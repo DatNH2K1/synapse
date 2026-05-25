@@ -1,0 +1,6 @@
+{
+  "name": "synapse",
+  "version": "1.0.0",
+  "displayName": "Synapse Extension Suite",
+  "description": "Global Memory Interceptor and Agent Suite for Synapse"
+}

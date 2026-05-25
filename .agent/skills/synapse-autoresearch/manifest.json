@@ -1,0 +1,7 @@
+{
+  "id": "synapse-autoresearch",
+  "name": "synapse-autoresearch",
+  "description": "Autonomous iterative optimization loop — run N iterations against a mechanical metric (coverage, size, errors). Use for improving measurable project metrics automatically.",
+  "module": "core",
+  "path": "skills/synapse-autoresearch/SKILL.md"
+}

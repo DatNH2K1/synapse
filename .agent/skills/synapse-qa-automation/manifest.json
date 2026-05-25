@@ -1,0 +1,7 @@
+{
+  "id": "synapse-qa-automation",
+  "name": "synapse-qa-automation",
+  "description": "Advanced QA Automation: End-to-End browser testing, visual regression testing, accessibility (WCAG) compliance, and performance audits.",
+  "module": "synapse",
+  "path": "skills/synapse-qa-automation/SKILL.md"
+}

@@ -1,0 +1,7 @@
+{
+  "id": "synapse-product-suite",
+  "name": "synapse-product-suite",
+  "description": "Master Product Suite: An end-to-end management layer covering Ideation, PRD Definition, Work Decomposition (Epics/Stories), and Sprint Execution.",
+  "module": "synapse",
+  "path": "skills/synapse-product-suite/SKILL.md"
+}

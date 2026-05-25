@@ -1,0 +1,7 @@
+{
+  "id": "synapse-quick-dev",
+  "name": "synapse-quick-dev",
+  "description": "Implements any user intent, requirement, story, bug fix or change request by producing clean working code artifacts that follow the project's existing architecture, patterns and conventions.",
+  "module": "synapse",
+  "path": "skills/synapse-quick-dev/SKILL.md"
+}

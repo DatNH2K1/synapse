@@ -1,0 +1,10 @@
+services:
+  synapse-portal:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    volumes:
+      - ./synapse-portal:/app
+      - /app/node_modules
+      - /app/.next

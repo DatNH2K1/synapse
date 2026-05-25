@@ -1,0 +1,7 @@
+{
+  "id": "synapse-design-suite",
+  "name": "synapse-design-suite",
+  "description": "Master Design Suite: A comprehensive design intelligence layer covering UX Strategy, Visual Design, AI Art Generation, and Frontend Implementation.",
+  "module": "synapse",
+  "path": "skills/synapse-design-suite/SKILL.md"
+}

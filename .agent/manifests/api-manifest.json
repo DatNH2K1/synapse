@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Synapse Agent-Facing API Manifest",
+  "description": "Catalog of API endpoints specifically designed for Synapse agents to contribute to and retrieve context from the Knowledge Portal.",
+  "version": "1.2.0",
+  "endpoints": [
+    {
+      "id": "propose-knowledge",
+      "path": "/api/propose",
+      "method": "POST",
+      "description": "Submit a new knowledge proposal. Context (project, agent, tech) is now handled via the 'tags' array.",
+      "requestBody": {
+        "type": "object",
+        "properties": {
+          "label": { "type": "string", "description": "Short, descriptive name for the knowledge node." },
+          "content": { "type": "string", "description": "The main body of knowledge (will be stored in node properties)." },
+          "type": { 
+            "type": "string", 
+            "enum": ["Lesson", "Rule", "Snippet", "Pattern", "AntiPattern", "Fact", "ArchitectureDecision"],
+            "description": "The category/class of the knowledge node."
+          },
+          "tags": { 
+            "type": "array", 
+            "items": { "type": "string" },
+            "description": "Contextual tags (e.g., 'project:synapse', 'agent:winston', 'tech:nextjs@14'). Use '@' to specify version."
+          },
+          "metadata": { "type": "object", "description": "Additional unstructured data." }
+        },
+        "required": ["label", "content", "type"]
+      }
+    },
+    {
+      "id": "export-context",
+      "path": "/api/context/export",
+      "method": "POST",
+      "description": "Export JIT context. Use tags for filtering to retrieve nodes related to a specific project, technology, or agent.",
+      "requestBody": {
+        "type": "object",
+        "properties": {
+          "tags": { 
+            "type": "array", 
+            "items": { "type": "string" },
+            "description": "List of tags to match (OR condition). Format: 'scope:name' or just 'name'." 
+          },
+          "format": { "type": "string", "enum": ["json", "md"], "default": "json" }
+        }
+      }
+    },
+    {
+      "id": "track-efficacy",
+      "path": "/api/nodes/efficacy",
+      "method": "POST",
+      "description": "Increment the efficacy (success count) of an existing knowledge node when it is successfully applied.",
+      "requestBody": {
+        "type": "object",
+        "properties": {
+          "nodeId": { "type": "string", "format": "uuid", "description": "The UUID of the knowledge node that was applied successfully." }
+        },
+        "required": ["nodeId"]
+      }
+    }
+  ]
+}

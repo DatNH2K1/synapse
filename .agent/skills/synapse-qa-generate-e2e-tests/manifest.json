@@ -1,0 +1,7 @@
+{
+  "id": "synapse-qa-generate-e2e-tests",
+  "name": "synapse-qa-generate-e2e-tests",
+  "description": "Generate end to end automated tests for existing features. Use when the user says \"create qa automated tests for [feature]\"",
+  "module": "synapse",
+  "path": "skills/synapse-qa-generate-e2e-tests/SKILL.md"
+}

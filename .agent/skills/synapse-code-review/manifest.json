@@ -1,0 +1,7 @@
+{
+  "id": "synapse-code-review",
+  "name": "synapse-code-review",
+  "description": "Master Review Suite: Automatically dispatches multiple review layers (Adversarial, Edge-Case, Prose-UI, Security) based on code context. High-fidelity analysis with zero manual configuration.",
+  "module": "core",
+  "path": "skills/synapse-code-review/SKILL.md"
+}

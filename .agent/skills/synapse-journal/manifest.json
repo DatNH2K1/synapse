@@ -1,0 +1,7 @@
+{
+  "id": "synapse-journal",
+  "name": "synapse-journal",
+  "description": "Write technical journal entries analyzing recent changes, decisions, and session reflections.",
+  "module": "core",
+  "path": "skills/synapse-journal/SKILL.md"
+}

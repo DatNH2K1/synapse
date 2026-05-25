@@ -1,0 +1,7 @@
+{
+  "id": "synapse-security-scan",
+  "name": "synapse-security-scan",
+  "description": "Scan codebase for security vulnerabilities, hardcoded secrets, and dependency issues. Use when asked to 'security scan', 'audit security', or before releases.",
+  "module": "core",
+  "path": "skills/synapse-security-scan/SKILL.md"
+}

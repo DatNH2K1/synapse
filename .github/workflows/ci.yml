@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: synapse-portal/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          cd synapse-portal
+          npm install
+
+      - name: Generate Prisma Client
+        run: |
+          cd synapse-portal
+          npx prisma generate
+
+      - name: Run Lint
+        run: |
+          cd synapse-portal
+          npm run lint
+
+      - name: Type Check
+        run: |
+          cd synapse-portal
+          npx tsc --noEmit
+
+      - name: Run Tests
+        run: |
+          cd synapse-portal
+          npm test
+
+  build:
+    needs: lint-and-typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: synapse-portal/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          cd synapse-portal
+          npm install
+
+      - name: Generate Prisma Client
+        run: |
+          cd synapse-portal
+          npx prisma generate
+
+      - name: Build Next.js
+        run: |
+          cd synapse-portal
+          npm run build
+        env:
+          DATABASE_URL: "postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public" # Placeholder for build-time check
+          NEXT_PUBLIC_API_URL: "http://localhost:3000"

@@ -1,0 +1,7 @@
+{
+  "id": "synapse-party-mode",
+  "name": "synapse-party-mode",
+  "description": "Orchestrates group discussions between installed Synapse agents, enabling natural multi-agent conversations where each agent is a real subagent with independent thinking.",
+  "module": "core",
+  "path": "skills/synapse-party-mode/SKILL.md"
+}

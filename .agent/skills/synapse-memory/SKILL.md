@@ -1,0 +1,200 @@
+---
+id: synapse-memory
+name: synapse-memory
+module: synapse
+phase: anytime
+description: "Submit and retrieve AI lessons via the Synapse Knowledge Portal. Uses a centralized API with mandatory section-based tagging. Core capability for all agents."
+---
+
+# 🛡️ MANDATORY COMPLIANCE CHECKLIST
+- [ ] **JIT Grounding**: Have I retrieved current project context before proceeding?
+- [ ] **Memory Persistence**: Have I planned to record insights to the Knowledge Portal?
+
+> [!MANDATORY]
+> **STOP!** If the items in the Checklist above are not checked, the Agent is NOT ALLOWED to proceed. Compliance is mandatory for knowledge integrity.
+
+# synapse-memory
+
+Manages AI lessons and project context via the **Synapse Knowledge Portal**. This skill is a standard capability for all Synapse agents, allowing them to record insights and retrieve Just-In-Time (JIT) context.
+
+---
+
+## When to Use
+
+- Use when the user says **"record a lesson"**, **"update memory"**, **"add to lessons learned"**, or **"synapse-memory"**.
+- Automatically invoked at the end of a sprint, complex story implementation, or task.
+- Use to **retrieve** context when starting new features or debugging known issues.
+
+---
+
+## 🛡️ GUARDRAILS & USAGE POLICY (MANDATORY FOR ALL AGENTS)
+
+To prevent cross-project context contamination, all agents MUST follow these rules when using `synapse-memory`:
+
+1. **Zero Assumption Rule**: Never assume the project name (e.g., `project:synapse-portal`) from history or previous sessions.
+2. **Workspace Verification**: Before executing `query.py`, inspect the active workspace paths. If multiple projects are open (e.g., `synapse`), you MUST confirm the target project with the user.
+3. **Explicit Scoping**: All queries and records MUST automatically include the `project:<name>` tag AND the calling agent's tag (e.g., `agent:synapse-agent-web-dev`). The agent tag value **MUST be the agent folder name** (the directory name under `agents/`), NOT the agent's display name or persona name. The agent invoking this skill must supply its own identity tag to prevent context contamination across different agents.
+4. **Context Grounding**: Only apply retrieved knowledge that explicitly matches the current active workspace.
+
+---
+
+## PORTAL WRITE Workflow
+
+All lessons are proposed to the Portal via the `/api/propose` endpoint. Refer to `manifests/api-.env` for the full schema.
+
+### Step 1 — Formulate Payload
+
+Construct a JSON payload following this format:
+
+```json
+{
+  "label": "Short descriptive title",
+  "type": "LESSON|CONTEXT|FEATURE",
+  "content": "Detailed explanation of the knowledge node.",
+  "tags": [
+    "section:<section_name>",
+    "project:name",
+    "technology:name@version",
+    "agent:name"
+  ]
+}
+```
+
+### Step 2 — Mandatory Section Tags
+
+Every proposal **MUST** include exactly one of the following section tags in the `tags` array. All tags **MUST** follow kebab-case (lowercase, hyphen-separated):
+
+- `section:specialized-conventions`
+- `section:optimized-techniques`
+- `section:mistakes-to-avoid`
+- `section:user-personals`
+
+### Step 3 — Submit to Portal
+
+Use the automated recording script to submit the knowledge node.
+
+> [!IMPORTANT]
+> The following are the **ONLY** supported parameters for `record.py`. Do not attempt to pass additional flags.
+
+| Parameter   | Required | Description                                                                       |
+| :---------- | :------- | :-------------------------------------------------------------------------------- |
+| `--label`   | Yes      | Short descriptive title of the node.                                              |
+| `--type`    | Yes      | One of:`LESSON`, `CONTEXT`, `FEATURE`.                                            |
+| `--content` | Yes      | The full text/markdown content of the node.                                       |
+| `--tags`    | Yes      | Space-separated list of tags (must include a `section:` tag if type is `LESSON`). |
+
+```bash
+python3 skills/synapse-memory/scripts/record.py \
+  --label "Colocate Server Actions" \
+  --type "LESSON" \
+  --content "Always co-locate server actions with their form components to improve maintainability." \
+  --tags "section:optimized-techniques" "technology:nextjs"
+```
+
+---
+
+## PORTAL EFFICACY Workflow
+
+To track which lessons are most effective, the Portal tracks a `success_count` for each node. When an agent or user successfully applies a lesson in their work, they should increment its efficacy count.
+
+### Execute Efficacy Tracking
+
+Use the automated efficacy script to register a successful application of a lesson.
+
+| Parameter   | Required | Description                                                         |
+| :---------- | :------- | :------------------------------------------------------------------ |
+| `--node-id` | Yes      | The UUID of the Lesson node that was applied successfully.           |
+
+```bash
+python3 skills/synapse-memory/scripts/efficacy.py --node-id "1992455f-5d0b-4b2c-9d30-927bc5161894"
+```
+
+---
+
+## Tag Definitions & Conventions
+
+To ensure consistent retrieval, all tags **MUST** follow the `scope:value` format. There are **NO OTHER** allowed tag formats.
+
+### Allowed Scopes
+
+| Scope        | Definition                                                                                                                                                                                    | Example                          |
+| :----------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------------------------------- |
+| `section`    | Mandatory category for lessons (defines where it appears in the Portal).                                                                                                                      | `section:mistakes-to-avoid`      |
+| `project`    | Links knowledge to a specific repository or project name.                                                                                                                                     | `project:synapse-portal`            |
+| `technology` | Defines the tech stack or library related to the insight.                                                                                                                                     | `technology:react@18`            |
+| `agent`      | Identifies the agent who generated or is most relevant to the insight. Value **MUST** be the **agent folder name** (e.g. the directory under `agents/`), NOT the persona display name. | `agent:synapse-agent-web-dev`       |
+
+### Naming Rules
+
+- **Kebab-case only**: Use `lowercase-words-separated-by-hyphens`.
+- **No spaces**: Never use spaces within a tag.
+- **No uppercase**: Always use lowercase to avoid case-sensitivity issues.
+- **Format**: `scope:value` ONLY.
+- **`agent` tag value = folder name**: Always use the skill folder name (e.g. `synapse-agent-web-dev`), never the persona's first name (e.g. ~~`amelia`~~). The folder name is the canonical identifier stored in the Portal.
+
+---
+
+## PORTAL READ Workflow (JIT Grounding)
+
+To retrieve context, use the automated query script. This is a **MANDATORY** step when starting new features or exploring unknown codebases.
+
+### Step 1 — Filtering Strategy
+
+Construct your query using specific tags to narrow down the context:
+
+- **Agent Context**: Use `agent:<folder-name>` — the skill folder name, e.g. `agent:synapse-agent-web-dev` (NOT `agent:amelia`).
+- **Project Context**: Use `project:<name>` (e.g., `project:synapse-portal`).
+- **Tech Context**: Use `technology:<name>` or `technology:<name>@<version>` depending on query breadth:
+  - **Omit version** for broad retrieval across all versions: `technology:nextjs`
+  - **Include version** to pin to a specific major release: `technology:nextjs@15`, `technology:react@18`
+  - Version follows the `@` suffix as defined in the `technology` scope (e.g. `technology:tailwindcss@4`). Always use the same format as the tag was recorded with.
+
+### Step 2 — Execute Query
+
+Use the `query.py` script.
+
+> [!IMPORTANT]
+> The following are the **ONLY** supported parameters for `query.py`. Do not attempt to pass additional flags.
+
+| Parameter | Required | Description                                                          |
+| :-------- | :------- | :------------------------------------------------------------------- |
+| `--tags`  | Yes      | Space-separated list of tags to filter by. At least one is required. |
+| `--limit` | No       | Optional integer to limit the number of returned results.            |
+
+```bash
+python3 skills/synapse-memory/scripts/query.py --tags "project:synapse-portal" "technology:nextjs"
+```
+
+> [!NOTE]
+>
+> - Multiple tags act as an **OR** filter (returns nodes matching _any_ of the tags).
+> - All tags must follow the **kebab-case** convention and `scope:value` format.
+
+### Step 3 — Apply Context
+
+Retrieved content **MUST** be reviewed and integrated into your reasoning. This prevents regressions and ensures adherence to established patterns.
+
+---
+
+## Example Interactions
+
+**User:** "Record a lesson: never hardcode tenant IDs in project-alpha."
+→ **Action:** Construct payload with `type: "LESSON"`, `tags: ["section:mistakes-to-avoid", "project:project-alpha"]`.
+→ **Submit:** Run `python3 skills/synapse-memory/scripts/record.py --label "Tenant IDs" --type "LESSON" --content "never hardcode tenant IDs..." --tags "section:mistakes-to-avoid" "project:project-alpha"`.
+
+**User:** "Document the finished Auth feature for this project."
+→ **Action:** Run `python3 skills/synapse-memory/scripts/record.py --label "Auth System" --type "FEATURE" --content "Implemented Better Auth with Google and GitHub providers..." --tags "project:synapse-portal" "technology:next-js"`.
+
+**User:** "Save the current project architecture context."
+→ **Action:** Run `python3 skills/synapse-memory/scripts/record.py --label "Micro-file Architecture" --type "CONTEXT" --content "Project uses micro-file architecture for workflows to ensure atomic execution..." --tags "project:synapse-portal" "type:architecture"`.
+
+**User:** "What have we learned about Ant Design?"
+→ **Action:** Run `python3 skills/synapse-memory/scripts/query.py --tags "technology:antd"`.
+→ **Present:** Summarize the returned knowledge nodes for the user.
+
+**User:** "Check my (Amelia) specialized conventions for this project."
+→ **Action:** Run `python3 skills/synapse-memory/scripts/query.py --tags "agent:synapse-agent-web-dev" "project:synapse-portal" "section:specialized-conventions"`.
+→ **Present:** List and apply the conventions to the current task.
+
+> [!IMPORTANT]
+> The `agent:` tag value is always the **agent folder name** (e.g. `synapse-agent-web-dev`), not the agent's persona name (e.g. ~~`amelia`~~). Check `agents/` for the exact folder name of each agent.

@@ -1,0 +1,7 @@
+{
+  "id": "synapse-research-center",
+  "name": "synapse-research-center",
+  "description": "Master Research Center: A unified engine for Domain Analysis, Market Intelligence, Technical Research, and Documentation Lookup.",
+  "module": "synapse",
+  "path": "skills/synapse-research-center/SKILL.md"
+}

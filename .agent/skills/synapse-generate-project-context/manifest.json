@@ -1,0 +1,7 @@
+{
+  "id": "synapse-generate-project-context",
+  "name": "synapse-generate-project-context",
+  "description": "Create project-context.md with AI rules. Use when the user says \"generate project context\" or \"create project context\"",
+  "module": "synapse",
+  "path": "skills/synapse-generate-project-context/SKILL.md"
+}

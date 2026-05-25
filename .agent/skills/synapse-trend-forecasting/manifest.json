@@ -1,0 +1,7 @@
+{
+  "id": "synapse-trend-forecasting",
+  "name": "synapse-trend-forecasting",
+  "description": "Trend Forecasting & Futurism: Weak Signals, STEEP Analysis, Futures Cone, and Cross-Industry Analogy mapping.",
+  "module": "synapse",
+  "path": "skills/synapse-trend-forecasting/SKILL.md"
+}

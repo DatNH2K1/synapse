@@ -1,0 +1,7 @@
+{
+  "id": "synapse-correct-course",
+  "name": "synapse-correct-course",
+  "description": "Manage significant changes during sprint execution. Use when the user says \"correct course\" or \"propose sprint change\"",
+  "module": "synapse",
+  "path": "skills/synapse-correct-course/SKILL.md"
+}

@@ -1,0 +1,34 @@
+# Mac
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+
+_synapse-output/
+
+# Coverage files
+.coverage
+.coverage.*
+htmlcov/
+
+__pycache__/
+SYNAPSE-DASHBOARD.md
+memory.db
+memory/
+*.db-journal
+.localstack
+
+# Environment Variables
+.env*
+!.env.example
+
+# Database local storage
+.postgresql/
+
+# Symbolic Link
+/skills
+/.agent/skills/synapse-agent-*
+
+# Local Translations
+idea/translate/

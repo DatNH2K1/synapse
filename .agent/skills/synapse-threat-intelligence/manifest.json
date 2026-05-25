@@ -1,0 +1,7 @@
+{
+  "id": "synapse-threat-intelligence",
+  "name": "synapse-threat-intelligence",
+  "description": "CVE & Threat Intelligence Monitoring: Real-time CVE audits, GitHub Advisory tracking, and proactive dependency patching.",
+  "module": "synapse",
+  "path": "skills/synapse-threat-intelligence/SKILL.md"
+}

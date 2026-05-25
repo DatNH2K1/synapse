@@ -1,0 +1,7 @@
+{
+  "id": "synapse-core-system",
+  "name": "synapse-core-system",
+  "description": "Master Core System: The central management layer for Synapse operations, covering Project Admin, Context Optimization, and Agent Orchestration.",
+  "module": "core",
+  "path": "skills/synapse-core-system/SKILL.md"
+}

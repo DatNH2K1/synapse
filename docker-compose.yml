@@ -1,0 +1,50 @@
+name: synapse
+
+networks:
+  synapse:
+    name: synapse
+    driver: bridge
+
+services:
+  db:
+    image: ankane/pgvector:v0.5.1
+    container_name: synapse-db
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    volumes:
+      - ./.postgresql:/var/lib/postgresql/data
+    networks:
+      - synapse
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U synapse"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  synapse-portal:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: synapse-portal
+    ports:
+      - "${Synapse_PORTAL_PORT:-3100}:3000"
+    env_file:
+      - .env
+    environment:
+      - AGENT_MANIFEST_PATH=/data/agent-manifest.csv
+      - SKILL_MANIFEST_PATH=/data/skill-manifest.csv
+    volumes:
+      - ./synapse-portal/prisma/schema.prisma:/app/prisma/schema.prisma
+      - ./synapse-portal/prisma/migrations:/app/prisma/migrations
+      - ./synapse-portal/prisma/seed.ts:/app/prisma/seed.ts
+      - ./.agent/manifests/agent-manifest.csv:/data/agent-manifest.csv
+      - ./.agent/manifests/skill-manifest.csv:/data/skill-manifest.csv
+    networks:
+      - synapse
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always

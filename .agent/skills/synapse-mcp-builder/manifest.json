@@ -1,0 +1,7 @@
+{
+  "id": "synapse-mcp-builder",
+  "name": "synapse-mcp-builder",
+  "description": "Build MCP servers for LLM-external service integration. Supports FastMCP (Python) and MCP SDK (Node/TypeScript).",
+  "module": "core",
+  "path": "skills/synapse-mcp-builder/SKILL.md"
+}

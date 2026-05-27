@@ -137,5 +137,9 @@
   "forget_mode_desc_disabled": "Memory decay is disabled. All active knowledge stays active permanently.",
   "forget_dry_run": "Forgetting Dry-Run Mode",
   "forget_dry_run_desc_enabled": "Dry-run is active. Decay scores are analyzed in logs, but no nodes will actually transition to COLD storage.",
-  "forget_dry_run_desc_disabled": "Dry-run is inactive. Decay transitions will be written directly to the database."
+  "forget_dry_run_desc_disabled": "Dry-run is inactive. Decay transitions will be written directly to the database.",
+  "not_found_title": "Memory Partition Not Found",
+  "not_found_desc": "The requested path does not exist or has been garbage-collected within the Synapse knowledge framework.",
+  "back_to_home": "Back to Home",
+  "go_back": "Go Back"
 }

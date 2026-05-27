@@ -15,6 +15,7 @@ import { useI18n } from "@/lib/i18n";
 import { Tag } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Avatar from "@/components/shared/Avatar";
 
 export default function SettingsPageContent({
   config,
@@ -119,13 +120,10 @@ export default function SettingsPageContent({
           <div className="rounded-2xl glass p-6">
             <div className="flex items-center gap-5">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 border-indigo-500/20 bg-slate-800 p-1 shadow-xl">
-                <Image
-                  src={`https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${config.user_name}`}
-                  alt="Avatar"
-                  width={56}
-                  height={56}
-                  className="rounded-full"
-                  unoptimized
+                <Avatar
+                  seed={config.user_name}
+                  width={48}
+                  height={48}
                 />
               </div>
               <div className="flex-1 min-w-0 flex items-center justify-between gap-4">

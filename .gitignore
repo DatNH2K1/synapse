@@ -18,6 +18,7 @@ memory.db
 memory/
 *.db-journal
 .localstack
+scratch/
 
 # Environment Variables
 .env*

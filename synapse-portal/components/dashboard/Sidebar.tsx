@@ -14,6 +14,7 @@ import {
 import Image from "next/image";
 import NavItem from "@/components/shared/NavItem";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import Avatar from "@/components/shared/Avatar";
 import { useI18n } from "@/lib/i18n";
 
 export default function Sidebar({
@@ -61,11 +62,7 @@ export default function Sidebar({
           badge={pendingCount}
           href="/gate"
         />
-        <NavItem
-          icon={<Search size={18} />}
-          label={t("relevance_explorer")}
-          href="/relevance"
-        />
+
         <NavItem
           icon={<UserCircle2 size={18} />}
           label={t("agents_skills")}
@@ -85,12 +82,10 @@ export default function Sidebar({
         <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/5 pt-4 px-1">
           <div className="flex items-center gap-3 overflow-hidden">
             <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-dashboard-bg/50">
-              <Image
-                src={`https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${userName}`}
+              <Avatar
+                seed={userName}
                 width={32}
                 height={32}
-                alt="Avatar"
-                unoptimized
               />
             </div>
             <div className="overflow-hidden">

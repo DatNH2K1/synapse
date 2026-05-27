@@ -25,6 +25,28 @@ Manages AI lessons and project context via the **Synapse Knowledge Portal**. Thi
 - Automatically invoked at the end of a sprint, complex story implementation, or task.
 - Use to **retrieve** context when starting new features or debugging known issues.
 
+### 🚫 When NOT to Record Anything
+Do **NOT** record a knowledge node for:
+- Minor refactorings or code tweaks (e.g., renaming classes, variables, or functions).
+- Small bug fixes or formatting updates.
+- Simple, localized changes that have no architectural impact, safety implications, or reuse potential.
+- Cluttering the database with localized implementation details.
+
+### 📌 Node Type Selection Criteria
+Only record when there is a significant, reusable insight or documentation requirement. Choose the type strictly according to these boundaries:
+
+1. **`LESSON`**:
+   - **Definition**: A rule, pattern, best practice, or anti-pattern to prevent future mistakes or maintain strict coding standards.
+   - **Example**: Mandatory security headers, API route conventions, or a lesson learned from a major bug.
+   
+2. **`FEATURE`**:
+   - **Definition**: Complete technical documentation of a newly shipped major feature, database schema, API design, or workspace integration.
+   - **Example**: A newly implemented OAuth login flow, indexing job, or dashboard page structure.
+
+3. **`CONTEXT`**:
+   - **Definition**: High-level domain context, core architectural designs (ADRs), external API integration flows, or permanent system design guidelines.
+   - **Example**: Overall system architecture, design rules for multi-agent execution, or business domain boundaries.
+
 ---
 
 ## 🛡️ GUARDRAILS & USAGE POLICY (MANDATORY FOR ALL AGENTS)
@@ -41,6 +63,9 @@ To prevent cross-project context contamination, all agents MUST follow these rul
 ## PORTAL WRITE Workflow
 
 All lessons are proposed to the Portal via the `/api/propose` endpoint. Refer to `manifests/api-.env` for the full schema.
+
+> [!IMPORTANT]
+> **English Language Rule**: All proposed nodes, including their title (`--label`) and markdown content (`--content`), **MUST** be written in **English** only. This ensures a standardized, globally searchable knowledge base, even if the developer's conversation is in another language (e.g. Vietnamese).
 
 ### Step 1 — Formulate Payload
 

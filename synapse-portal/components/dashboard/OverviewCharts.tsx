@@ -113,7 +113,7 @@ export default function OverviewCharts({
           {t("node_growth")}
         </h3>
         <div className="h-[250px] w-full">
-          <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+          <ResponsiveContainer width="100%" height={250} debounce={50}>
             <AreaChart data={growthData}>
               <defs>
                 <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
@@ -159,7 +159,7 @@ export default function OverviewCharts({
           {t("knowledge_distribution")}
         </h3>
         <div className="h-[250px] w-full">
-          <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+          <ResponsiveContainer width="100%" height={250} debounce={50}>
             <BarChart data={distributionData} layout="vertical">
               <CartesianGrid
                 strokeDasharray="3 3"
@@ -206,7 +206,7 @@ export default function OverviewCharts({
           {t("knowledge_type")}
         </h3>
         <div className="h-[250px] w-full flex items-center justify-center">
-          <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+          <ResponsiveContainer width="100%" height={250} debounce={50}>
             <PieChart>
               <Pie
                 data={typeDistributionData}
@@ -251,7 +251,7 @@ export default function OverviewCharts({
               {t("no_success_lessons_data")}
             </div>
           ) : (
-            <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+            <ResponsiveContainer width="100%" height={250} debounce={50}>
               <BarChart data={topLessonsData}>
                 <CartesianGrid
                   strokeDasharray="3 3"
@@ -298,7 +298,7 @@ export default function OverviewCharts({
               {t("no_agent_contributions")}
             </div>
           ) : (
-            <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+            <ResponsiveContainer width="100%" height={250} debounce={50}>
               <BarChart data={agentContributionData} layout="vertical">
                 <CartesianGrid
                   strokeDasharray="3 3"
@@ -351,7 +351,7 @@ export default function OverviewCharts({
           </span>
         </div>
         <div className="h-[250px] w-full flex items-center justify-center">
-          <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+          <ResponsiveContainer width="100%" height={250} debounce={50}>
             <PieChart>
               <Pie
                 data={statusDistributionData}

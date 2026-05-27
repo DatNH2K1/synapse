@@ -17,38 +17,34 @@ metadata:
 
 This is the ultimate orchestration layer for all code-related reviews in Synapse. It automatically analyzes code context to trigger the most relevant expert layers while preserving the full technical rigor and all supporting documentation of underlying methodologies.
 
-## 🚦 INTELLIGENCE DISPATCHER
+## 🚦 INTELLIGENCE DISPATCHER & SUB-SKILL REGISTRY
 
-The system uses `scripts/dispatcher.py` to automatically analyze the input and activate the following layers:
+When reviewing, you MUST refer to the registry table below and **only load/query the sub-skills whose Activation Criteria match the current task context** (Lazy/Conditional Loading pattern) to prevent token waste and context bloat. Do NOT load sub-skills whose activation criteria are not met.
 
-- **ALWAYS ACTIVE**: **Adversarial Red-Team** (Baseline skepticism).
-- **DETECTED LOGIC** (`if`, `loop`, `math`): **Edge-Case Hunter** (Path tracing).
-- **DETECTED UI** (`className`, `style`, `CSS`): **Prose-UI & UX** (Experience audit).
-- **DETECTED SENSITIVE** (`token`, `sql`, `auth`): **Security Auditor** (Vulnerability scan).
+| Sub-Skill | Portable Path | Primary Role | Activation Criteria |
+| :--- | :--- | :--- | :--- |
+| **Adversarial Review** | [`./references/adversarial-review/SKILL.md`](./references/adversarial-review/SKILL.md) | Skeptical critique, security audit, assumptions challenge | Always active for Stage 3 reviews |
+| **Edge-Case Hunter** | [`./references/edge-case-hunter/SKILL.md`](./references/edge-case-hunter/SKILL.md) | Path tracing, boundary analysis, race conditions | Active on logic detection (`if`, `loop`, `math`) |
 
 ---
 
-## 🛠️ CORE PROTOCOLS (Full Essence)
+## 🛠️ ACTIVE INTEGRATION WORKFLOWS
 
-### 1. The Three-Stage Review Protocol
-*Consolidated from synapse-code-review*
-
-**Stage 1 — Spec Compliance**
-- Does code match what was requested?
-- MUST pass before Stage 2.
-
-**Stage 2 — Code Quality**
-- Standards, security, performance, and naming.
-
-**Stage 3 — Adversarial Red-Team**
-- Actively try to break the code. Find security holes, false assumptions, resource exhaustion.
+### 1. Three-Stage Review Protocol (Dynamic Integration)
+- **Stage 1 & 2 (Compliance & Quality)**: Assess code structure. If any branching paths exist, you **MUST** load and apply the exhaustive path tracing rules from `edge-case-hunter`.
+- **Stage 3 (Adversarial Red-Team)**: Actively apply the threat models, security vulnerability vectors, and destructive testing mindsets defined in `adversarial-review`.
 
 ### 2. Edge-Case Path Tracing
-*Consolidated from synapse-code-review*
+- When trace logic is triggered, systematically enumerate all input parameters. Use the boundary-value analysis guidelines from `edge-case-hunter` to trace empty inputs, invalid formats, and overflow/null states.
 
-**Method**: Exhaustive path enumeration.
-- Walk all branching paths and domain boundaries.
-- Identify unhandled nulls, empty inputs, and race conditions.
+---
+
+## 🔒 AUTOMATED QUALITY CHECKPOINTS
+
+Before submitting a code review report:
+- [ ] **Path Traversal Gate**: Confirm all branching logic (`if`, `switch`, loops) has been traced with a corresponding edge-case checklist.
+- [ ] **Adversarial Security Sign-off**: Verify that input validation, API error handling, and authorization states have been fuzzed using `adversarial-review` checklists.
+- [ ] **Prose Naming Audit**: Ensure variable and function names are self-documenting and match Synapse naming conventions.
 
 ---
 
@@ -62,4 +58,4 @@ For deep-dive analysis, the Master Skill maintains the full original structures 
     - Includes: Exhaustive path tracing rules.
 
 ## USAGE
-Simply request a "code review" or "review these changes." The system will automatically coordinate the layers and provide a unified report.
+Simply request a "code review" or "review these changes." The system will automatically coordinate the layers, apply the sub-skill checks, and provide a unified report with quality checkpoints.

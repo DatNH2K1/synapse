@@ -4,11 +4,13 @@ import urllib.request
 import argparse
 import sys
 
-# Resolve the absolute path of scripts/utils and insert into sys.path
-utils_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../scripts/utils"))
-sys.path.insert(0, utils_path)
+from pathlib import Path
+import sys
 
-from env_loader import load_env
+# Add project root directory to sys.path
+sys.path.append(str(Path(__file__).parents[4]))
+
+from scripts.utils.env_loader import load_env
 load_env()
 
 PORTAL_PORT = os.getenv("Synapse_PORTAL_PORT", "3100")

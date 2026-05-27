@@ -75,7 +75,7 @@ dev:
 	$(MAKE) seed
 
 link:
-	bash scripts/utils/link-agents.sh
+	python3 scripts/utils/link_agents.py
 
 plugin-link:
 	@mkdir -p ~/.gemini/config/plugins

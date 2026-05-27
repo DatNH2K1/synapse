@@ -105,9 +105,9 @@ export default function EvolutionTimeline({
           </p>
         </div>
       ) : filteredLogs.length > 0 ? (
-        <div className="relative pl-8 sm:pl-10 space-y-8">
+        <div className="relative space-y-8">
           {/* Timeline continuous line tracker */}
-          <div className="absolute left-[17px] top-6 bottom-6 w-[2px] bg-gradient-to-b from-emerald-500/25 via-rose-500/25 to-amber-500/25 rounded-full" />
+          <div className="absolute left-[13px] top-6 bottom-6 w-[2px] bg-gradient-to-b from-emerald-500/25 via-rose-500/25 to-amber-500/25 rounded-full" />
 
           {filteredLogs.map((log) => {
             const properties = JSON.parse(log.properties || "{}");
@@ -117,10 +117,10 @@ export default function EvolutionTimeline({
             return (
               <div
                 key={log.id}
-                className="relative flex flex-col group animate-in fade-in slide-in-from-bottom-2 duration-300"
+                className="relative flex flex-col pl-10 group animate-in fade-in slide-in-from-bottom-2 duration-300"
               >
                 {/* Floating Circle marker for status */}
-                <div className="absolute left-[-29px] top-1.5 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-slate-950 border border-white/5 transition-all duration-300">
+                <div className="absolute left-[0px] top-1.5 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-slate-950 border border-white/5 transition-all duration-300">
                   {log.status === "APPROVED" && (
                     <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.25)]">
                       <CheckCircle size={10} />

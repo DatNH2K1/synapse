@@ -263,6 +263,7 @@ export const knowledgeService = {
             data: {
               status: "ARCHIVE",
               memory_tier: "ARCHIVE",
+              last_verified: new Date(),
             },
           });
 
@@ -444,7 +445,7 @@ export const knowledgeService = {
     await prisma.$executeRaw`UPDATE "Node" SET embedding = NULL WHERE id = cast(${id} as uuid)`;
     return prisma.node.update({
       where: { id },
-      data: { status: "REJECTED", memory_tier: "ARCHIVE" },
+      data: { status: "REJECTED", memory_tier: "ARCHIVE", last_verified: new Date() },
     });
   },
 
@@ -911,7 +912,7 @@ export const knowledgeService = {
       // 2. Archive all source nodes and nullify their embeddings to save local space
       await tx.node.updateMany({
         where: { id: { in: params.sourceNodeIds } },
-        data: { status: "ARCHIVE", memory_tier: "ARCHIVE" },
+        data: { status: "ARCHIVE", memory_tier: "ARCHIVE", last_verified: new Date() },
       });
       for (const srcId of params.sourceNodeIds) {
         await tx.$executeRaw`UPDATE "Node" SET embedding = NULL WHERE id = cast(${srcId} as uuid)`;

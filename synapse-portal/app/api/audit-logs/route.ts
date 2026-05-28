@@ -66,6 +66,9 @@ export async function GET() {
       };
     });
 
+    // Explicitly sort logs by last_verified descending (newest first)
+    decoratedLogs.sort((a, b) => new Date(b.last_verified).getTime() - new Date(a.last_verified).getTime());
+
     return NextResponse.json({
       success: true,
       logs: decoratedLogs,

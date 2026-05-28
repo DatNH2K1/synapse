@@ -59,7 +59,7 @@ describe("Evolution History & Timeline Undo Unit Tests", () => {
       // Verify node update was called
       expect(prisma.node.update).toHaveBeenCalledWith({
         where: { id: mockId },
-        data: { status: "REJECTED", memory_tier: "ARCHIVE" },
+        data: { status: "REJECTED", memory_tier: "ARCHIVE", last_verified: expect.any(Date) },
       });
     });
   });
@@ -96,7 +96,7 @@ describe("Evolution History & Timeline Undo Unit Tests", () => {
       // Verify archiving source nodes
       expect(prisma.node.updateMany).toHaveBeenCalledWith({
         where: { id: { in: mockParams.sourceNodeIds } },
-        data: { status: "ARCHIVE", memory_tier: "ARCHIVE" },
+        data: { status: "ARCHIVE", memory_tier: "ARCHIVE", last_verified: expect.any(Date) },
       });
 
       // Verify source node vector nullification

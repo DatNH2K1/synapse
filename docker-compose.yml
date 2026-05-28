@@ -10,7 +10,7 @@ services:
     image: ankane/pgvector:v0.5.1
     container_name: synapse-db
     ports:
-      - "5432:5432"
+      - "${SYNAPSE_DB_PORT:-5432}:5432"
     env_file:
       - .env
     volumes:
@@ -30,7 +30,7 @@ services:
       dockerfile: Dockerfile
     container_name: synapse-portal
     ports:
-      - "${Synapse_PORTAL_PORT:-3100}:3000"
+      - "${SYNAPSE_PORTAL_PORT:-3100}:3000"
     env_file:
       - .env
     environment:

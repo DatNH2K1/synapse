@@ -53,13 +53,16 @@ db-refresh:
 	docker compose exec synapse-portal npx prisma db push --force-reset
 	docker compose exec synapse-portal npx prisma db seed
 
+test:
+	cd synapse-portal && npm run test:silent
+
 check:
 	@if [ ! -d "synapse-portal/node_modules" ]; then \
 		echo "📦 synapse-portal node_modules not found. Running npm install on host..."; \
 		cd synapse-portal && npm install; \
 	fi
 	cd synapse-portal && npx prisma generate && npm run check
-	cd synapse-portal && npm run test:silent
+	$(MAKE) test
 
 # Run local development with hot reload
 dev:

@@ -8,6 +8,8 @@ import { Node, Edge, Tag } from "@/lib/db";
 import OverviewCharts from "@/components/dashboard/OverviewCharts";
 import KnowledgeAtlas from "@/components/dashboard/KnowledgeAtlas";
 import { formatFullTag } from "@/lib/format-utils";
+import { useRealtime } from "@/components/shared/RealtimeProvider";
+import { useRouter } from "next/navigation";
 
 export default function OverviewPageContent({
   nodes,
@@ -30,6 +32,15 @@ export default function OverviewPageContent({
   };
 }) {
   const { t } = useI18n();
+  const router = useRouter();
+  const { subscribeToUpdates } = useRealtime();
+
+  React.useEffect(() => {
+    const unsubscribe = subscribeToUpdates(() => {
+      router.refresh();
+    });
+    return unsubscribe;
+  }, [subscribeToUpdates, router]);
 
   // --- Data Processing for Charts ---
   const growthData = useMemo(() => {

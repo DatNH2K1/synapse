@@ -141,5 +141,9 @@
   "not_found_title": "Không tìm thấy phân vùng",
   "not_found_desc": "Đường dẫn bạn yêu cầu không tồn tại hoặc đã bị thu hồi trong hệ thống tri thức của Synapse.",
   "back_to_home": "Quay về Trang chủ",
-  "go_back": "Quay lại"
+  "go_back": "Quay lại",
+  "new_proposal_title": "Yêu Cầu Mới Chờ Duyệt",
+  "new_proposal_msg": "Đã nhận node mới: \"{label}\" ({type})",
+  "proposal_status_title": "Cập Nhật Trạng Thái",
+  "proposal_status_msg": "Node đề xuất đã được xử lý: [{action}]"
 }

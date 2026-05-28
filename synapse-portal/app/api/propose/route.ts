@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { knowledgeService } from "@/lib/services/knowledge-service";
+import { broadcastProposalCreated } from "@/lib/services/event-service";
 
 export async function POST(request: Request) {
   try {
@@ -14,6 +15,13 @@ export async function POST(request: Request) {
     }
 
     const result = await knowledgeService.proposeKnowledge(body);
+    if (result.success && result.id) {
+      broadcastProposalCreated({
+        id: result.id,
+        label: body.label,
+        type: body.type,
+      });
+    }
     return NextResponse.json(result);
   } catch (error) {
     const message =

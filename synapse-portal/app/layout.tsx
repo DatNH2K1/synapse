@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 
 import { I18nProvider } from "@/lib/i18n";
 import ThemeProvider from "@/components/shared/ThemeProvider";
+import RealtimeProvider from "@/components/shared/RealtimeProvider";
 
 export default function RootLayout({
   children,
@@ -18,7 +19,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className="selection:bg-indigo-500/30" suppressHydrationWarning>
         <ThemeProvider>
-          <I18nProvider>{children}</I18nProvider>
+          <I18nProvider>
+            <RealtimeProvider>{children}</RealtimeProvider>
+          </I18nProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -13,7 +13,6 @@ import {
   Zap,
   Tag as TagIcon,
 } from "lucide-react";
-import Image from "next/image";
 import Avatar from "@/components/shared/Avatar";
 import { useI18n } from "@/lib/i18n";
 import TiltCard from "@/components/landing/TiltCard";
@@ -252,11 +251,7 @@ export default function LandingPageContent({
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-[#030712]">
-                    <Avatar
-                      seed={agent.name}
-                      width={48}
-                      height={48}
-                    />
+                    <Avatar seed={agent.name} width={48} height={48} />
                   </div>
                   <span className="text-lg">{agent.icon}</span>
                 </div>

@@ -6,20 +6,19 @@ import {
   LayoutDashboard,
   Brain,
   ShieldCheck,
-  Search,
   UserCircle2,
   Settings,
   Bell,
 } from "lucide-react";
-import Image from "next/image";
 import NavItem from "@/components/shared/NavItem";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import Avatar from "@/components/shared/Avatar";
 import { useI18n } from "@/lib/i18n";
+import { useRealtime } from "@/components/shared/RealtimeProvider";
 
 export default function Sidebar({
   userName = "Chief Architect",
-  pendingCount = 0,
+  pendingCount: initialPendingCount = 0,
   isFullscreen = false,
 }: {
   userName?: string;
@@ -27,6 +26,10 @@ export default function Sidebar({
   isFullscreen?: boolean;
 }) {
   const { t } = useI18n();
+  const { pendingCount: livePendingCount } = useRealtime();
+
+  const pendingCount =
+    livePendingCount !== undefined ? livePendingCount : initialPendingCount;
 
   return (
     <aside
@@ -82,11 +85,7 @@ export default function Sidebar({
         <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/5 pt-4 px-1">
           <div className="flex items-center gap-3 overflow-hidden">
             <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-dashboard-bg/50">
-              <Avatar
-                seed={userName}
-                width={32}
-                height={32}
-              />
+              <Avatar seed={userName} width={32} height={32} />
             </div>
             <div className="overflow-hidden">
               <p className="truncate text-[10px] font-black uppercase tracking-wider text-dashboard-fg">

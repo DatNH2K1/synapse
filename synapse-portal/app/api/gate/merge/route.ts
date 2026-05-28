@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { knowledgeService } from "@/lib/services/knowledge-service";
+import { broadcastProposalUpdated } from "@/lib/services/event-service";
 
 export async function POST(request: Request) {
   try {
@@ -30,6 +31,8 @@ export async function POST(request: Request) {
       reason,
       similarityScore: similarityScore || 0,
     });
+
+    broadcastProposalUpdated("MERGE", newNode.id);
 
     return NextResponse.json({
       success: true,

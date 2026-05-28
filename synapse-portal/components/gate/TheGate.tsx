@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Zap, ShieldCheck } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { useRouter } from "next/navigation";
+import { useRealtime } from "@/components/shared/RealtimeProvider";
 
 import {
   PendingUpdate,
@@ -82,6 +83,15 @@ export default function TheGate({
 }) {
   const { t } = useI18n();
   const router = useRouter();
+  const { subscribeToUpdates } = useRealtime();
+
+  React.useEffect(() => {
+    const unsubscribe = subscribeToUpdates(() => {
+      router.refresh();
+    });
+    return unsubscribe;
+  }, [subscribeToUpdates, router]);
+
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [comparingUpdate, setComparingUpdate] = useState<{
     update: PendingUpdate;

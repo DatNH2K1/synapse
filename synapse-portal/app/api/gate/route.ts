@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { knowledgeService } from "@/lib/services/knowledge-service";
+import { broadcastProposalUpdated } from "@/lib/services/event-service";
 
 export async function POST(request: Request) {
   try {
@@ -13,6 +14,7 @@ export async function POST(request: Request) {
     }
     if (action === "REJECT") {
       await knowledgeService.rejectPendingUpdate(id);
+      broadcastProposalUpdated("REJECT", id);
       return NextResponse.json({
         success: true,
         message: "Proposal rejected.",
@@ -21,6 +23,7 @@ export async function POST(request: Request) {
 
     if (action === "APPROVE") {
       await knowledgeService.approvePendingUpdate(id);
+      broadcastProposalUpdated("APPROVE", id);
       return NextResponse.json({
         success: true,
         message: "Proposal approved.",
@@ -30,6 +33,7 @@ export async function POST(request: Request) {
     if (action === "UNDO") {
       const result = await knowledgeService.undoAction(id, type);
       if (result.success) {
+        broadcastProposalUpdated("UNDO", id);
         return NextResponse.json({
           success: true,
           message: "Action undone successfully.",
@@ -47,6 +51,7 @@ export async function POST(request: Request) {
 
     if (action === "WAKEUP") {
       await knowledgeService.wakeUpNode(id);
+      broadcastProposalUpdated("WAKEUP", id);
       return NextResponse.json({
         success: true,
         message: "Node resurrected successfully.",

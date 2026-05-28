@@ -60,7 +60,7 @@ export default function Avatar({
 
         // 2. Fetch from Dicebear API
         const url = `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${encodeURIComponent(
-          seed
+          seed,
         )}`;
         const res = await fetch(url);
         if (!res.ok) {
@@ -78,7 +78,10 @@ export default function Avatar({
           setLoading(false);
         }
       } catch (err) {
-        console.warn("[Avatar Cache] Failed to load avatar, using fallback:", err);
+        console.warn(
+          "[Avatar Cache] Failed to load avatar, using fallback:",
+          err,
+        );
         if (active) {
           setError(true);
           setLoading(false);

@@ -83,6 +83,17 @@ Focus on:
 - **Typography**: Choose fonts that are beautiful, unique, and interesting. Avoid generic fonts like Arial and Inter; opt instead for distinctive choices that elevate the frontend's aesthetics; unexpected, characterful font choices. Pair a distinctive display font with a refined body font.
 - **Color & Theme**: Commit to a cohesive aesthetic. Use CSS variables for consistency. Dominant colors with sharp accents outperform timid, evenly-distributed palettes.
 - **Motion**: Use animations for effects and micro-interactions. Prioritize CSS-only solutions for HTML. Use Motion library for React when available. Focus on high-impact moments: one well-orchestrated page load with staggered reveals (animation-delay) creates more delight than scattered micro-interactions. Use scroll-triggering and hover states that surprise.
+- **UX & Animation Library Selection Matrix**:
+  - **driver.js**: [INSTALL] Use directly for product walkthroughs and interactive tours. Wraps nicely inside custom components.
+  - **motion.dev** (Framer Motion): [INSTALL] Default animation library for React/Next.js UI transitions, gesture-based states, and responsive entry effects.
+  - **medium-zoom**: [INSTALL] Use directly for clean, immersive image zooming without modal disruption.
+  - **vidstack.io**: [INSTALL] Default modern media player components (web-components & React). Replaces video.js for modern streaming/media player customizations.
+  - **dicebear.com**: [API ONLY] Call external HTTP API (e.g. `https://api.dicebear.com/9.x/...`) to fetch dynamic vector avatars instead of installing npm modules.
+  - **howler.js**: [GUIDELINE ONLY] Avoid installing unless developing audio-heavy projects. Use HTML5 Web Audio API helper scripts (~50 lines) for micro-interaction sounds (Earcons).
+  - **drawkit.com**: [ASSETS ONLY] Download vector illustrations, optimize via SVGO, and place directly in project assets directory.
+  - **gsap.com**: [STANDBY STACK] Install only for complex landing pages with scroll-driven timeline sequencing. Otherwise, extract easing curves to CSS variables.
+  - **animejs.com**: [STANDBY STACK] Install for intricate SVG Line Drawing or SVG Morphing (e.g., dynamic agent state transitions). Otherwise, use CSS transitions/Framer Motion.
+  - **video.js**: [LEGACY STANDBY] Avoid for modern projects. Use only for enterprise legacy requirements, complex live streaming fallback, or strict accessibility (a11y) screen-reader specifications.
 - **Spatial Composition**: Unexpected layouts. Asymmetry. Overlap. Diagonal flow. Grid-breaking elements. Generous negative space OR controlled density.
 - **Backgrounds & Visual Details**: Create atmosphere and depth rather than defaulting to solid colors. Add contextual effects and textures that match the overall aesthetic. Apply creative forms like gradient meshes, noise textures, geometric patterns, layered transparencies, dramatic shadows, decorative borders, custom cursors, and grain overlays.
 

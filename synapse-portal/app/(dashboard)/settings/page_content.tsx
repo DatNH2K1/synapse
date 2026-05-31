@@ -41,7 +41,9 @@ export default function SettingsPageContent({
     useState<Record<string, string>>(initialSystemConfig);
   const [savingKey, setSavingKey] = useState<string | null>(null);
 
-  const [activeTab, setActiveTab] = useState<"profile" | "ai" | "tags">("profile");
+  const [activeTab, setActiveTab] = useState<"profile" | "ai" | "tags">(
+    "profile",
+  );
 
   const [similarityVal, setSimilarityVal] = useState(
     parseFloat(initialSystemConfig.rem_similarity_threshold || "0.85"),
@@ -159,7 +161,10 @@ export default function SettingsPageContent({
       {/* Tab Content Panels */}
       <div className="min-h-[500px] pt-2">
         {activeTab === "profile" && (
-          <div key="profile" className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div
+            key="profile"
+            className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300"
+          >
             {/* 1. Identity Profile - Compact */}
             <TiltCard disableTilt={true} className="rounded-2xl glass p-6">
               <div className="flex items-center gap-5">
@@ -185,7 +190,10 @@ export default function SettingsPageContent({
             </TiltCard>
 
             {/* 2. AI Infrastructure - Primary Status */}
-            <TiltCard disableTilt={true} className="rounded-2xl glass p-8 space-y-6">
+            <TiltCard
+              disableTilt={true}
+              className="rounded-2xl glass p-8 space-y-6"
+            >
               <div className="flex items-center gap-4 border-b border-white/5 pb-6">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-600/10 text-indigo-400">
                   <Brain size={24} />
@@ -261,7 +269,10 @@ export default function SettingsPageContent({
             </TiltCard>
 
             {/* 3. Brain Connectivity */}
-            <TiltCard disableTilt={true} className="rounded-2xl glass p-8 space-y-6">
+            <TiltCard
+              disableTilt={true}
+              className="rounded-2xl glass p-8 space-y-6"
+            >
               <div className="flex items-center gap-4 border-b border-white/5 pb-6">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600/10 text-emerald-400">
                   <Database size={24} />
@@ -270,7 +281,9 @@ export default function SettingsPageContent({
                   <h4 className="text-lg font-black tracking-tight text-dashboard-fg uppercase">
                     {t("brain_connectivity")}
                   </h4>
-                  <p className="text-xs text-slate-500">{t("db_sync_status")}</p>
+                  <p className="text-xs text-slate-500">
+                    {t("db_sync_status")}
+                  </p>
                 </div>
               </div>
 
@@ -297,9 +310,15 @@ export default function SettingsPageContent({
         )}
 
         {activeTab === "ai" && (
-          <div key="ai" className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div
+            key="ai"
+            className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300"
+          >
             {/* 2.5. Agent Co-Pilot & Self-Regulation - Premium Settings */}
-            <TiltCard disableTilt={true} className="rounded-2xl glass p-8 space-y-6">
+            <TiltCard
+              disableTilt={true}
+              className="rounded-2xl glass p-8 space-y-6"
+            >
               <div className="flex items-center gap-4 border-b border-white/5 pb-6">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-600/10 text-violet-400">
                   <Sliders size={24} />
@@ -391,7 +410,8 @@ export default function SettingsPageContent({
                       onClick={() =>
                         handleUpdateConfig(
                           "forget_mode_enabled",
-                          (systemConfig.forget_mode_enabled || "false") === "true"
+                          (systemConfig.forget_mode_enabled || "false") ===
+                            "true"
                             ? "false"
                             : "true",
                         )
@@ -405,7 +425,8 @@ export default function SettingsPageContent({
                     >
                       <span
                         className={`pointer-events-none flex items-center justify-center h-5 w-5 transform rounded-full bg-dashboard-bg shadow ring-0 ring-offset-0 transition-transform duration-500 ${
-                          (systemConfig.forget_mode_enabled || "false") === "true"
+                          (systemConfig.forget_mode_enabled || "false") ===
+                          "true"
                             ? "translate-x-5"
                             : "translate-x-0"
                         }`}
@@ -436,7 +457,8 @@ export default function SettingsPageContent({
                       )}
                     </div>
                     <p className="text-xs text-dashboard-fg/55">
-                      {(systemConfig.forget_dry_run_enabled || "true") === "true"
+                      {(systemConfig.forget_dry_run_enabled || "true") ===
+                      "true"
                         ? t("forget_dry_run_desc_enabled")
                         : t("forget_dry_run_desc_disabled")}
                     </p>
@@ -454,7 +476,8 @@ export default function SettingsPageContent({
                       }
                       disabled={savingKey !== null}
                       className={`relative inline-flex items-center h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-500 focus:outline-none ${
-                        (systemConfig.forget_dry_run_enabled || "true") === "true"
+                        (systemConfig.forget_dry_run_enabled || "true") ===
+                        "true"
                           ? "bg-amber-500 shadow-[0_0_12px_rgba(245,158,11,0.35)]"
                           : "bg-dashboard-fg/15"
                       }`}
@@ -503,7 +526,9 @@ export default function SettingsPageContent({
                     step="0.01"
                     disabled={savingKey !== null}
                     value={similarityVal}
-                    onChange={(e) => setSimilarityVal(parseFloat(e.target.value))}
+                    onChange={(e) =>
+                      setSimilarityVal(parseFloat(e.target.value))
+                    }
                     onMouseUp={() =>
                       handleUpdateConfig(
                         "rem_similarity_threshold",
@@ -545,7 +570,9 @@ export default function SettingsPageContent({
                     step="0.01"
                     disabled={savingKey !== null}
                     value={confidenceVal}
-                    onChange={(e) => setConfidenceVal(parseFloat(e.target.value))}
+                    onChange={(e) =>
+                      setConfidenceVal(parseFloat(e.target.value))
+                    }
                     onMouseUp={() =>
                       handleUpdateConfig(
                         "rem_confidence_threshold",
@@ -570,9 +597,15 @@ export default function SettingsPageContent({
         )}
 
         {activeTab === "tags" && (
-          <div key="tags" className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div
+            key="tags"
+            className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300"
+          >
             {/* Tag Appearance Management */}
-            <TiltCard disableTilt={true} className="rounded-2xl glass p-8 space-y-6">
+            <TiltCard
+              disableTilt={true}
+              className="rounded-2xl glass p-8 space-y-6"
+            >
               <div className="flex items-center gap-4 border-b border-white/5 pb-6">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent-primary/10 text-accent-primary">
                   <Palette size={24} />
@@ -617,7 +650,7 @@ export default function SettingsPageContent({
                           style={{ backgroundColor: tag.color || "#818cf8" }}
                           onClick={(e) => {
                             const input = e.currentTarget
-                               .nextSibling as HTMLInputElement;
+                              .nextSibling as HTMLInputElement;
                             input.click();
                           }}
                         />

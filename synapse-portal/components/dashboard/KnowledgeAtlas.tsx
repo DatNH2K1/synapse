@@ -123,7 +123,9 @@ export default function KnowledgeAtlas({
             <h3 className="text-xl font-bold tracking-tight text-dashboard-fg">
               {t("knowledge_graph")}
             </h3>
-            <p className="text-xs text-dashboard-fg/55">{t("graph_description")}</p>
+            <p className="text-xs text-dashboard-fg/55">
+              {t("graph_description")}
+            </p>
           </div>
         </div>
       )}

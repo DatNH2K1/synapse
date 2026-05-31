@@ -1,5 +1,9 @@
 import fs from "fs";
-import { AGENT_MANIFEST_PATH, SKILL_MANIFEST_PATH } from "../config";
+import {
+  AGENT_MANIFEST_PATH,
+  SKILL_MANIFEST_PATH,
+  ADDITIONAL_SKILL_MANIFEST_PATH,
+} from "../config";
 
 export interface AgentManifestRecord {
   name: string;
@@ -83,9 +87,13 @@ export const manifestService = {
   },
 
   /**
-   * Retrieves all skills from the skill-manifest.csv
+   * Retrieves all skills from the skill-manifest.csv and addition-skill-manifest.csv
    */
   getSkills: (): SkillManifestRecord[] => {
-    return parseCsv<SkillManifestRecord>(SKILL_MANIFEST_PATH);
+    const mainSkills = parseCsv<SkillManifestRecord>(SKILL_MANIFEST_PATH);
+    const additionalSkills = parseCsv<SkillManifestRecord>(
+      ADDITIONAL_SKILL_MANIFEST_PATH,
+    );
+    return [...mainSkills, ...additionalSkills];
   },
 };

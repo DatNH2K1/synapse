@@ -58,7 +58,10 @@ export default function Sidebar({
         }`}
       >
         <div className="p-6">
-          <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
+          <Link
+            href="/"
+            className="flex items-center gap-3 hover:opacity-90 transition-opacity"
+          >
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent-primary shadow-lg shadow-accent-primary/40">
               <Brain size={20} className="text-white" />
             </div>
@@ -124,7 +127,10 @@ export default function Sidebar({
 
       <div className="fixed inset-x-0 top-0 z-[120] border-b border-white/10 bg-dashboard-bg/90 px-3 py-2 backdrop-blur-xl lg:hidden">
         <div className="flex items-center justify-between gap-2">
-          <Link href="/" className="flex shrink-0 items-center gap-2 hover:opacity-90 transition-opacity">
+          <Link
+            href="/"
+            className="flex shrink-0 items-center gap-2 hover:opacity-90 transition-opacity"
+          >
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent-primary shadow-lg shadow-accent-primary/40">
               <Brain size={18} className="text-white" />
             </div>

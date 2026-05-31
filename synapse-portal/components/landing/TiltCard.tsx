@@ -33,7 +33,7 @@ export default function TiltCard({
       if (rafId.current) cancelAnimationFrame(rafId.current);
       rafId.current = requestAnimationFrame(() => {
         const rect = el.getBoundingClientRect();
-        
+
         if (!disableTilt) {
           const cx = rect.left + rect.width / 2;
           const cy = rect.top + rect.height / 2;
@@ -45,7 +45,7 @@ export default function TiltCard({
 
           el.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) scale3d(1.025, 1.025, 1.025)`;
         }
-        
+
         el.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
         el.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
       });

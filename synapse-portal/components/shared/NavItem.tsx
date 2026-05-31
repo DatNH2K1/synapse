@@ -26,9 +26,7 @@ export default function NavItem({
       href={href}
       className={`flex items-center rounded-xl transition-all duration-200 ${
         compact ? "w-auto shrink-0" : "w-full"
-      } ${
-        mobileOnly ? "lg:hidden" : ""
-      } ${
+      } ${mobileOnly ? "lg:hidden" : ""} ${
         active
           ? "bg-accent-primary text-white shadow-md shadow-accent-primary/20"
           : "text-dashboard-fg/55 hover:bg-dashboard-fg/5 hover:text-dashboard-fg"
@@ -41,7 +39,9 @@ export default function NavItem({
             : "justify-between px-4 py-2.5 gap-3"
         }`}
       >
-        <div className={`flex items-center ${compact ? "w-auto justify-center" : "gap-3"}`}>
+        <div
+          className={`flex items-center ${compact ? "w-auto justify-center" : "gap-3"}`}
+        >
           {icon}
           <span
             className={`font-bold tracking-tight ${

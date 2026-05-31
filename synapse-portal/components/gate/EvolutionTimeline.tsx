@@ -239,7 +239,9 @@ export default function EvolutionTimeline({
                       </p>
                       {log.archiveDetail.reason && (
                         <p>
-                          <strong className="text-dashboard-fg/55">Reason:</strong>{" "}
+                          <strong className="text-dashboard-fg/55">
+                            Reason:
+                          </strong>{" "}
                           {log.archiveDetail.reason}
                         </p>
                       )}

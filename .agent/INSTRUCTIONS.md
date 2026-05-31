@@ -5,7 +5,7 @@
 
 ## Key Resources
 - **Agent Manifest**: [.agent/manifests/agent-manifest.csv](file://.agent/manifests/agent-manifest.csv)
-- **Skill Manifest**: [.agent/manifests/skill-manifest.csv](file://.agent/manifests/skill-manifest.csv)
+- **Skill Manifests**: [.agent/manifests/skill-manifest.csv](file://.agent/manifests/skill-manifest.csv) & [.agent/manifests/addition-skill-manifest.csv](file://.agent/manifests/addition-skill-manifest.csv)
 - **Portal Source**: [synapse-portal/](file://synapse-portal/)
 - **Repo Index Skill**: [synapse-repo-indexer/](file://.agent/skills/synapse-repo-indexer/)
 
@@ -59,3 +59,6 @@ To prevent context window degradation, sub-agents MUST receive only high-signal,
 - **Parallelism**: Spawn independent tasks simultaneously (e.g. Frontend and Backend tasks).
 - **Sequential Chaining**: Run tasks sequentially when a step depends on the output of the previous one (e.g. Plan -> Code -> Test).
 - **Escalation**: If a sub-agent fails 3+ times on the same task, escalate to the User immediately.
+- **Skill Discovery & Lazy Loading**: Parent agents should select and inject relevant skill paths into the sub-agent prompt. If a sub-agent receives a complex/specialized task without specific skill pointers, it MUST lazily read both [skill-manifest.csv](file://.agent/manifests/skill-manifest.csv) and [addition-skill-manifest.csv](file://.agent/manifests/addition-skill-manifest.csv) (if it exists) to discover and load matching skills instead of writing custom code or solutions from scratch.
+
+

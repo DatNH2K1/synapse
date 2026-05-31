@@ -88,7 +88,9 @@ export default function ThemeSwitcher() {
                   />
                   <span className="text-[11px] font-bold">{t.label}</span>
                 </div>
-                {isActive && <Check size={12} className="text-accent-primary" />}
+                {isActive && (
+                  <Check size={12} className="text-accent-primary" />
+                )}
               </button>
             );
           })}

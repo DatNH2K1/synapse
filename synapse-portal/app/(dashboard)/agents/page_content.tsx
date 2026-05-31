@@ -44,7 +44,9 @@ export default function AgentsPageContent({
 }) {
   const { t } = useI18n();
   const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
-  const [activeTab, setActiveTab] = useState<"overview" | "protocols" | "capabilities">("overview");
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "protocols" | "capabilities"
+  >("overview");
 
   // Reset tab when agent changes
   const handleSelectAgent = (agent: Agent) => {
@@ -75,7 +77,11 @@ export default function AgentsPageContent({
             >
               <div className="mb-4 flex items-center gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border-2 border-indigo-500/20 bg-dashboard-bg/50 p-1 shadow-lg relative">
-                  <Avatar seed={agent.displayName || agent.name} width={40} height={40} />
+                  <Avatar
+                    seed={agent.displayName || agent.name}
+                    width={40}
+                    height={40}
+                  />
                   <span className="absolute -bottom-1 -right-1 text-sm bg-dashboard-bg border border-dashboard-fg/10 rounded-full p-0.5 leading-none shadow-md">
                     {agent.icon}
                   </span>
@@ -182,7 +188,11 @@ export default function AgentsPageContent({
             {/* Modal Header */}
             <div className="flex items-start gap-5 border-b border-dashboard-fg/10 pb-6 mb-6">
               <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border-2 border-indigo-500/20 bg-dashboard-bg/50 p-1 shadow-xl">
-                <Avatar seed={selectedAgent.displayName || selectedAgent.name} width={56} height={56} />
+                <Avatar
+                  seed={selectedAgent.displayName || selectedAgent.name}
+                  width={56}
+                  height={56}
+                />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
@@ -212,7 +222,8 @@ export default function AgentsPageContent({
               >
                 Overview
               </button>
-              {((selectedAgent.complianceChecklist && selectedAgent.complianceChecklist.length > 0) ||
+              {((selectedAgent.complianceChecklist &&
+                selectedAgent.complianceChecklist.length > 0) ||
                 selectedAgent.protocols?.contextLoad ||
                 selectedAgent.protocols?.gatekeeper) && (
                 <button
@@ -259,23 +270,29 @@ export default function AgentsPageContent({
                         <Sliders size={12} /> Communication Style
                       </h4>
                       <p className="text-sm text-dashboard-fg/70 leading-relaxed italic border-l-2 border-purple-500/30 pl-4 py-1 bg-purple-500/[0.02]">
-                        "{selectedAgent.communicationStyle}"
+                        &ldquo;{selectedAgent.communicationStyle}&rdquo;
                       </p>
                     </div>
                   )}
 
-                  {selectedAgent.principlesList && selectedAgent.principlesList.length > 0 ? (
+                  {selectedAgent.principlesList &&
+                  selectedAgent.principlesList.length > 0 ? (
                     <div className="space-y-3 bg-dashboard-fg/[0.02] border border-dashboard-fg/5 rounded-2xl p-5">
                       <h4 className="text-[10px] font-black uppercase tracking-widest text-amber-500 flex items-center gap-1.5 mb-2">
                         <ShieldAlert size={12} /> Core Principles
                       </h4>
                       <ul className="space-y-2.5">
-                        {selectedAgent.principlesList.map((principle, index) => (
-                          <li key={index} className="text-xs text-dashboard-fg/85 flex items-start gap-2 leading-relaxed">
-                            <span className="h-1.5 w-1.5 rounded-full bg-amber-500 shrink-0 mt-1.5" />
-                            <span>{principle}</span>
-                          </li>
-                        ))}
+                        {selectedAgent.principlesList.map(
+                          (principle, index) => (
+                            <li
+                              key={index}
+                              className="text-xs text-dashboard-fg/85 flex items-start gap-2 leading-relaxed"
+                            >
+                              <span className="h-1.5 w-1.5 rounded-full bg-amber-500 shrink-0 mt-1.5" />
+                              <span>{principle}</span>
+                            </li>
+                          ),
+                        )}
                       </ul>
                     </div>
                   ) : selectedAgent.principles ? (
@@ -291,36 +308,49 @@ export default function AgentsPageContent({
 
                   {/* System Module & Path details */}
                   <div className="border-t border-dashboard-fg/5 pt-4 flex flex-wrap gap-x-8 gap-y-2 text-[10px] text-dashboard-fg/40 font-bold uppercase tracking-widest">
-                    <span>Module: <span className="text-dashboard-fg/60">{selectedAgent.module || "synapse"}</span></span>
-                    <span>Path: <span className="text-dashboard-fg/60 lowercase">{selectedAgent.path || "n/a"}</span></span>
+                    <span>
+                      Module:{" "}
+                      <span className="text-dashboard-fg/60">
+                        {selectedAgent.module || "synapse"}
+                      </span>
+                    </span>
+                    <span>
+                      Path:{" "}
+                      <span className="text-dashboard-fg/60 lowercase">
+                        {selectedAgent.path || "n/a"}
+                      </span>
+                    </span>
                   </div>
                 </div>
               )}
 
               {activeTab === "protocols" && (
                 <div className="space-y-6">
-                  {selectedAgent.complianceChecklist && selectedAgent.complianceChecklist.length > 0 && (
-                    <div className="space-y-3">
-                      <h4 className="text-[10px] font-black uppercase tracking-widest text-emerald-400 flex items-center gap-1.5">
-                        🛡️ Mandatory Compliance Checklist
-                      </h4>
-                      <div className="grid grid-cols-1 gap-2.5">
-                        {selectedAgent.complianceChecklist.map((item, index) => (
-                          <div
-                            key={index}
-                            className="flex items-center gap-3 bg-dashboard-fg/[0.02] border border-dashboard-fg/5 rounded-xl p-3"
-                          >
-                            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-bold">
-                              ✓
-                            </div>
-                            <span className="text-xs font-semibold text-dashboard-fg/80 leading-tight">
-                              {item}
-                            </span>
-                          </div>
-                        ))}
+                  {selectedAgent.complianceChecklist &&
+                    selectedAgent.complianceChecklist.length > 0 && (
+                      <div className="space-y-3">
+                        <h4 className="text-[10px] font-black uppercase tracking-widest text-emerald-400 flex items-center gap-1.5">
+                          🛡️ Mandatory Compliance Checklist
+                        </h4>
+                        <div className="grid grid-cols-1 gap-2.5">
+                          {selectedAgent.complianceChecklist.map(
+                            (item, index) => (
+                              <div
+                                key={index}
+                                className="flex items-center gap-3 bg-dashboard-fg/[0.02] border border-dashboard-fg/5 rounded-xl p-3"
+                              >
+                                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-bold">
+                                  ✓
+                                </div>
+                                <span className="text-xs font-semibold text-dashboard-fg/80 leading-tight">
+                                  {item}
+                                </span>
+                              </div>
+                            ),
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
                   {selectedAgent.protocols?.gatekeeper && (
                     <div className="space-y-2">
@@ -348,33 +378,34 @@ export default function AgentsPageContent({
 
               {activeTab === "capabilities" && (
                 <div className="space-y-6">
-                  {selectedAgent.capabilitiesList && selectedAgent.capabilitiesList.length > 0 && (
-                    <div className="space-y-3">
-                      <h4 className="text-[10px] font-black uppercase tracking-widest text-indigo-400">
-                        Mapped Tools & Capabilities
-                      </h4>
-                      <div className="border border-dashboard-fg/5 rounded-2xl overflow-hidden divide-y divide-dashboard-fg/5">
-                        {selectedAgent.capabilitiesList.map((cap, index) => (
-                          <div
-                            key={index}
-                            className="p-4 flex items-start gap-4 bg-dashboard-fg/[0.01] hover:bg-dashboard-fg/[0.03] transition-colors"
-                          >
-                            <div className="rounded bg-indigo-500/20 border border-indigo-500/30 px-2 py-0.5 text-xs font-black text-indigo-400 uppercase tracking-wider shrink-0 min-w-10 text-center font-mono">
-                              {cap.code}
+                  {selectedAgent.capabilitiesList &&
+                    selectedAgent.capabilitiesList.length > 0 && (
+                      <div className="space-y-3">
+                        <h4 className="text-[10px] font-black uppercase tracking-widest text-indigo-400">
+                          Mapped Tools & Capabilities
+                        </h4>
+                        <div className="border border-dashboard-fg/5 rounded-2xl overflow-hidden divide-y divide-dashboard-fg/5">
+                          {selectedAgent.capabilitiesList.map((cap, index) => (
+                            <div
+                              key={index}
+                              className="p-4 flex items-start gap-4 bg-dashboard-fg/[0.01] hover:bg-dashboard-fg/[0.03] transition-colors"
+                            >
+                              <div className="rounded bg-indigo-500/20 border border-indigo-500/30 px-2 py-0.5 text-xs font-black text-indigo-400 uppercase tracking-wider shrink-0 min-w-10 text-center font-mono">
+                                {cap.code}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-xs text-dashboard-fg/90 font-semibold leading-relaxed">
+                                  {cap.description}
+                                </p>
+                                <span className="mt-1 inline-block rounded bg-dashboard-fg/5 px-1.5 py-0.5 text-[9px] font-bold text-dashboard-fg/40">
+                                  {cap.skill}
+                                </span>
+                              </div>
                             </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-xs text-dashboard-fg/90 font-semibold leading-relaxed">
-                                {cap.description}
-                              </p>
-                              <span className="mt-1 inline-block rounded bg-dashboard-fg/5 px-1.5 py-0.5 text-[9px] font-bold text-dashboard-fg/40">
-                                {cap.skill}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
 
                   {/* Capabilities (Full badge list) */}
                   <div className="space-y-3">

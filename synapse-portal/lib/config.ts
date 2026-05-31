@@ -33,6 +33,10 @@ export const SKILL_MANIFEST_PATH = getEffectivePath(
   "SKILL_MANIFEST_PATH",
   ".agent/manifests/skill-manifest.csv",
 );
+export const ADDITIONAL_SKILL_MANIFEST_PATH = getEffectivePath(
+  "ADDITIONAL_SKILL_MANIFEST_PATH",
+  ".agent/manifests/addition-skill-manifest.csv",
+);
 
 export const DB_CONFIG = {
   host: process.env.POSTGRES_HOST || "db",

@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { AGENT_MANIFEST_PATH, SKILL_MANIFEST_PATH } from "@/lib/db";
+import { manifestService } from "@/lib/services/manifest-service";
 import AgentsPageContent from "./page_content";
 
 export const dynamic = "force-dynamic";
@@ -54,7 +54,11 @@ function parseSkillMd(skillPath: string) {
 
     const content = fs.readFileSync(filePath, "utf-8");
     const complianceChecklist: string[] = [];
-    const capabilitiesList: { code: string; description: string; skill: string }[] = [];
+    const capabilitiesList: {
+      code: string;
+      description: string;
+      skill: string;
+    }[] = [];
     const principlesList: string[] = [];
     let contextLoad = "";
     let gatekeeper = "";
@@ -76,7 +80,10 @@ function parseSkillMd(skillPath: string) {
       // 1. Compliance Checklist
       if (currentSection.includes("COMPLIANCE CHECKLIST")) {
         if (line.startsWith("- [ ]") || line.startsWith("- [x]")) {
-          const item = line.replace(/^-\s*\[[ x]\]\s*/i, "").trim().replace(/\*\*/g, "");
+          const item = line
+            .replace(/^-\s*\[[ x]\]\s*/i, "")
+            .trim()
+            .replace(/\*\*/g, "");
           complianceChecklist.push(item);
         }
       }
@@ -92,7 +99,10 @@ function parseSkillMd(skillPath: string) {
       if (currentSection.includes("CAPABILITIES")) {
         if (line.startsWith("|")) {
           if (line.includes("---")) continue;
-          const parts = line.split("|").map((p) => p.trim()).filter((p) => p !== "");
+          const parts = line
+            .split("|")
+            .map((p) => p.trim())
+            .filter((p) => p !== "");
           if (parts.length >= 3) {
             const code = parts[0];
             if (code.toLowerCase() === "code") continue;
@@ -123,7 +133,9 @@ function parseSkillMd(skillPath: string) {
     return {
       complianceChecklist,
       capabilitiesList,
-      principlesList: principlesList.map((p) => p.trim()).filter((p) => p !== ""),
+      principlesList: principlesList
+        .map((p) => p.trim())
+        .filter((p) => p !== ""),
       protocols: {
         contextLoad: contextLoad.trim(),
         gatekeeper: gatekeeper.trim(),
@@ -141,70 +153,43 @@ export default function AgentsPage() {
 
   // Parse Agents
   try {
-    if (fs.existsSync(AGENT_MANIFEST_PATH)) {
-      const content = fs.readFileSync(AGENT_MANIFEST_PATH, "utf-8");
-      const lines = content.split("\n").filter((line) => line.trim() !== "");
-      agents = lines
-        .slice(1)
-        .map((line) => {
-          const parts = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-          if (!parts || parts.length < 6) return null;
-          const cleanParts = parts.map((p) => p.trim().replace(/^"|"$/g, ""));
-          const agentObj: Agent = {
-            name: cleanParts[0],
-            displayName: cleanParts[1],
-            title: cleanParts[2],
-            icon: cleanParts[3],
-            capabilities: cleanParts[4],
-            role: cleanParts[5],
-            identity: cleanParts[6] || "",
-            communicationStyle: cleanParts[7] || "",
-            principles: cleanParts[8] || "",
-            module: cleanParts[9] || "",
-            path: cleanParts[10] || "",
-          };
+    const rawAgents = manifestService.getAgents();
+    agents = rawAgents.map((agentObj) => {
+      const cleanAgent: Agent = {
+        name: agentObj.name,
+        displayName: agentObj.displayName,
+        title: agentObj.title,
+        icon: agentObj.icon,
+        capabilities: agentObj.capabilities,
+        role: agentObj.role,
+        identity: agentObj.identity,
+        communicationStyle: agentObj.communicationStyle,
+        principles: agentObj.principles,
+        module: agentObj.module,
+        path: agentObj.path,
+      };
 
-          if (agentObj.path) {
-            const parsed = parseSkillMd(agentObj.path);
-            if (parsed) {
-              agentObj.complianceChecklist = parsed.complianceChecklist;
-              agentObj.capabilitiesList = parsed.capabilitiesList;
-              if (parsed.principlesList && parsed.principlesList.length > 0) {
-                agentObj.principlesList = parsed.principlesList;
-              }
-              agentObj.protocols = parsed.protocols;
-            }
+      if (cleanAgent.path) {
+        const parsed = parseSkillMd(cleanAgent.path);
+        if (parsed) {
+          cleanAgent.complianceChecklist = parsed.complianceChecklist;
+          cleanAgent.capabilitiesList = parsed.capabilitiesList;
+          if (parsed.principlesList && parsed.principlesList.length > 0) {
+            cleanAgent.principlesList = parsed.principlesList;
           }
+          cleanAgent.protocols = parsed.protocols;
+        }
+      }
 
-          return agentObj;
-        })
-        .filter((a) => a !== null) as Agent[];
-    }
+      return cleanAgent;
+    });
   } catch (e) {
     console.error("Failed to load agents", e);
   }
 
   // Parse Skills
   try {
-    if (fs.existsSync(SKILL_MANIFEST_PATH)) {
-      const content = fs.readFileSync(SKILL_MANIFEST_PATH, "utf-8");
-      const lines = content.split("\n").filter((line) => line.trim() !== "");
-      skills = lines
-        .slice(1)
-        .map((line) => {
-          const parts = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-          if (!parts || parts.length < 5) return null;
-          const cleanParts = parts.map((p) => p.trim().replace(/^"|"$/g, ""));
-          return {
-            canonicalId: cleanParts[0],
-            name: cleanParts[1],
-            description: cleanParts[2],
-            module: cleanParts[3],
-            path: cleanParts[4],
-          };
-        })
-        .filter((s) => s !== null) as Skill[];
-    }
+    skills = manifestService.getSkills();
   } catch (e) {
     console.error("Failed to load skills", e);
   }

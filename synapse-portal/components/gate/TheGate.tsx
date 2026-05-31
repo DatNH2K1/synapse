@@ -407,9 +407,11 @@ export default function TheGate({
       {activeTab === "gate" ? (
         <div className="space-y-4">
           {pendingUpdates.length > 0 ? (
-            pendingUpdates.map((update) => (
+            pendingUpdates.map((update, i) => (
               <ProposalCard
                 key={update.id}
+                style={{ "--delay-index": (i % 4) + 1 } as React.CSSProperties}
+                className="stagger-item"
                 update={update}
                 existingNodes={existingNodes}
                 processingId={processingId}

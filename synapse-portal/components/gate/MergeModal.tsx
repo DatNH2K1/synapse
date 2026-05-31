@@ -27,8 +27,8 @@ export default function MergeModal({
 
   return (
     <div className="fixed inset-0 z-[1100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
-      <div className="w-full max-w-5xl max-h-[85vh] overflow-hidden rounded-3xl border border-amber-500/20 bg-slate-950 shadow-[0_0_50px_rgba(245,158,11,0.1)] flex flex-col">
-        <div className="flex items-center justify-between p-6 border-b border-white/5 bg-amber-500/5">
+      <div className="flex w-full max-w-5xl max-h-[85vh] flex-col overflow-hidden rounded-3xl border border-amber-500/20 bg-slate-950 shadow-[0_0_50px_rgba(245,158,11,0.1)]">
+        <div className="flex items-center justify-between gap-4 p-4 border-b border-white/5 bg-amber-500/5 sm:p-6">
           <div>
             <h4 className="text-xl font-black tracking-tight text-white uppercase italic flex items-center gap-2">
               <GitMerge className="text-amber-500" />
@@ -46,9 +46,9 @@ export default function MergeModal({
           </button>
         </div>
 
-        <div className="flex-1 overflow-hidden flex flex-row">
+        <div className="flex flex-1 flex-col overflow-hidden lg:flex-row">
           {/* Left Panel: Source Nodes Review */}
-          <div className="w-[38%] border-r border-white/5 bg-slate-950/50 overflow-y-auto p-6 space-y-4 custom-scrollbar">
+          <div className="max-h-[42vh] overflow-y-auto border-b border-white/5 bg-slate-950/50 p-4 space-y-4 custom-scrollbar lg:max-h-none lg:w-[38%] lg:border-b-0 lg:border-r lg:p-6">
             <div className="flex items-center justify-between pb-2 border-b border-white/5">
               <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
                 {t("source_nodes_review")}
@@ -94,9 +94,9 @@ export default function MergeModal({
           </div>
 
           {/* Right Panel: Merge Synthesized Editor */}
-          <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
+          <div className="flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar lg:p-6">
             {/* Basic Info */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
                 <label className="text-[9px] font-black uppercase tracking-widest text-slate-500">
                   Label
@@ -188,7 +188,7 @@ export default function MergeModal({
           </div>
         </div>
 
-        <div className="p-6 border-t border-white/5 bg-slate-900/50 flex justify-between items-center">
+        <div className="flex flex-col gap-3 border-t border-white/5 bg-slate-900/50 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-6">
           <div className="flex items-center gap-2">
             <div className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20">
               <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest">
@@ -197,7 +197,7 @@ export default function MergeModal({
               </span>
             </div>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row">
             <button
               onClick={onClose}
               className="px-6 py-2 rounded-xl text-slate-400 hover:text-white transition-all text-xs font-black uppercase tracking-widest"

@@ -123,7 +123,7 @@ export default function KnowledgeAtlas({
             <h3 className="text-xl font-bold tracking-tight text-dashboard-fg">
               {t("knowledge_graph")}
             </h3>
-            <p className="text-xs text-slate-600">{t("graph_description")}</p>
+            <p className="text-xs text-dashboard-fg/55">{t("graph_description")}</p>
           </div>
         </div>
       )}
@@ -142,41 +142,41 @@ export default function KnowledgeAtlas({
         />
 
         {/* Overlay Controls */}
-        <div className="absolute right-6 top-6 z-[110] flex flex-col gap-2">
+        <div className="absolute right-2 top-2 z-[110] flex flex-row gap-2 sm:right-6 sm:top-6 sm:flex-col">
           <button
             onClick={() => setIsFullscreen(!isFullscreen)}
-            className="rounded-xl glass p-3 text-slate-500 shadow-2xl backdrop-blur-xl transition-all hover:bg-foreground/5 hover:text-dashboard-fg"
+            className="rounded-xl glass p-2.5 text-dashboard-fg/55 shadow-2xl backdrop-blur-xl transition-all hover:bg-dashboard-fg/5 hover:text-dashboard-fg sm:p-3"
           >
-            {isFullscreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+            {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
           </button>
           <button
             onClick={() => setShowExplorer(!showExplorer)}
             className={`rounded-xl glass p-3 shadow-2xl backdrop-blur-xl transition-all ${
               showExplorer
                 ? "bg-accent-primary text-white"
-                : "text-slate-500 hover:bg-foreground/5 hover:text-dashboard-fg"
+                : "text-dashboard-fg/55 hover:bg-dashboard-fg/5 hover:text-dashboard-fg"
             }`}
           >
-            <Brain size={18} />
+            <Brain size={16} />
           </button>
-          <div className="flex flex-col gap-1 rounded-xl border border-white/10 bg-black/60 p-1 backdrop-blur-xl">
+          <div className="flex flex-row gap-1 rounded-xl border border-white/10 bg-dashboard-bg/85 p-1 shadow-2xl backdrop-blur-xl sm:flex-col">
             <button
               onClick={handleZoomIn}
-              className="p-2 text-slate-500 transition-all hover:bg-foreground/5 hover:text-dashboard-fg"
+              className="rounded-lg p-2 text-dashboard-fg/55 transition-all hover:bg-dashboard-fg/5 hover:text-dashboard-fg"
             >
-              <Plus size={18} />
+              <Plus size={16} />
             </button>
             <button
               onClick={handleZoomOut}
-              className="p-2 text-slate-500 transition-all hover:bg-foreground/5 hover:text-dashboard-fg"
+              className="rounded-lg p-2 text-dashboard-fg/55 transition-all hover:bg-dashboard-fg/5 hover:text-dashboard-fg"
             >
-              <Minus size={18} />
+              <Minus size={16} />
             </button>
             <button
               onClick={handleResetZoom}
-              className="border-t border-foreground/5 p-2 text-slate-500 transition-all hover:bg-foreground/5 hover:text-dashboard-fg"
+              className="rounded-lg border-t border-white/10 p-2 text-dashboard-fg/55 transition-all hover:bg-dashboard-fg/5 hover:text-dashboard-fg sm:rounded-b-lg sm:border-t"
             >
-              <RotateCcw size={16} />
+              <RotateCcw size={14} />
             </button>
           </div>
         </div>
@@ -184,7 +184,7 @@ export default function KnowledgeAtlas({
         {/* Explorer Overlay */}
         {showExplorer && (
           <div
-            className={`absolute bottom-8 left-8 z-[110] transition-all duration-500 ${
+            className={`absolute bottom-3 left-3 z-[110] max-w-[calc(100vw-1.5rem)] transition-all duration-500 sm:bottom-8 sm:left-8 sm:max-w-none ${
               isFullscreen ? "opacity-100" : "opacity-90"
             }`}
           >
@@ -200,10 +200,10 @@ export default function KnowledgeAtlas({
         )}
 
         {isFullscreen && (
-          <div className="absolute left-8 top-8 z-[110]">
-            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/60 p-4 shadow-2xl backdrop-blur-2xl">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600">
-                <Brain size={18} />
+          <div className="absolute left-3 top-3 z-[110] sm:left-8 sm:top-8">
+            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/60 p-3 shadow-2xl backdrop-blur-2xl sm:p-4">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-600 sm:h-8 sm:w-8">
+                <Brain size={16} />
               </div>
               <div>
                 <p className="text-sm font-black tracking-tight text-dashboard-fg uppercase">

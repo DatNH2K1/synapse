@@ -71,7 +71,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -82,7 +82,7 @@ h2,
 h3,
 h4,
 .font-display {
-  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  font-family: "Outfit", "Trebuchet MS", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 @utility glass {
@@ -118,6 +118,47 @@ h4,
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+
+input[type="range"].themed-range {
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--accent-primary) 85%, transparent) 0%,
+    color-mix(in srgb, var(--accent-primary) 85%, transparent) 100%
+  );
+}
+
+input[type="range"].themed-range::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--foreground) 14%, transparent);
+}
+
+input[type="range"].themed-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  margin-top: -5px;
+  background: var(--accent-primary);
+  border: 2px solid var(--background);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-primary) 35%, transparent);
+}
+
+input[type="range"].themed-range::-moz-range-track {
+  height: 4px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--foreground) 14%, transparent);
+}
+
+input[type="range"].themed-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: var(--accent-primary);
+  border: 2px solid var(--background);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent-primary) 35%, transparent);
 }
 
 @keyframes pulse-slow {
@@ -267,3 +308,80 @@ h4,
 @utility animate-float {
   animation: float-y 5s ease-in-out infinite;
 }
+
+/* Staggered entry animation */
+@keyframes slide-up-fade {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stagger-item {
+  opacity: 0;
+  animation: slide-up-fade 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--delay-index, 0) * 80ms);
+}
+
+/* Spotlight Card border and inner glow */
+.spotlight-card {
+  position: relative;
+}
+
+.spotlight-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    350px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    rgba(99, 102, 241, 0.35),
+    rgba(168, 85, 247, 0.2) 50%,
+    transparent 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
+}
+
+.spotlight-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    450px circle at var(--mouse-x, 0px) var(--mouse-y, 0px),
+    rgba(99, 102, 241, 0.06),
+    rgba(168, 85, 247, 0.03) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
+}
+
+.spotlight-card:hover::before,
+.spotlight-card:hover::after {
+  opacity: 1;
+}
+
+/* Tactile press response */
+.press-tactile {
+  transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.press-tactile:active {
+  transform: scale(0.96);
+}
+

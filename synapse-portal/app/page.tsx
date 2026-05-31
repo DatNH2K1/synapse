@@ -15,6 +15,7 @@ export default async function LandingPage() {
   // Transform to the format expected by the UI
   const agents = manifestAgents.map((a) => ({
     name: a.displayName || a.name,
+    seed: a.displayName || a.name,
     title: a.title,
     icon: a.icon,
     desc: a.role || a.identity || a.capabilities,

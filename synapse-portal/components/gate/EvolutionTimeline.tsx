@@ -60,13 +60,13 @@ export default function EvolutionTimeline({
       {/* Filters and Search Bar */}
       <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
         <div className="relative w-full sm:w-80">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-500" />
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-dashboard-fg/45" />
           <input
             type="text"
             placeholder={t("all_actions") + "..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-xs font-bold bg-slate-950/20 border border-white/5 rounded-xl text-dashboard-fg placeholder-slate-500 focus:outline-none focus:border-accent-primary/50 transition-all glass"
+            className="w-full pl-9 pr-4 py-2 text-xs font-bold bg-white/[0.04] border border-white/10 rounded-xl text-dashboard-fg placeholder:text-dashboard-fg/35 focus:outline-none focus:border-accent-primary/50 transition-all glass"
           />
         </div>
         <div className="flex flex-wrap gap-2 w-full sm:w-auto">
@@ -85,7 +85,7 @@ export default function EvolutionTimeline({
                   className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all border ${
                     statusFilter === filter
                       ? "bg-accent-primary/20 text-accent-primary border-accent-primary/45 shadow-[0_0_10px_rgba(99,102,241,0.15)]"
-                      : "bg-slate-950/10 border-white/5 text-slate-400 hover:text-dashboard-fg"
+                      : "bg-white/[0.04] border-white/10 text-dashboard-fg/55 hover:bg-dashboard-fg/5 hover:text-dashboard-fg"
                   }`}
                 >
                   {labelMap[filter]}
@@ -100,7 +100,7 @@ export default function EvolutionTimeline({
       {isLoadingLogs ? (
         <div className="flex flex-col items-center justify-center py-20">
           <Loader2 className="animate-spin text-accent-primary h-8 w-8 mb-2" />
-          <p className="text-xs font-black tracking-widest uppercase text-slate-500">
+          <p className="text-xs font-black tracking-widest uppercase text-dashboard-fg/55">
             Loading Evolution Logs...
           </p>
         </div>
@@ -120,26 +120,26 @@ export default function EvolutionTimeline({
                 className="relative flex flex-col pl-10 group animate-in fade-in slide-in-from-bottom-2 duration-300"
               >
                 {/* Floating Circle marker for status */}
-                <div className="absolute left-[0px] top-1.5 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-slate-950 border border-white/5 transition-all duration-300">
+                <div className="absolute left-[0px] top-1.5 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-dashboard-bg/90 border border-white/10 transition-all duration-300">
                   {log.status === "APPROVED" && (
-                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.25)]">
+                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.25)]">
                       <CheckCircle size={10} />
                     </div>
                   )}
                   {log.status === "REJECTED" && (
-                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-400 shadow-[0_0_10px_rgba(244,63,94,0.25)]">
+                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.25)]">
                       <XCircle size={10} />
                     </div>
                   )}
                   {log.status === "ARCHIVE" && (
-                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.25)]">
+                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.25)]">
                       <GitMerge size={10} />
                     </div>
                   )}
                 </div>
 
                 {/* Timeline Event Card */}
-                <div className="glass relative rounded-2xl p-5 border border-white/5 bg-slate-900/10 group-hover:bg-slate-900/20 group-hover:border-white/10 transition-all duration-300 space-y-3">
+                <div className="glass relative rounded-2xl p-5 border border-white/5 bg-white/[0.03] group-hover:bg-white/[0.06] group-hover:border-white/10 transition-all duration-300 space-y-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
                       <span
@@ -185,7 +185,7 @@ export default function EvolutionTimeline({
                         if (!bestTag) return null;
 
                         return (
-                          <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">
+                          <span className="text-[9px] font-bold text-dashboard-fg/45 uppercase tracking-widest">
                             •{" "}
                             {formatFullTag(
                               bestTag.scope,
@@ -198,7 +198,7 @@ export default function EvolutionTimeline({
                     </div>
 
                     {/* Timestamp */}
-                    <div className="flex items-center gap-1 text-[9px] font-bold text-slate-500 uppercase tracking-widest">
+                    <div className="flex items-center gap-1 text-[9px] font-bold text-dashboard-fg/45 uppercase tracking-widest">
                       <Calendar size={10} />
                       {timestamp}
                     </div>
@@ -215,7 +215,7 @@ export default function EvolutionTimeline({
                       {log.tags.map((tag) => (
                         <span
                           key={tag.id}
-                          className="px-1.5 py-0.5 rounded text-[8px] font-bold border border-foreground/5"
+                          className="px-1.5 py-0.5 rounded text-[8px] font-bold border border-white/10"
                           style={{
                             backgroundColor: `${tag.color}20`,
                             color: tag.color,
@@ -226,26 +226,26 @@ export default function EvolutionTimeline({
                       ))}
                     </div>
 
-                    <p className="text-xs text-slate-500 line-clamp-3 max-w-4xl font-medium">
+                    <p className="text-xs text-dashboard-fg/55 line-clamp-3 max-w-4xl font-medium">
                       {content}
                     </p>
                   </div>
 
                   {/* Display Merge metadata detail if archived */}
                   {log.status === "ARCHIVE" && log.archiveDetail && (
-                    <div className="rounded-xl border border-amber-500/10 bg-amber-500/5 p-3 text-[11px] font-medium text-slate-400 space-y-1">
+                    <div className="rounded-xl border border-amber-500/10 bg-amber-500/5 p-3 text-[11px] font-medium text-dashboard-fg/55 space-y-1">
                       <p className="font-bold text-amber-500 uppercase tracking-wider text-[9px]">
                         Merge Metadata
                       </p>
                       {log.archiveDetail.reason && (
                         <p>
-                          <strong className="text-slate-500">Reason:</strong>{" "}
+                          <strong className="text-dashboard-fg/55">Reason:</strong>{" "}
                           {log.archiveDetail.reason}
                         </p>
                       )}
                       {log.archiveDetail.similarityScore && (
                         <p>
-                          <strong className="text-slate-500">
+                          <strong className="text-dashboard-fg/55">
                             Similarity Score:
                           </strong>{" "}
                           {(log.archiveDetail.similarityScore * 100).toFixed(0)}
@@ -260,7 +260,7 @@ export default function EvolutionTimeline({
                     <button
                       onClick={() => onUndo(log.id, log.status)}
                       disabled={!!undoingId}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-white/5 border border-white/10 text-slate-400 hover:bg-white/10 hover:text-dashboard-fg transition-all disabled:opacity-50"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest bg-white/5 border border-white/10 text-dashboard-fg/55 hover:bg-dashboard-fg/5 hover:text-dashboard-fg transition-all disabled:opacity-50"
                     >
                       {undoingId === log.id ? (
                         <Loader2 size={10} className="animate-spin" />
@@ -276,12 +276,12 @@ export default function EvolutionTimeline({
           })}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-20 rounded-3xl border border-dashed border-white/5 bg-slate-900/10">
-          <ShieldCheck size={48} className="text-slate-800 mb-4" />
-          <p className="text-lg font-black tracking-tight text-slate-600 uppercase">
+        <div className="flex flex-col items-center justify-center py-20 rounded-3xl border border-dashed border-white/10 bg-white/[0.03]">
+          <ShieldCheck size={48} className="text-dashboard-fg/35 mb-4" />
+          <p className="text-lg font-black tracking-tight text-dashboard-fg/60 uppercase">
             No history found
           </p>
-          <p className="text-xs text-slate-700">
+          <p className="text-xs text-dashboard-fg/45">
             Actions you approve or reject will be recorded in this personal
             developer logbook.
           </p>

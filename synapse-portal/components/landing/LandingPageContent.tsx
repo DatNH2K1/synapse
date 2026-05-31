@@ -19,6 +19,7 @@ import TiltCard from "@/components/landing/TiltCard";
 
 export interface Agent {
   name: string;
+  seed: string;
   title: string;
   icon: string;
   desc: string;
@@ -117,7 +118,10 @@ export default function LandingPageContent({
 
         {/* Real-time System Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-          <TiltCard className="glass border-white/5 bg-white/[0.02] p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden group hover:border-indigo-500/20 transition-all">
+          <TiltCard
+            style={{ "--delay-index": 1 } as React.CSSProperties}
+            className="stagger-item glass border-white/5 bg-white/[0.02] p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden group hover:border-indigo-500/20 transition-all"
+          >
             <div className="absolute top-0 right-0 w-16 h-16 bg-indigo-500/5 rounded-full blur-md" />
             <Activity
               size={24}
@@ -131,7 +135,10 @@ export default function LandingPageContent({
             </span>
           </TiltCard>
 
-          <TiltCard className="glass border-white/5 bg-white/[0.02] p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden group hover:border-emerald-500/20 transition-all">
+          <TiltCard
+            style={{ "--delay-index": 2 } as React.CSSProperties}
+            className="stagger-item glass border-white/5 bg-white/[0.02] p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden group hover:border-emerald-500/20 transition-all"
+          >
             <div className="absolute top-0 right-0 w-16 h-16 bg-emerald-500/5 rounded-full blur-md" />
             <ShieldCheck
               size={24}
@@ -145,7 +152,10 @@ export default function LandingPageContent({
             </span>
           </TiltCard>
 
-          <TiltCard className="glass border-white/5 bg-white/[0.02] p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden group hover:border-amber-500/20 transition-all">
+          <TiltCard
+            style={{ "--delay-index": 3 } as React.CSSProperties}
+            className="stagger-item glass border-white/5 bg-white/[0.02] p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden group hover:border-amber-500/20 transition-all"
+          >
             <div className="absolute top-0 right-0 w-16 h-16 bg-amber-500/5 rounded-full blur-md" />
             <Zap
               size={24}
@@ -159,7 +169,10 @@ export default function LandingPageContent({
             </span>
           </TiltCard>
 
-          <TiltCard className="glass border-white/5 bg-white/[0.02] p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden group hover:border-purple-500/20 transition-all">
+          <TiltCard
+            style={{ "--delay-index": 4 } as React.CSSProperties}
+            className="stagger-item glass border-white/5 bg-white/[0.02] p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden group hover:border-purple-500/20 transition-all"
+          >
             <div className="absolute top-0 right-0 w-16 h-16 bg-purple-500/5 rounded-full blur-md" />
             <TagIcon
               size={24}
@@ -185,7 +198,10 @@ export default function LandingPageContent({
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <TiltCard className="glass border-white/5 bg-white/[0.02] p-8 rounded-2xl relative overflow-hidden transition-all group">
+          <TiltCard
+            style={{ "--delay-index": 1 } as React.CSSProperties}
+            className="stagger-item glass border-white/5 bg-white/[0.02] p-8 rounded-2xl relative overflow-hidden transition-all group"
+          >
             <div className="absolute top-0 right-0 w-24 h-24 bg-rose-500/5 rounded-full blur-xl pointer-events-none" />
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-rose-500/10 text-rose-400 mb-6 group-hover:scale-110 transition-transform">
               <Cpu size={24} />
@@ -198,7 +214,10 @@ export default function LandingPageContent({
             </p>
           </TiltCard>
 
-          <TiltCard className="glass border-white/5 bg-white/[0.02] p-8 rounded-2xl relative overflow-hidden transition-all group">
+          <TiltCard
+            style={{ "--delay-index": 2 } as React.CSSProperties}
+            className="stagger-item glass border-white/5 bg-white/[0.02] p-8 rounded-2xl relative overflow-hidden transition-all group"
+          >
             <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-xl pointer-events-none" />
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400 mb-6 group-hover:scale-110 transition-transform">
               <Brain size={24} />
@@ -211,7 +230,10 @@ export default function LandingPageContent({
             </p>
           </TiltCard>
 
-          <TiltCard className="glass border-white/5 bg-white/[0.02] p-8 rounded-2xl relative overflow-hidden transition-all group">
+          <TiltCard
+            style={{ "--delay-index": 3 } as React.CSSProperties}
+            className="stagger-item glass border-white/5 bg-white/[0.02] p-8 rounded-2xl relative overflow-hidden transition-all group"
+          >
             <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-xl pointer-events-none" />
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 mb-6 group-hover:scale-110 transition-transform">
               <ShieldCheck size={24} />
@@ -246,12 +268,13 @@ export default function LandingPageContent({
             <TiltCard
               key={i}
               maxTilt={7}
-              className="glass border-white/5 bg-white/[0.01] hover:bg-white/[0.03] p-6 rounded-2xl hover:border-indigo-500/30 transition-all duration-300 relative group flex flex-col justify-between"
+              style={{ "--delay-index": (i % 4) + 1 } as React.CSSProperties}
+              className="stagger-item glass border-white/5 bg-white/[0.01] hover:bg-white/[0.03] p-6 rounded-2xl hover:border-indigo-500/30 transition-all duration-300 relative group flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-white/10 bg-[#030712]">
-                    <Avatar seed={agent.name} width={48} height={48} />
+                    <Avatar seed={agent.seed} width={48} height={48} />
                   </div>
                   <span className="text-lg">{agent.icon}</span>
                 </div>

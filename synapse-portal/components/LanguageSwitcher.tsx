@@ -34,33 +34,30 @@ export default function LanguageSwitcher() {
 
   return (
     <div className="relative" ref={containerRef}>
-      <div className="flex items-center gap-2 px-1 mb-2">
-        <Globe size={10} className="text-slate-500" />
-        <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">
-          Language
-        </span>
-      </div>
-
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between gap-2 px-3 py-2.5 bg-white/[0.03] border border-white/5 rounded-xl hover:bg-white/5 hover:border-white/10 transition-all duration-300 group"
+        className="w-full flex items-center justify-between gap-2 px-3 py-2 bg-dashboard-bg/70 border border-white/10 rounded-xl hover:bg-dashboard-bg/85 hover:border-accent-primary/20 transition-all duration-300 group"
       >
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-black text-indigo-400 group-hover:text-indigo-300 transition-colors">
+          <Globe size={10} className="text-dashboard-fg/55" />
+          <span className="text-[9px] font-black uppercase tracking-widest text-dashboard-fg/55 w-20 text-left">
+            Language
+          </span>
+          <span className="text-[10px] font-black text-accent-primary group-hover:text-accent-primary transition-colors">
             {currentLang.short}
           </span>
-          <span className="text-[11px] font-bold text-slate-300 group-hover:text-white transition-colors">
+          <span className="text-[10px] font-bold text-dashboard-fg/75 group-hover:text-dashboard-fg transition-colors">
             {currentLang.label}
           </span>
         </div>
         <ChevronUp
-          size={14}
-          className={`text-slate-500 transition-transform duration-300 ${isOpen ? "rotate-0" : "rotate-180"}`}
+          size={12}
+          className={`text-dashboard-fg/45 transition-transform duration-300 ${isOpen ? "rotate-0" : "rotate-180"}`}
         />
       </button>
 
       {isOpen && (
-        <div className="absolute bottom-full left-0 w-full mb-2 p-1 bg-slate-900/90 border border-white/10 rounded-xl shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-bottom-2 z-50">
+        <div className="absolute bottom-full left-0 z-50 mb-2 w-full rounded-xl border border-white/10 bg-dashboard-bg/90 p-1 shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-bottom-2">
           {LANGUAGES.map((lang) => (
             <button
               key={lang.code}
@@ -71,20 +68,20 @@ export default function LanguageSwitcher() {
               }}
               className={`w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg text-left transition-all ${
                 locale === lang.code
-                  ? "bg-indigo-600/20 text-white"
-                  : "text-slate-400 hover:bg-white/5 hover:text-white"
+                  ? "bg-accent-primary/10 text-dashboard-fg"
+                  : "text-dashboard-fg/60 hover:bg-dashboard-fg/5 hover:text-dashboard-fg"
               }`}
             >
               <div className="flex items-center gap-2">
                 <span
-                  className={`text-[9px] font-black ${locale === lang.code ? "text-indigo-400" : "text-slate-500"}`}
+                  className={`text-[9px] font-black ${locale === lang.code ? "text-accent-primary" : "text-dashboard-fg/45"}`}
                 >
                   {lang.short}
                 </span>
                 <span className="text-[11px] font-bold">{lang.label}</span>
               </div>
               {locale === lang.code && (
-                <Check size={12} className="text-indigo-400" />
+                <Check size={12} className="text-accent-primary" />
               )}
             </button>
           ))}

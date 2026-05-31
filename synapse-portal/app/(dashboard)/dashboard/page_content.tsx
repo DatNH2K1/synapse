@@ -295,16 +295,22 @@ export default function OverviewPageContent({
       {/* Top Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StatCard
+          style={{ "--delay-index": 1 } as React.CSSProperties}
+          className="stagger-item"
           label={t("total_nodes")}
           value={nodes.length}
           icon={<Activity size={20} className="text-indigo-400" />}
         />
         <StatCard
+          style={{ "--delay-index": 2 } as React.CSSProperties}
+          className="stagger-item"
           label={t("successful_lessons")}
           value={nodes.filter((n) => n.type === "LESSON").length}
           icon={<ShieldCheck size={20} className="text-emerald-400" />}
         />
         <StatCard
+          style={{ "--delay-index": 3 } as React.CSSProperties}
+          className="stagger-item"
           label={t("pending_approval")}
           value={pendingCount}
           icon={<Zap size={20} className="text-amber-400" />}

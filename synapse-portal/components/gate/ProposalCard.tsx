@@ -12,6 +12,7 @@ import {
 import { useI18n } from "@/lib/i18n";
 import { formatFullTag } from "@/lib/format-utils";
 import { PendingUpdate, NodeWithTags } from "./types";
+import TiltCard from "@/components/landing/TiltCard";
 
 interface ProposalCardProps {
   update: PendingUpdate;
@@ -21,6 +22,8 @@ interface ProposalCardProps {
   onAction: (id: string, action: "APPROVE" | "REJECT") => void;
   onStartMerge: (proposal: PendingUpdate, masters: NodeWithTags[]) => void;
   onCompare: (update: PendingUpdate, match: NodeWithTags | undefined) => void;
+  style?: React.CSSProperties;
+  className?: string;
 }
 
 export default function ProposalCard({
@@ -31,6 +34,8 @@ export default function ProposalCard({
   onAction,
   onStartMerge,
   onCompare,
+  style,
+  className = "",
 }: ProposalCardProps) {
   const { t } = useI18n();
   const data = {
@@ -44,12 +49,14 @@ export default function ProposalCard({
     : null;
 
   return (
-    <div
+    <TiltCard
+      disableTilt={true}
+      style={style}
       className={`group relative rounded-2xl border transition-all p-6 ${
         hasHighSimilarity
           ? "border-amber-500/30 bg-amber-500/5 shadow-[0_0_20px_rgba(245,158,11,0.05)]"
           : "glass"
-      }`}
+      } ${className}`}
     >
       <div className="flex items-start justify-between">
         <div className="space-y-1">
@@ -188,6 +195,6 @@ export default function ProposalCard({
           })}
         </div>
       )}
-    </div>
+    </TiltCard>
   );
 }

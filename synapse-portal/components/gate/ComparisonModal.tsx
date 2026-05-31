@@ -31,8 +31,8 @@ export default function ComparisonModal({
 
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
-      <div className="w-full max-w-5xl max-h-[90vh] overflow-hidden rounded-3xl border border-white/10 bg-slate-950 shadow-2xl flex flex-col">
-        <div className="flex items-center justify-between p-6 border-b border-white/5">
+      <div className="flex w-full max-w-5xl max-h-[90vh] flex-col overflow-hidden rounded-3xl border border-white/10 bg-slate-950 shadow-2xl">
+        <div className="flex items-center justify-between gap-4 p-4 border-b border-white/5 sm:p-6">
           <div>
             <h4 className="text-xl font-black tracking-tight text-white uppercase italic">
               {t("diff_view")}
@@ -49,13 +49,13 @@ export default function ComparisonModal({
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6 grid grid-cols-2 gap-6 custom-scrollbar">
+        <div className="flex-1 overflow-y-auto p-4 grid grid-cols-1 gap-4 custom-scrollbar sm:p-6 sm:grid-cols-2 sm:gap-6">
           {/* Left Side: Current (Master) */}
           <div className="space-y-4">
             <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400">
               {t("current_data")} (Master)
             </h5>
-            <div className="rounded-2xl border border-white/5 bg-white/5 p-6 h-full min-h-[300px]">
+            <div className="rounded-2xl border border-white/5 bg-white/5 p-4 h-full min-h-[220px] sm:p-6 sm:min-h-[300px]">
               {match ? (
                 <div className="space-y-4">
                   <div>
@@ -92,7 +92,7 @@ export default function ComparisonModal({
             <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400">
               {t("proposed_data")}
             </h5>
-            <div className="rounded-2xl border border-emerald-500/10 bg-emerald-500/5 p-6 h-full min-h-[300px] shadow-[inset_0_0_20px_rgba(16,185,129,0.05)]">
+            <div className="rounded-2xl border border-emerald-500/10 bg-emerald-500/5 p-4 h-full min-h-[220px] shadow-[inset_0_0_20px_rgba(16,185,129,0.05)] sm:p-6 sm:min-h-[300px]">
               <div className="space-y-4">
                 <div>
                   <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">
@@ -114,7 +114,7 @@ export default function ComparisonModal({
           </div>
         </div>
 
-        <div className="p-6 border-t border-white/5 bg-slate-900/50 flex justify-end gap-3">
+        <div className="flex flex-col gap-3 border-t border-white/5 bg-slate-900/50 p-4 sm:flex-row sm:justify-end sm:gap-3 sm:p-6">
           <button
             onClick={() => onAction(update.id, "REJECT")}
             disabled={!!processingId}

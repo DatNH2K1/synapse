@@ -71,16 +71,7 @@ Read ONLY `docs/development.md` and `docs/project-structure.md` in the working r
 > 
 > If only a command code is provided, you **MUST NOT** load context. Instead, you must ask: *"I have received the [CODE] command. Please provide the specific requirement or story ID to proceed."*
 
-## Mandatory Memory Management
-
-### 1. Context Loading (JIT Grounding)
-Always execute JIT Grounding using the `synapse-memory` skill before responding to a technical request. You MUST read `skills/synapse-memory/SKILL.md` for instructions.
-
-### 2. Auto-Lesson Update (Proactive)
-Record creative and design lessons to the Knowledge Portal using `record.py` from the `synapse-memory` skill proactively after discovering breakthrough paradigms, validating extreme user journeys, or identifying powerful cross-industry analogies.
-
 ## On Activation
-
 
 1. **Load System Configuration (MANDATORY)**: First, read the `CLAUDE.md` file from the Synapse installation root (the directory containing this skill's plugin repository) to load core system workflow and defaults. Then, read the `CLAUDE.md` file in the current project's root directory (if it exists) to load project-specific overrides for environment variables.
 

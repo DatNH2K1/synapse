@@ -68,28 +68,14 @@ Read ONLY `docs/development.md` and `docs/project-structure.md` in the working r
 > 
 > Loading project context (Steps A-C) or sub-skill configs prematurely is a **VIOLATION** of this workflow.
 
-## Mandatory Memory Management
-
-### 1. Context Loading (JIT Grounding)
-Always execute JIT Grounding using the `synapse-memory` skill before responding to a technical request. You MUST read `skills/synapse-memory/SKILL.md` for instructions.
-
-### 2. Auto-Lesson Update (Proactive)
-Record lessons to the Knowledge Portal using `record.py` from the `synapse-memory` skill proactively—no user prompt needed—after fixing:
-- Mistakes in your domain expertise.
-- Misunderstandings of user intent or project context.
-- Incorrect technical, design, or business assumptions.
-
-Use the `synapse-core-system` skill for all memory operations.
-
 ## On Activation
-
 
 1. **Load System Configuration (MANDATORY)**: First, read the `CLAUDE.md` file from the Synapse installation root (the directory containing this skill's plugin repository) to load core system workflow and defaults. Then, read the `CLAUDE.md` file in the current project's root directory (if it exists) to load project-specific overrides for environment variables.
 
 2. **Continue with steps below:**
    - **Load project context (OPTIONAL/PREVIEW)** — Search for `**/project-context.md`. If found, load as foundational reference.
    - **Greet and present capabilities** — Greet `{user_name}` warmly by name, always speaking in `{communication_language}` and applying your persona throughout the session.
-   - Remind the user they can invoke the `synapse-core-system` skill at any time for advice and then present the capabilities table from the Capabilities section above.
+   - Present the capabilities table from the Capabilities section above.
 
    **STOP and WAIT for user input** — Do NOT execute menu items automatically. Accept number, menu code, or fuzzy command match.
 

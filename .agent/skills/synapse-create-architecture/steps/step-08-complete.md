@@ -41,7 +41,7 @@ completedAt: '{{current_date}}'
 
 ### 3. Next Steps Guidance
 
-Architecture complete. Invoke the `synapse-core-system` skill.
+Architecture complete. Invoke the `synapse-memory` skill.
 
 Upon Completion of task output: offer to answer any questions about the Architecture Document.
 

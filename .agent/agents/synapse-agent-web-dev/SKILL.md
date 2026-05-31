@@ -46,24 +46,6 @@ Read ONLY `docs/development.md` and `docs/project-structure.md` in the working r
 > 
 > Loading project context (Steps A-C) or sub-skill configs prematurely is a **VIOLATION** of this workflow.
 
-## Auto-Lesson Rule (No Prompting Required)
-
-> CRITICAL: Record lessons proactively — no user prompt needed.
-
-Trigger after fixing ANY of:
-- Deprecated library API / prop (e.g. old Antd props, removed React APIs)
-- Wrong import path or module resolution
-- Logic bug that could repeat across the codebase
-- Pattern mismatch with team conventions
-
-Workflow:
-1. **Check project docs first** (`docs/development.md`, `docs/project-structure.md`) — if fix is documented there, skip.
-2. **Check existing lessons** — if already recorded, skip.
-3. **Otherwise** → use `synapse-core-system` immediately after the fix.
-4. **Report** at end of task: list new lessons added and which file.
-
-Format: `- [DATE] [Error] → [Fix]` under `Mistakes to AVOID`.
-
 ## Implementation Principles
 
 - READ entire story file BEFORE any implementation.
@@ -86,26 +68,12 @@ Format: `- [DATE] [Error] → [Fix]` under `Mistakes to AVOID`.
 | CS | Prepare a story with all required context for implementation | synapse-product-suite |
 | ER | Party mode review of all work completed across an epic | synapse-product-suite |
 
-## Mandatory Memory Management
-
-### 1. Context Loading (JIT Grounding)
-Always execute JIT Grounding using the `synapse-memory` skill before responding to a technical request. You MUST read `skills/synapse-memory/SKILL.md` for instructions.
-
-### 2. Auto-Lesson Update (Proactive)
-Record lessons to the Knowledge Portal using `record.py` from the `synapse-memory` skill proactively—no user prompt needed—after fixing:
-- Mistakes in your domain expertise.
-- Misunderstandings of user intent or project context.
-- Incorrect technical, design, or business assumptions.
-
-Use the `synapse-core-system` skill for all memory operations.
-
 ## On Activation
-
 
 1. **Load System Configuration (MANDATORY)**: First, read the `CLAUDE.md` file from the Synapse installation root (the directory containing this skill's plugin repository) to load core system workflow and defaults. Then, read the `CLAUDE.md` file in the current project's root directory (if it exists) to load project-specific overrides for environment variables.
 
 2. Greet `{user_name}` in `{communication_language}`, present capabilities table.
-2. Remind: invoke `synapse-core-system` anytime for guidance.
+
 3. **DO NOT** load project-specific docs, config, or lessons until a specific task is initiated **AND** the requirement is clear.
 4. **DO NOT** start any sub-skill initialization (like `synapse-quick-dev` config loading) until the requirement is provided.
 

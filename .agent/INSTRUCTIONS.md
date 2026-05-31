@@ -5,22 +5,57 @@
 
 ## Key Resources
 - **Agent Manifest**: [.agent/manifests/agent-manifest.csv](file://.agent/manifests/agent-manifest.csv)
+- **Skill Manifest**: [.agent/manifests/skill-manifest.csv](file://.agent/manifests/skill-manifest.csv)
 - **Portal Source**: [synapse-portal/](file://synapse-portal/)
+- **Repo Index Skill**: [synapse-repo-indexer/](file://.agent/skills/synapse-repo-indexer/)
 
-## Workflow
-1. **Initialize**: Run `PYTHONPATH=scripts/utils python3 scripts/utils/get_env_safe.py` to retrieve environment configuration safely. DO NOT read the `.env` file directly with `view_file` to avoid exposing sensitive keys (such as `GEMINI_API_KEY` or `POSTGRES_PASSWORD`). The keys returned are:
-   - `SYNAPSE_USER_NAME` (resolves `{user_name}`)
-   - `SYNAPSE_COMMUNICATION_LANGUAGE` (resolves `{communication_language}`)
-   - `SYNAPSE_DOCUMENT_OUTPUT_LANGUAGE` (resolves `{document_output_language}`)
-   - `SYNAPSE_OUTPUT_FOLDER` (resolves `{output_folder}`)
-   - `SYNAPSE_PORTAL_PORT` (resolves `{docker_port}`)
-2. **Ground (JIT Retrieval - MANDATORY)**: Before executing any `synapse-` skills or starting a task, you MUST perform JIT Retrieval via `python3 skills/synapse-memory/scripts/query.py --tags "project:<project_name>"` (where project name is retrieved from the active workspace).
-3. **Execute**: Use specialized skills in `skills/`.
-4. **Finalize (Memory Persistence - MANDATORY)**: At the end of any task, bug fix, story, or feature completion, record insights to the Portal (you may run the record script multiple times to create separate nodes if there are multiple distinct insights to preserve):
-   - Command: `python3 skills/synapse-memory/scripts/record.py --type <LESSON|CONTEXT|FEATURE> --label "<title>" --content "<markdown_content>" --tags "project:<project_name>" "section:<section_tag>" ...`
-   - **CRITICAL Rules**:
-     - Only record significant, reusable insights.
-     - Do NOT record minor refactorings (e.g. renaming classes/functions), small bug fixes, or minor tweaks.
-     - Follow strict node type selection criteria (LESSON, FEATURE, CONTEXT) defined in the memory skill.
-     - All text details MUST be written in English.
-5. **No Direct Hook API Bypass**: Do not bypass the `synapse-memory` scripts by writing raw API client calls for memory sync; always use the canonical `query.py` and `record.py` tools.
+## Playbooks
+
+### Prerequisite: Initialize (Mandatory for all tasks)
+Always run `PYTHONPATH=scripts/utils python3 scripts/utils/get_env_safe.py` to retrieve environment configuration safely before executing any playbooks or skills. DO NOT read the `.env` file directly with `view_file` to avoid exposing sensitive keys (such as `GEMINI_API_KEY` or `POSTGRES_PASSWORD`). The keys returned are:
+- `SYNAPSE_USER_NAME` (resolves `{user_name}`)
+- `SYNAPSE_COMMUNICATION_LANGUAGE` (resolves `{communication_language}`)
+- `SYNAPSE_DOCUMENT_OUTPUT_LANGUAGE` (resolves `{document_output_language}`)
+- `SYNAPSE_OUTPUT_FOLDER` (resolves `{output_folder}`)
+- `SYNAPSE_PORTAL_PORT` (resolves `{docker_port}`)
+
+### Execution Policy: Prefer Docker in Target Repos
+When using a skill to work on another repository, verify Docker in that target repository before running development commands. If the target repo has Docker available and the relevant service/container can be reached, prefer containerized execution over running the same command directly on the host.
+
+- Use `docker compose exec` for app commands when the target service container is running.
+- Use the target repo's `docker compose up` / `docker compose -f ... up` flow for local stacks instead of starting host-side processes when the repo already supports Docker.
+- Fall back to host execution only when Docker is unavailable in the target repo, the container is not running, or the task explicitly requires host-only tooling.
+- Keep the decision local to the target repo: check Docker first, then choose the shortest safe path for the command you need to run.
+
+Based on your active task type, refer to and follow the appropriate playbook below:
+
+| Playbook | Link | Description | Activation Context |
+| :--- | :--- | :--- | :--- |
+| **Engineering Workflow** | [engineering-workflow](file://.agent/playbooks/engineering-workflow.md) | Standard flow for JIT retrieval, development, testing, and memory recording. | Whenever performing a code implementation, task, feature, or bug fix. |
+
+## Sub-agent Delegation Rules
+
+When spawning, managing, and coordinating sub-agents (via `invoke_subagent` or `define_subagent`), you MUST strictly adhere to these protocols:
+
+### 1. Sub-agent Status Protocol (MANDATORY)
+Every sub-agent MUST end its final response using this exact status report format:
+```
+**Status:** DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
+**Summary:** [1-2 sentence summary of results]
+**Concerns/Blockers:** [Detailed explanation if status is not DONE]
+```
+- **DONE**: Task completed successfully. Proceed to next step.
+- **DONE_WITH_CONCERNS**: Completed but with potential risks or tech debt.
+- **BLOCKED**: Cannot proceed due to error or external factor. Resolve blocker before retrying.
+- **NEEDS_CONTEXT**: Missing information. Ask user or parent agent, then re-dispatch.
+
+### 2. Context Isolation Principle
+To prevent context window degradation, sub-agents MUST receive only high-signal, relevant data:
+- **No Session Bloat**: Do NOT pass full session/chat history to sub-agents. Summarize previous decisions.
+- **Explicit Scoping**: Provide specific task prompts, exact file paths, and list which files to read or modify.
+- **Project Pathing**: Always include `Work context: [root path]` in sub-agent prompts.
+
+### 3. Delegation & Escalation Rules
+- **Parallelism**: Spawn independent tasks simultaneously (e.g. Frontend and Backend tasks).
+- **Sequential Chaining**: Run tasks sequentially when a step depends on the output of the previous one (e.g. Plan -> Code -> Test).
+- **Escalation**: If a sub-agent fails 3+ times on the same task, escalate to the User immediately.

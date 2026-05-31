@@ -90,6 +90,3 @@ plugin-link:
 plugin-unlink:
 	@rm -f ~/.gemini/config/plugins/synapse
 	@echo "✅ Unlinked synapse plugin from ~/.gemini/config/plugins/synapse"
-
-
-

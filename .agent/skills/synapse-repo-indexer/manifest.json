@@ -1,0 +1,7 @@
+{
+  "id": "synapse-repo-indexer",
+  "name": "synapse-repo-indexer",
+  "description": "Build a lightweight repo index from filesystem signals only. Use when the user needs a fast AI-facing map of an unfamiliar project without a preexisting manifest or metadata.",
+  "module": "synapse",
+  "path": "skills/synapse-repo-indexer/SKILL.md"
+}

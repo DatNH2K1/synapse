@@ -59,6 +59,29 @@ To prevent cross-project context contamination, all agents MUST follow these rul
 4. **Context Grounding**: Only apply retrieved knowledge that explicitly matches the current active workspace.
 
 ---
+## Tag Definitions & Conventions
+
+To ensure consistent retrieval, all tags **MUST** follow the `scope:value` format. There are **NO OTHER** allowed tag formats.
+
+### Allowed Scopes
+
+| Scope        | Definition | Example | Requirement Level |
+| :----------- | :--------- | :------ | :----------------- |
+| `section`    | Mandatory category for lessons (defines where it appears in the Portal). | `section:mistakes-to-avoid` | **Required** for `LESSON` type, N/A/Optional for other types. |
+| `project`    | Links knowledge to a specific repository or project name. | `project:synapse-portal` | **Required** for project-specific nodes (unless `global` is set). |
+| `global`     | Sets global-wide visibility, making the knowledge node accessible across all projects. | `global:global` | **Required** if `project` scope is NOT provided. |
+| `technology` | Defines the tech stack or library related to the insight. | `technology:react@18` | **Optional**. |
+| `agent`      | Identifies the agent who generated or is most relevant to the insight. Value **MUST** be the **agent folder name** (e.g. the directory under `agents/`), NOT the persona display name. | `agent:synapse-agent-web-dev` | **Optional/Recommended**. |
+
+### Naming Rules
+
+- **Kebab-case only**: Use `lowercase-words-separated-by-hyphens`.
+- **No spaces**: Never use spaces within a tag.
+- **No uppercase**: Always use lowercase to avoid case-sensitivity issues.
+- **Format**: `scope:value` ONLY (with optional `@version` suffix for the `technology` scope, e.g. `technology:react@18`).
+- **`agent` tag value = folder name**: Always use the skill folder name (e.g. `synapse-agent-web-dev`), never the persona's first name (e.g. ~~`amelia`~~). The folder name is the canonical identifier stored in the Portal.
+
+---
 
 ## PORTAL WRITE Workflow
 
@@ -136,28 +159,6 @@ python3 skills/synapse-memory/scripts/efficacy.py --node-id "1992455f-5d0b-4b2c-
 
 ---
 
-## Tag Definitions & Conventions
-
-To ensure consistent retrieval, all tags **MUST** follow the `scope:value` format. There are **NO OTHER** allowed tag formats.
-
-### Allowed Scopes
-
-| Scope        | Definition                                                                                                                                                                                    | Example                          |
-| :----------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| :------------------------------- |
-| `section`    | Mandatory category for lessons (defines where it appears in the Portal).                                                                                                                      | `section:mistakes-to-avoid`      |
-| `project`    | Links knowledge to a specific repository or project name.                                                                                                                                     | `project:synapse-portal`            |
-| `technology` | Defines the tech stack or library related to the insight.                                                                                                                                     | `technology:react@18`            |
-| `agent`      | Identifies the agent who generated or is most relevant to the insight. Value **MUST** be the **agent folder name** (e.g. the directory under `agents/`), NOT the persona display name. | `agent:synapse-agent-web-dev`       |
-
-### Naming Rules
-
-- **Kebab-case only**: Use `lowercase-words-separated-by-hyphens`.
-- **No spaces**: Never use spaces within a tag.
-- **No uppercase**: Always use lowercase to avoid case-sensitivity issues.
-- **Format**: `scope:value` ONLY.
-- **`agent` tag value = folder name**: Always use the skill folder name (e.g. `synapse-agent-web-dev`), never the persona's first name (e.g. ~~`amelia`~~). The folder name is the canonical identifier stored in the Portal.
-
----
 
 ## PORTAL READ Workflow (JIT Grounding)
 
@@ -184,7 +185,6 @@ Use the `query.py` script.
 | Parameter | Required | Description                                                          |
 | :-------- | :------- | :------------------------------------------------------------------- |
 | `--tags`  | Yes      | Space-separated list of tags to filter by. At least one is required. |
-| `--limit` | No       | Optional integer to limit the number of returned results.            |
 
 ```bash
 python3 skills/synapse-memory/scripts/query.py --tags "project:synapse-portal" "technology:nextjs"

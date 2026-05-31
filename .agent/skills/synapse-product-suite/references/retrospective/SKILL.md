@@ -18,9 +18,7 @@ Follow the instructions in ./workflow.md.
 ## AI Lessons Learned (Mandatory)
 
 > **Before performing any retrospective, you MUST:**
-> 1. Execute JIT Grounding using the `synapse-memory` skill (Global Hub) — always.
-> 2. Read `memory/context/lessons-context.csv` to resolve current project and technologies.
-> 3. Load `lessons_file` entries from CSV where `scope in (technology, project)` and `status=exists`.
+> 1. Execute JIT Grounding using the `synapse-memory` skill (refer to [synapse-memory](file://.agent/skills/synapse-memory/SKILL.md#portal-read-workflow-jit-grounding) for instructions).
 
 ---
 
@@ -28,13 +26,11 @@ Follow the instructions in ./workflow.md.
 
 > **CRITICAL: The retrospective MUST result in updated AI memory.**
 >
-> For each lesson identified in Step 3:
-> 1. Determine scope (global / technology / project).
-> 2. Classify as `Mistake to AVOID` or `Optimized Technique`.
-> 3. Write to the appropriate lessons file via `synapse-core-system`.
+> For each lesson identified:
+> 1. Record the lesson using the `synapse-memory` skill (refer to [synapse-memory](file://.agent/skills/synapse-memory/SKILL.md#portal-write-workflow) for instructions).
 >
 > This ensures lessons are persisted in the AI memory system and will be automatically applied in all future sessions.
 
 Confirm to the user:
 - Path to retrospective report
-- List of lesson entries written to memory (with target files)
+- List of lesson entries written to the Knowledge Portal

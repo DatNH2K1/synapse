@@ -81,18 +81,18 @@ When the same fact appears in both a brief and discovery notes:
 
 **Brief says:**
 ```
-synapse-core-system must always be included as a base skill in every bundle
+synapse-memory must always be included as a base skill in every bundle
 ```
 
 **Discovery notes say:**
 ```
-synapse-core-system must always be included as a base skill in every bundle/install
+synapse-memory must always be included as a base skill in every bundle/install
 (solves discoverability problem)
 ```
 
 **Distillate keeps the more contextual version:**
 ```
-- synapse-core-system: always included as base skill in every bundle (solves discoverability)
+- synapse-memory: always included as base skill in every bundle (solves discoverability)
 ```
 
 ### Decision/Rationale Compression

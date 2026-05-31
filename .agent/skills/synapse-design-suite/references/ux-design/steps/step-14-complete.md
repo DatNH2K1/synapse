@@ -82,7 +82,7 @@ Update the main workflow status file:
 
 ### 3. Suggest Next Steps
 
-UX Design complete. Invoke the `synapse-core-system` skill.
+UX Design complete. Invoke the `synapse-memory` skill.
 
 ### 5. Final Completion Confirmation
 

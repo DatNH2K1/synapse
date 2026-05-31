@@ -78,7 +78,7 @@ Offer validation workflows to ensure PRD is ready for implementation:
 
 ### 4. Suggest Next Workflows
 
-PRD complete. Invoke the `synapse-core-system` skill.
+PRD complete. Invoke the `synapse-memory` skill.
 
 ### 5. Final Completion Confirmation
 

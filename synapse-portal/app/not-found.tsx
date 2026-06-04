@@ -63,7 +63,7 @@ export default function NotFound() {
 
       {/* Small footer brand */}
       <div className="absolute bottom-6 text-[10px] font-bold uppercase tracking-widest text-slate-600 flex items-center gap-1.5 z-10">
-        <Brain size={12} className="text-indigo-500/60" /> Synapse OS
+        <Brain size={12} className="text-indigo-500/60" /> {t("synapse_os")}
       </div>
     </div>
   );

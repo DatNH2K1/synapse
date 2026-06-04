@@ -38,7 +38,7 @@ export default function ComparisonModal({
               {t("diff_view")}
             </h4>
             <p className="text-[10px] text-slate-500 uppercase tracking-widest">
-              ID: {update.id} • {update.type}
+              {t("id_prefix")} {update.id} • {update.type}
             </p>
           </div>
           <button
@@ -53,14 +53,14 @@ export default function ComparisonModal({
           {/* Left Side: Current (Master) */}
           <div className="space-y-4">
             <h5 className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400">
-              {t("current_data")} (Master)
+              {t("current_data_master")}
             </h5>
             <div className="rounded-2xl border border-white/5 bg-white/5 p-4 h-full min-h-[220px] sm:p-6 sm:min-h-[300px]">
               {match ? (
                 <div className="space-y-4">
                   <div>
                     <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">
-                      Label
+                      {t("label_header")}
                     </p>
                     <p className="text-lg font-bold text-white">
                       {match.label}
@@ -68,7 +68,7 @@ export default function ComparisonModal({
                   </div>
                   <div>
                     <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">
-                      Content
+                      {t("content_header")}
                     </p>
                     <pre className="text-xs text-slate-400 whitespace-pre-wrap font-mono mt-2 bg-black/30 p-4 rounded-xl border border-white/5">
                       {JSON.parse(match.properties || "{}").content ||
@@ -80,7 +80,7 @@ export default function ComparisonModal({
                 <div className="flex flex-col items-center justify-center h-full text-slate-600">
                   <Trash2 size={32} className="mb-2 opacity-20" />
                   <p className="text-xs uppercase font-bold tracking-widest">
-                    New Entry
+                    {t("new_entry")}
                   </p>
                 </div>
               )}
@@ -96,13 +96,13 @@ export default function ComparisonModal({
               <div className="space-y-4">
                 <div>
                   <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">
-                    Label
+                    {t("label_header")}
                   </p>
                   <p className="text-lg font-bold text-white">{update.label}</p>
                 </div>
                 <div>
                   <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">
-                    Content
+                    {t("content_header")}
                   </p>
                   <pre className="text-xs text-emerald-100/60 whitespace-pre-wrap font-mono mt-2 bg-black/30 p-4 rounded-xl border border-emerald-500/10">
                     {JSON.parse(update.properties || "{}").content ||

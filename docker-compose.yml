@@ -43,7 +43,6 @@ services:
       - ./synapse-portal/prisma/seed.ts:/app/prisma/seed.ts
       - ./.agent/manifests:/data/manifests
 
-
     networks:
       - synapse
     depends_on:

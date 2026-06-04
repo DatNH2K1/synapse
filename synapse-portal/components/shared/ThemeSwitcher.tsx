@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import { Moon, Sun, Zap, Cloud, Palette, ChevronUp, Check } from "lucide-react";
 import { useIsMounted } from "@/lib/hooks";
+import { useI18n } from "@/lib/i18n";
 
 const themes = [
   { id: "light", icon: Sun, label: "Light" },
@@ -13,6 +14,7 @@ const themes = [
 ];
 
 export default function ThemeSwitcher() {
+  const { t } = useI18n();
   const { theme, setTheme } = useTheme();
   const mounted = useIsMounted();
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +46,7 @@ export default function ThemeSwitcher() {
         <div className="flex items-center gap-2">
           <Palette size={10} className="text-dashboard-fg/55" />
           <span className="text-[9px] font-black uppercase tracking-widest text-dashboard-fg/55 w-20 text-left">
-            Theme
+            {t("theme")}
           </span>
           <currentTheme.icon
             size={12}

@@ -220,7 +220,7 @@ export default function AgentsPageContent({
                     : "border-transparent text-dashboard-fg/40 hover:text-dashboard-fg/70"
                 }`}
               >
-                Overview
+                {t("overview")}
               </button>
               {((selectedAgent.complianceChecklist &&
                 selectedAgent.complianceChecklist.length > 0) ||
@@ -234,7 +234,7 @@ export default function AgentsPageContent({
                       : "border-transparent text-dashboard-fg/40 hover:text-dashboard-fg/70"
                   }`}
                 >
-                  System Protocols
+                  {t("system_protocols")}
                 </button>
               )}
               <button
@@ -245,7 +245,7 @@ export default function AgentsPageContent({
                     : "border-transparent text-dashboard-fg/40 hover:text-dashboard-fg/70"
                 }`}
               >
-                Capabilities & Tools
+                {t("capabilities_tools")}
               </button>
             </div>
 
@@ -256,7 +256,7 @@ export default function AgentsPageContent({
                   {selectedAgent.identity && (
                     <div className="space-y-2">
                       <h4 className="text-[10px] font-black uppercase tracking-widest text-indigo-400 flex items-center gap-1.5">
-                        <Brain size={12} /> Identity
+                        <Brain size={12} /> {t("identity")}
                       </h4>
                       <p className="text-sm text-dashboard-fg/80 leading-relaxed font-medium">
                         {selectedAgent.identity}
@@ -267,7 +267,7 @@ export default function AgentsPageContent({
                   {selectedAgent.communicationStyle && (
                     <div className="space-y-2">
                       <h4 className="text-[10px] font-black uppercase tracking-widest text-purple-400 flex items-center gap-1.5">
-                        <Sliders size={12} /> Communication Style
+                        <Sliders size={12} /> {t("communication_style")}
                       </h4>
                       <p className="text-sm text-dashboard-fg/70 leading-relaxed italic border-l-2 border-purple-500/30 pl-4 py-1 bg-purple-500/[0.02]">
                         &ldquo;{selectedAgent.communicationStyle}&rdquo;
@@ -279,7 +279,7 @@ export default function AgentsPageContent({
                   selectedAgent.principlesList.length > 0 ? (
                     <div className="space-y-3 bg-dashboard-fg/[0.02] border border-dashboard-fg/5 rounded-2xl p-5">
                       <h4 className="text-[10px] font-black uppercase tracking-widest text-amber-500 flex items-center gap-1.5 mb-2">
-                        <ShieldAlert size={12} /> Core Principles
+                        <ShieldAlert size={12} /> {t("core_principles")}
                       </h4>
                       <ul className="space-y-2.5">
                         {selectedAgent.principlesList.map(
@@ -298,7 +298,7 @@ export default function AgentsPageContent({
                   ) : selectedAgent.principles ? (
                     <div className="space-y-2 bg-dashboard-fg/[0.02] border border-dashboard-fg/5 rounded-2xl p-5">
                       <h4 className="text-[10px] font-black uppercase tracking-widest text-amber-500 flex items-center gap-1.5 mb-2">
-                        <ShieldAlert size={12} /> Core Principles
+                        <ShieldAlert size={12} /> {t("core_principles")}
                       </h4>
                       <p className="text-xs text-dashboard-fg/85 leading-relaxed whitespace-pre-wrap">
                         {selectedAgent.principles}
@@ -309,13 +309,13 @@ export default function AgentsPageContent({
                   {/* System Module & Path details */}
                   <div className="border-t border-dashboard-fg/5 pt-4 flex flex-wrap gap-x-8 gap-y-2 text-[10px] text-dashboard-fg/40 font-bold uppercase tracking-widest">
                     <span>
-                      Module:{" "}
+                      {t("module")}:{" "}
                       <span className="text-dashboard-fg/60">
                         {selectedAgent.module || "synapse"}
                       </span>
                     </span>
                     <span>
-                      Path:{" "}
+                      {t("path")}:{" "}
                       <span className="text-dashboard-fg/60 lowercase">
                         {selectedAgent.path || "n/a"}
                       </span>
@@ -330,7 +330,7 @@ export default function AgentsPageContent({
                     selectedAgent.complianceChecklist.length > 0 && (
                       <div className="space-y-3">
                         <h4 className="text-[10px] font-black uppercase tracking-widest text-emerald-400 flex items-center gap-1.5">
-                          🛡️ Mandatory Compliance Checklist
+                          {t("compliance_checklist")}
                         </h4>
                         <div className="grid grid-cols-1 gap-2.5">
                           {selectedAgent.complianceChecklist.map(
@@ -340,7 +340,7 @@ export default function AgentsPageContent({
                                 className="flex items-center gap-3 bg-dashboard-fg/[0.02] border border-dashboard-fg/5 rounded-xl p-3"
                               >
                                 <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-bold">
-                                  ✓
+                                  {t("checkmark")}
                                 </div>
                                 <span className="text-xs font-semibold text-dashboard-fg/80 leading-tight">
                                   {item}
@@ -355,7 +355,7 @@ export default function AgentsPageContent({
                   {selectedAgent.protocols?.gatekeeper && (
                     <div className="space-y-2">
                       <h4 className="text-[10px] font-black uppercase tracking-widest text-rose-400 flex items-center gap-1.5">
-                        ⚠️ Enforcement Gatekeeper Protocol
+                        {t("gatekeeper_protocol")}
                       </h4>
                       <div className="bg-rose-500/[0.03] border border-rose-500/20 rounded-2xl p-5 text-xs text-rose-300 leading-relaxed whitespace-pre-wrap font-medium">
                         {selectedAgent.protocols.gatekeeper}
@@ -366,7 +366,7 @@ export default function AgentsPageContent({
                   {selectedAgent.protocols?.contextLoad && (
                     <div className="space-y-2">
                       <h4 className="text-[10px] font-black uppercase tracking-widest text-indigo-400 flex items-center gap-1.5">
-                        ⚙️ Context Loading Sequence
+                        {t("context_loading_sequence")}
                       </h4>
                       <div className="bg-indigo-500/[0.03] border border-indigo-500/20 rounded-2xl p-5 text-xs text-dashboard-fg/80 leading-relaxed whitespace-pre-wrap">
                         {selectedAgent.protocols.contextLoad}
@@ -382,7 +382,7 @@ export default function AgentsPageContent({
                     selectedAgent.capabilitiesList.length > 0 && (
                       <div className="space-y-3">
                         <h4 className="text-[10px] font-black uppercase tracking-widest text-indigo-400">
-                          Mapped Tools & Capabilities
+                          {t("mapped_capabilities")}
                         </h4>
                         <div className="border border-dashboard-fg/5 rounded-2xl overflow-hidden divide-y divide-dashboard-fg/5">
                           {selectedAgent.capabilitiesList.map((cap, index) => (
@@ -410,7 +410,7 @@ export default function AgentsPageContent({
                   {/* Capabilities (Full badge list) */}
                   <div className="space-y-3">
                     <h4 className="text-[10px] font-black uppercase tracking-widest text-dashboard-fg/50">
-                      System Keywords & Capabilities
+                      {t("system_capabilities")}
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {selectedAgent.capabilities.split(",").map((cap) => (

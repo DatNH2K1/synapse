@@ -10,14 +10,6 @@ export function getNodeCategoryLabel(node: Node): string {
   return node.type || "Knowledge Node";
 }
 
-import { formatFullTag } from "./format-utils";
-
-export function getLegendItems(tags: Tag[]) {
-  return tags.map((t) => ({
-    label: formatFullTag(t.scope, t.name, t.version),
-    color: t.color,
-  }));
-}
 
 export function groupTagsByScope(tags: Tag[]) {
   const groups: Record<string, Tag[]> = {};

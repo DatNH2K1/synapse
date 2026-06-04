@@ -1,10 +1,12 @@
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
+import i18next from "eslint-plugin-i18next";
 
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  i18next.configs["flat/recommended"],
   {
     rules: {
       "@typescript-eslint/no-unused-vars": [
@@ -26,6 +28,19 @@ const eslintConfig = defineConfig([
             },
           ],
         },
+      ],
+      "i18next/no-literal-string": [
+        "warn",
+        {
+          "ignore": [
+            "•",
+            "✓",
+            "%",
+            ":",
+            "• ",
+            "•"
+          ]
+        }
       ],
     },
   },

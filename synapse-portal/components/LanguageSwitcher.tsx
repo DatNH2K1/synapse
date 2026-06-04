@@ -13,7 +13,7 @@ const LANGUAGES = [
 ];
 
 export default function LanguageSwitcher() {
-  const { locale, setLocale } = useI18n();
+  const { locale, setLocale, t } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +41,7 @@ export default function LanguageSwitcher() {
         <div className="flex items-center gap-2">
           <Globe size={10} className="text-dashboard-fg/55" />
           <span className="text-[9px] font-black uppercase tracking-widest text-dashboard-fg/55 w-20 text-left">
-            Language
+            {t("language")}
           </span>
           <span className="text-[10px] font-black text-accent-primary group-hover:text-accent-primary transition-colors">
             {currentLang.short}

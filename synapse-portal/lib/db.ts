@@ -2,7 +2,7 @@ import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
 
-import { AGENT_MANIFEST_PATH, SKILL_MANIFEST_PATH, DB_CONFIG } from "./config";
+import { DB_CONFIG } from "./config";
 
 const getDatabaseUrl = () => {
   if (DB_CONFIG.url) return DB_CONFIG.url;
@@ -36,7 +36,6 @@ export function getConfig() {
   return { user_name: process.env.SYNAPSE_USER_NAME || "User" };
 }
 
-export { AGENT_MANIFEST_PATH, SKILL_MANIFEST_PATH };
 
 export interface Edge {
   id: number;

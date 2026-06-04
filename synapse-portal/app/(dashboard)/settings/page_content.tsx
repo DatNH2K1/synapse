@@ -293,7 +293,7 @@ export default function SettingsPageContent({
                     {t("db_engine")}
                   </p>
                   <p className="text-sm font-bold text-dashboard-fg">
-                    PostgreSQL + pgvector
+                    {t("db_engine_name")}
                   </p>
                 </div>
                 <div className="space-y-1">
@@ -643,7 +643,7 @@ export default function SettingsPageContent({
                       </div>
                       <div className="flex items-center gap-3 shrink-0">
                         <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">
-                          Color
+                          {t("color_label")}
                         </span>
                         <div
                           className="h-7 w-7 rounded-full border border-white/20 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] transition-all duration-300 group-hover:scale-110 cursor-pointer ring-offset-2 ring-offset-slate-950 group-hover:ring-2 group-hover:ring-accent-primary/40"

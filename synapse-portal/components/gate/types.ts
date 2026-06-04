@@ -25,7 +25,7 @@ export interface CachedProposal {
   reason: string;
 }
 
-export interface MergeSourceNode {
+interface MergeSourceNode {
   id: string;
   label: string;
   content: string;

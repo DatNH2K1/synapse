@@ -1,4 +1,4 @@
-export enum NodeType {
+enum NodeType {
   LESSON = "Lesson",
   CONTEXT = "Context",
   FEATURE = "Feature",

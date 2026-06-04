@@ -35,7 +35,7 @@ export default function MergeModal({
               {t("knowledge_synthesis")}
             </h4>
             <p className="text-[10px] text-amber-500/60 uppercase tracking-widest font-bold">
-              Synthesizing Node C from A & B
+              {t("synthesize_subtitle")}
             </p>
           </div>
           <button
@@ -54,7 +54,7 @@ export default function MergeModal({
                 {t("source_nodes_review")}
               </span>
               <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">
-                {mergeData.sourceNodes.length} Nodes
+                {t("nodes_count", { count: mergeData.sourceNodes.length })}
               </span>
             </div>
 
@@ -99,7 +99,7 @@ export default function MergeModal({
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
                 <label className="text-[9px] font-black uppercase tracking-widest text-slate-500">
-                  Label
+                  {t("label_header")}
                 </label>
                 <input
                   type="text"
@@ -111,7 +111,7 @@ export default function MergeModal({
                 />
               </div>
               <FormSelect
-                label="Type"
+                label={t("type_label")}
                 value={mergeData.type}
                 onChange={(e) =>
                   onUpdateMergeData({ ...mergeData, type: e.target.value })
@@ -123,7 +123,7 @@ export default function MergeModal({
             {/* Content Editor */}
             <div className="space-y-1.5">
               <label className="text-[9px] font-black uppercase tracking-widest text-slate-500">
-                Synthesized Content (Markdown)
+                {t("synthesized_content")}
               </label>
               <textarea
                 value={mergeData.content}
@@ -138,7 +138,7 @@ export default function MergeModal({
             {/* Tag Selector */}
             <div className="space-y-2">
               <label className="text-[9px] font-black uppercase tracking-widest text-slate-500">
-                Select Tags (Union of A & B)
+                {t("select_tags_union")}
               </label>
               <div className="flex flex-wrap gap-1.5 p-3 rounded-2xl bg-white/5 border border-white/10">
                 {mergeData.allTags.map((tag) => {
@@ -173,7 +173,7 @@ export default function MergeModal({
             {/* Reason */}
             <div className="space-y-1.5">
               <label className="text-[9px] font-black uppercase tracking-widest text-slate-500">
-                Merge Reason
+                {t("merge_reason")}
               </label>
               <input
                 type="text"
@@ -181,7 +181,7 @@ export default function MergeModal({
                 onChange={(e) =>
                   onUpdateMergeData({ ...mergeData, reason: e.target.value })
                 }
-                placeholder="Why are these being merged?"
+                placeholder={t("merge_reason_placeholder")}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:border-amber-500/50 outline-none transition-all"
               />
             </div>
@@ -192,8 +192,7 @@ export default function MergeModal({
           <div className="flex items-center gap-2">
             <div className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20">
               <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest">
-                Similarity Score: {(mergeData.similarityScore * 100).toFixed(1)}
-                %
+                {t("similarity_score_value", { score: (mergeData.similarityScore * 100).toFixed(1) })}
               </span>
             </div>
           </div>

@@ -60,10 +60,10 @@ export default function LandingPageContent({
             </div>
             <div>
               <p className="text-lg font-black leading-none tracking-tight">
-                Synapse<span className="text-indigo-500">.</span>
+                {t("brand_name")}<span className="text-indigo-500">.</span>
               </p>
               <p className="mt-1 text-[9px] font-bold uppercase tracking-widest text-slate-500">
-                Intelligence OS
+                {t("intelligence_os")}
               </p>
             </div>
           </div>

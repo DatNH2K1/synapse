@@ -67,10 +67,10 @@ export default function Sidebar({
             </div>
             <div>
               <p className="text-lg font-black leading-none tracking-tight text-dashboard-fg">
-                Synapse<span className="text-accent-primary">.</span>
+                {t("brand_name")}<span className="text-accent-primary">.</span>
               </p>
               <p className="mt-1 text-[9px] font-bold uppercase tracking-widest text-dashboard-fg/55">
-                Intelligence OS
+                {t("intelligence_os")}
               </p>
             </div>
           </Link>
@@ -136,10 +136,10 @@ export default function Sidebar({
             </div>
             <div className="hidden min-[390px]:block">
               <p className="text-sm font-black leading-none tracking-tight text-dashboard-fg">
-                Synapse<span className="text-accent-primary">.</span>
+                {t("brand_name")}<span className="text-accent-primary">.</span>
               </p>
               <p className="mt-0.5 text-[8px] font-bold uppercase tracking-widest text-dashboard-fg/55">
-                Intelligence OS
+                {t("intelligence_os")}
               </p>
             </div>
           </Link>
@@ -150,7 +150,7 @@ export default function Sidebar({
               className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-[10px] font-black uppercase tracking-widest text-dashboard-fg/70"
             >
               <Menu size={14} className="text-accent-primary" />
-              More
+              {t("more_button")}
               <ChevronUp
                 size={12}
                 className={`text-dashboard-fg/45 transition-transform duration-300 ${

@@ -14,6 +14,13 @@ export default defineConfig({
     onConsoleLog() {
       return false;
     },
+    exclude: [
+      "node_modules",
+      ".next",
+      "dist",
+      ".git",
+      ".cache"
+    ],
     coverage: {
       enabled: true,
       provider: "v8",

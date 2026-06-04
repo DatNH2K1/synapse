@@ -3,13 +3,13 @@ import { prisma } from "../db";
 
 const MODEL_NAME = process.env.GEMINI_EMBEDDING_MODEL;
 
-export interface SimilarityResult {
+interface SimilarityResult {
   id: string;
   label: string;
   score: number;
 }
 
-export class VectorService {
+class VectorService {
   private genAI: GoogleGenerativeAI;
 
   constructor() {

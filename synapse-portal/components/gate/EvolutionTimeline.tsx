@@ -74,9 +74,9 @@ export default function EvolutionTimeline({
             (filter) => {
               const labelMap = {
                 ALL: t("all_actions"),
-                APPROVED: "Approved",
-                REJECTED: "Rejected",
-                ARCHIVE: "Merged",
+                APPROVED: t("approved_status"),
+                REJECTED: t("rejected_status"),
+                ARCHIVE: t("merged_status"),
               };
               return (
                 <button
@@ -235,12 +235,12 @@ export default function EvolutionTimeline({
                   {log.status === "ARCHIVE" && log.archiveDetail && (
                     <div className="rounded-xl border border-amber-500/10 bg-amber-500/5 p-3 text-[11px] font-medium text-dashboard-fg/55 space-y-1">
                       <p className="font-bold text-amber-500 uppercase tracking-wider text-[9px]">
-                        Merge Metadata
+                        {t("merge_metadata")}
                       </p>
                       {log.archiveDetail.reason && (
                         <p>
                           <strong className="text-dashboard-fg/55">
-                            Reason:
+                            {t("reason_label")}
                           </strong>{" "}
                           {log.archiveDetail.reason}
                         </p>
@@ -248,7 +248,7 @@ export default function EvolutionTimeline({
                       {log.archiveDetail.similarityScore && (
                         <p>
                           <strong className="text-dashboard-fg/55">
-                            Similarity Score:
+                            {t("similarity_score_label")}
                           </strong>{" "}
                           {(log.archiveDetail.similarityScore * 100).toFixed(0)}
                           %
@@ -281,11 +281,10 @@ export default function EvolutionTimeline({
         <div className="flex flex-col items-center justify-center py-20 rounded-3xl border border-dashed border-white/10 bg-white/[0.03]">
           <ShieldCheck size={48} className="text-dashboard-fg/35 mb-4" />
           <p className="text-lg font-black tracking-tight text-dashboard-fg/60 uppercase">
-            No history found
+            {t("no_history_found")}
           </p>
           <p className="text-xs text-dashboard-fg/45">
-            Actions you approve or reject will be recorded in this personal
-            developer logbook.
+            {t("no_history_desc")}
           </p>
         </div>
       )}

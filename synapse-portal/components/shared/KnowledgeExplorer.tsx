@@ -3,6 +3,7 @@ import { Settings, Eye, EyeOff, ChevronDown, ChevronRight } from "lucide-react";
 import { Tag } from "@/lib/db";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { useI18n } from "@/lib/i18n";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -23,6 +24,7 @@ export default function KnowledgeExplorer({
   visibleTags: Set<string>;
   onToggleTag: (tagId: string) => void;
 }) {
+  const { t } = useI18n();
   const [expandedScopes, setExpandedScopes] = useState<Set<string>>(new Set());
 
   const toggleScope = (scope: string) => {
@@ -38,7 +40,7 @@ export default function KnowledgeExplorer({
     <div className="flex flex-col gap-4 p-4 rounded-2xl glass shadow-2xl backdrop-blur-xl animate-in fade-in slide-in-from-left-4 max-h-[600px] overflow-y-auto w-72 pointer-events-auto">
       <div className="flex items-center justify-between border-b border-white/5 pb-3">
         <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-200">
-          Knowledge Explorer
+          {t("knowledge_explorer")}
         </h4>
         <button
           onClick={() => onToggleOrphans(!hideOrphans)}
@@ -50,7 +52,7 @@ export default function KnowledgeExplorer({
           )}
         >
           {hideOrphans ? <EyeOff size={12} /> : <Eye size={12} />}
-          {hideOrphans ? "Hiding Empty" : "Showing All"}
+          {hideOrphans ? t("hiding_empty") : t("showing_all")}
         </button>
       </div>
 

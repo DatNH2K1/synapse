@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import React from "react";
-import { render, screen, act, fireEvent, cleanup } from "@testing-library/react";
+import { render, screen, act, cleanup } from "@testing-library/react";
 import RealtimeProvider, { useRealtime } from "@/components/shared/RealtimeProvider";
 
 // Mock EventSource
@@ -23,6 +23,32 @@ class MockEventSource {
 }
 
 vi.stubGlobal("EventSource", MockEventSource);
+
+// Mock global Notification
+const mockRequestPermission = vi.fn().mockResolvedValue("granted");
+class MockNotification {
+  static permission = "default";
+  static requestPermission = mockRequestPermission;
+  static instances: MockNotification[] = [];
+  onclick: (() => void) | null = null;
+
+  constructor(public title: string, public options?: NotificationOptions) {
+    MockNotification.instances.push(this);
+  }
+}
+vi.stubGlobal("Notification", MockNotification);
+
+// Mock window.focus and window.location
+const mockFocus = vi.fn();
+vi.stubGlobal("focus", mockFocus);
+
+// Redefine window.location to allow writes in tests
+const mockLocation = { href: "" };
+Object.defineProperty(window, "location", {
+  value: mockLocation,
+  writable: true,
+  configurable: true,
+});
 
 vi.mock("@/lib/i18n", () => ({
   useI18n: () => ({
@@ -49,6 +75,11 @@ describe("components/shared/RealtimeProvider", () => {
   beforeEach(() => {
     cleanup();
     activeInstance = null;
+    MockNotification.instances = [];
+    MockNotification.permission = "default";
+    mockRequestPermission.mockClear();
+    mockFocus.mockClear();
+    mockLocation.href = "";
     vi.useFakeTimers();
   });
 
@@ -70,7 +101,7 @@ describe("components/shared/RealtimeProvider", () => {
     expect(activeInstance?.url).toBe("/api/updates");
   });
 
-  it("should update pendingCount and show toast on message: proposal:created", () => {
+  it("should update pendingCount on message: proposal:created", () => {
     let capturedContext: ReturnType<typeof useRealtime> | undefined;
 
     render(
@@ -93,21 +124,17 @@ describe("components/shared/RealtimeProvider", () => {
     });
 
     expect(capturedContext?.pendingCount).toBe(3);
-    expect(screen.getByText("new_proposal_title")).toBeDefined();
-    expect(screen.getByText("New proposal msg: Test Proposal - add")).toBeDefined();
-
-    // Click close toast
-    const closeBtn = screen.getByRole("button");
-    fireEvent.click(closeBtn);
-    expect(screen.queryByText("new_proposal_title")).toBeNull();
   });
 
-  it("should update pendingCount and show toast on message: proposal:updated", () => {
+  it("should update pendingCount on message: proposal:updated", () => {
+    let capturedContext: ReturnType<typeof useRealtime> | undefined;
     render(
       <RealtimeProvider>
-        <div>Child</div>
+        <Consumer onRender={(c) => { capturedContext = c; }} />
       </RealtimeProvider>
     );
+
+    expect(capturedContext?.pendingCount).toBe(0);
 
     act(() => {
       activeInstance?.onmessage?.({
@@ -119,8 +146,7 @@ describe("components/shared/RealtimeProvider", () => {
       } as MessageEvent);
     });
 
-    expect(screen.getByText("proposal_status_title")).toBeDefined();
-    expect(screen.getByText("Proposal status msg: merged")).toBeDefined();
+    expect(capturedContext?.pendingCount).toBe(1);
   });
 
   it("should attempt reconnect on error", () => {
@@ -152,7 +178,7 @@ describe("components/shared/RealtimeProvider", () => {
     consoleWarnSpy.mockRestore();
   });
 
-  it("should support subscribing to updates, triggering refresh, and auto-dismiss toasts", () => {
+  it("should support subscribing to updates and triggering refresh", () => {
     let capturedContext: ReturnType<typeof useRealtime> | undefined;
     render(
       <RealtimeProvider>
@@ -179,23 +205,80 @@ describe("components/shared/RealtimeProvider", () => {
       capturedContext?.triggerRefresh();
     });
     expect(mockCallback).toHaveBeenCalledTimes(1); // Should not increase
+  });
 
-    // Trigger toast and check auto-dismiss
+  it("should request Notification permission on mount if default", () => {
+    MockNotification.permission = "default";
+    render(
+      <RealtimeProvider>
+        <div>Child</div>
+      </RealtimeProvider>
+    );
+    expect(mockRequestPermission).toHaveBeenCalled();
+  });
+
+  it("should trigger Notification and handle onclick for proposal:created event", () => {
+    MockNotification.permission = "granted";
+    render(
+      <RealtimeProvider>
+        <div>Child</div>
+      </RealtimeProvider>
+    );
+
+    act(() => {
+      activeInstance?.onmessage?.({
+        data: JSON.stringify({
+          pendingCount: 2,
+          type: "proposal:created",
+          proposal: { label: "Awesome Proposal", type: "new-type" },
+        }),
+      } as MessageEvent);
+    });
+
+    expect(MockNotification.instances.length).toBe(1);
+    const notif = MockNotification.instances[0];
+    expect(notif.title).toContain("new_proposal_title");
+    expect(notif.options?.body).toContain("Awesome Proposal");
+    expect(notif.options?.icon).toBe("/favicon.ico");
+
+    // Test click behavior
+    expect(mockFocus).not.toHaveBeenCalled();
+    expect(mockLocation.href).toBe("");
+    act(() => {
+      notif.onclick?.();
+    });
+    expect(mockFocus).toHaveBeenCalled();
+    expect(mockLocation.href).toBe("/gate");
+  });
+
+  it("should trigger Notification and handle onclick for proposal:updated event", () => {
+    MockNotification.permission = "granted";
+    render(
+      <RealtimeProvider>
+        <div>Child</div>
+      </RealtimeProvider>
+    );
+
     act(() => {
       activeInstance?.onmessage?.({
         data: JSON.stringify({
           pendingCount: 1,
           type: "proposal:updated",
-          action: "merged",
+          action: "approved",
         }),
       } as MessageEvent);
     });
-    expect(screen.getByText("proposal_status_title")).toBeDefined();
 
-    // Fast-forward 6s (default duration)
+    expect(MockNotification.instances.length).toBe(1);
+    const notif = MockNotification.instances[0];
+    expect(notif.title).toContain("proposal_status_title");
+    expect(notif.options?.body).toContain("approved");
+
+    // Test click behavior
+    expect(mockFocus).not.toHaveBeenCalled();
     act(() => {
-      vi.advanceTimersByTime(6000);
+      notif.onclick?.();
     });
-    expect(screen.queryByText("proposal_status_title")).toBeNull();
+    expect(mockFocus).toHaveBeenCalled();
   });
 });

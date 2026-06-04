@@ -41,7 +41,7 @@ The project includes a `Makefile` to simplify common operations:
 | `make seed` | Seed the database |
 | `make shell` | Access the portal container shell |
 
-Access the dashboard at: **[http://localhost:3100](http://localhost:3100)** (or the port defined in `.env` as `Synapse_PORTAL_PORT`)
+Access the dashboard at: **[http://localhost:3100](http://localhost:3100)** (or the port defined in `.env` as `SYNAPSE_PORTAL_PORT`)
 
 ---
 

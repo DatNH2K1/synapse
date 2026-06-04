@@ -14,7 +14,7 @@ sys.path.append(str(Path(__file__).resolve().parents[4]))
 from scripts.utils.env_loader import load_env
 load_env()
 
-PORTAL_PORT = os.getenv("Synapse_PORTAL_PORT", "3100")
+PORTAL_PORT = os.getenv("SYNAPSE_PORTAL_PORT", "3100")
 PORTAL_API_URL = f"http://localhost:{PORTAL_PORT}/api/context/export"
 
 def query(tags):

@@ -12,7 +12,7 @@
 ## Playbooks
 
 ### Prerequisite: Initialize (Mandatory for all tasks)
-Always run `PYTHONPATH=scripts/utils python3 scripts/utils/get_env_safe.py` to retrieve environment configuration safely before executing any playbooks or skills. DO NOT read the `.env` file directly with `view_file` to avoid exposing sensitive keys (such as `GEMINI_API_KEY` or `POSTGRES_PASSWORD`). The keys returned are:
+Always run `PYTHONPATH=scripts/utils python3 scripts/utils/env_loader.py` to retrieve environment configuration safely before executing any playbooks or skills. DO NOT read the `.env` file directly with `view_file` to avoid exposing sensitive keys (such as `GEMINI_API_KEY` or `POSTGRES_PASSWORD`). The keys returned are:
 - `SYNAPSE_USER_NAME` (resolves `{user_name}`)
 - `SYNAPSE_COMMUNICATION_LANGUAGE` (resolves `{communication_language}`)
 - `SYNAPSE_DOCUMENT_OUTPUT_LANGUAGE` (resolves `{document_output_language}`)

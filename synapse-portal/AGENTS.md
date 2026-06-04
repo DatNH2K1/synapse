@@ -9,6 +9,6 @@ This version has breaking changes — APIs, conventions, and file structure may 
 # Knowledge Interaction Model (Tag-based)
 
 > [!IMPORTANT]
-> **MANDATORY PROTOCOLS**: All knowledge interaction (JIT Retrieval and Memory Recording) MUST follow the standardized procedures in [Synapse Memory Skill](file://../skills/synapse-memory/SKILL.md).
+> **MANDATORY PROTOCOLS**: All knowledge interaction (JIT Retrieval and Memory Recording) MUST follow the standardized procedures in [Synapse Memory Skill](../.agent/skills/synapse-memory/SKILL.md).
 
 The Synapse Knowledge Graph uses a Tag-based Semantic model.

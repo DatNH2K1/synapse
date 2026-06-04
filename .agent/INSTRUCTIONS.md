@@ -4,10 +4,10 @@
 > **LOCAL SINGLE-USER SYSTEM ONLY**: Synapse is strictly a local, offline, single-user system. There is no multi-tenant, multi-user, or cloud collaboration context. All database schemas, API routes, and UI designs MUST be optimized for a single local developer (User), prioritizing simplicity, zero network latency, and lightweight local resource usage (e.g., removing heavy vector embeddings of archived/rejected nodes).
 
 ## Key Resources
-- **Agent Manifest**: [.agent/manifests/agent-manifest.csv](file://.agent/manifests/agent-manifest.csv)
-- **Skill Manifests**: [.agent/manifests/skill-manifest.csv](file://.agent/manifests/skill-manifest.csv) & [.agent/manifests/addition-skill-manifest.csv](file://.agent/manifests/addition-skill-manifest.csv)
-- **Portal Source**: [synapse-portal/](file://synapse-portal/)
-- **Repo Index Skill**: [synapse-repo-indexer/](file://.agent/skills/synapse-repo-indexer/)
+- **Agent Manifest**: [.agent/manifests/agent-manifest.csv](./manifests/agent-manifest.csv)
+- **Skill Manifests**: [.agent/manifests/skill-manifest.csv](./manifests/skill-manifest.csv) & [.agent/manifests/addition-skill-manifest.csv](./manifests/addition-skill-manifest.csv)
+- **Portal Source**: [synapse-portal/](../synapse-portal/)
+- **Repo Index Skill**: [synapse-repo-indexer/](./skills/synapse-repo-indexer/)
 
 ## Playbooks
 
@@ -31,7 +31,7 @@ Based on your active task type, refer to and follow the appropriate playbook bel
 
 | Playbook | Link | Description | Activation Context |
 | :--- | :--- | :--- | :--- |
-| **Engineering Workflow** | [engineering-workflow](file://.agent/playbooks/engineering-workflow.md) | Standard flow for JIT retrieval, development, testing, and memory recording. | Whenever performing a code implementation, task, feature, or bug fix. |
+| **Engineering Workflow** | [engineering-workflow](./playbooks/engineering-workflow.md) | Standard flow for JIT retrieval, development, testing, and memory recording. | Whenever performing a code implementation, task, feature, or bug fix. |
 
 ## Sub-agent Delegation Rules
 
@@ -59,6 +59,4 @@ To prevent context window degradation, sub-agents MUST receive only high-signal,
 - **Parallelism**: Spawn independent tasks simultaneously (e.g. Frontend and Backend tasks).
 - **Sequential Chaining**: Run tasks sequentially when a step depends on the output of the previous one (e.g. Plan -> Code -> Test).
 - **Escalation**: If a sub-agent fails 3+ times on the same task, escalate to the User immediately.
-- **Skill Discovery & Lazy Loading**: Parent agents should select and inject relevant skill paths into the sub-agent prompt. If a sub-agent receives a complex/specialized task without specific skill pointers, it MUST lazily read both [skill-manifest.csv](file://.agent/manifests/skill-manifest.csv) and [addition-skill-manifest.csv](file://.agent/manifests/addition-skill-manifest.csv) (if it exists) to discover and load matching skills instead of writing custom code or solutions from scratch.
-
-
+- **Skill Discovery & Lazy Loading**: Parent agents should select and inject relevant skill paths into the sub-agent prompt. If a sub-agent receives a complex/specialized task without specific skill pointers, it MUST lazily read both [skill-manifest.csv](./manifests/skill-manifest.csv) and [addition-skill-manifest.csv](./manifests/addition-skill-manifest.csv) (if it exists) to discover and load matching skills instead of writing custom code or solutions from scratch.

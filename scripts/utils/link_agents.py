@@ -204,30 +204,6 @@ def main():
         print(f"❌ ERROR writing addition-skill-manifest.csv: {str(e)}")
         errors += 1
 
-    # Link the entire skills folder to the project root
-    print("\n🔗 Linking skills folder to project root...")
-    root_skills_link = os.path.join(project_root, "skills")
-    root_relative_target = os.path.join(".agent", "skills")
-
-    if os.path.islink(root_skills_link):
-        existing_target = os.readlink(root_skills_link)
-        if existing_target == root_relative_target:
-            print("  ✅ ROOT skills symlink already exists and is correct.")
-        else:
-            print(f"  🔄 Updating ROOT skills symlink (was: {existing_target})")
-            os.remove(root_skills_link)
-            os.symlink(root_relative_target, root_skills_link)
-    elif os.path.exists(root_skills_link):
-        print(f"  ❌ ERROR: {root_skills_link} exists but is NOT a symlink!")
-        errors += 1
-    else:
-        try:
-            os.symlink(root_relative_target, root_skills_link)
-            print("  ➕ LINKED skills → .agent/skills")
-        except Exception as e:
-            print(f"  ❌ ERROR failed to create ROOT symlink: {str(e)}")
-            errors += 1
-
     print(f"\nDone! Created: {created} | Already OK: {skipped} | Errors: {errors}")
     if errors > 0:
         print("⚠️  Some symlinks failed. Check errors above.")

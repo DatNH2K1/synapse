@@ -1,4 +1,4 @@
-.PHONY: up down build logs ps restart shell seed migrate dev link run-agent plugin-link plugin-unlink
+.PHONY: up down build logs ps restart shell seed migrate dev link run-agent link\:antigravity plugin-unlink
 
 # Start containers in background
 up:
@@ -13,7 +13,7 @@ up:
 	$(MAKE) migrate
 	$(MAKE) seed
 	$(MAKE) link
-	$(MAKE) plugin-link
+	$(MAKE) link:antigravity
 
 # Stop and remove containers
 down:
@@ -80,13 +80,15 @@ dev:
 link:
 	python3 scripts/utils/link_agents.py
 
-plugin-link:
+link\:antigravity:
 	@mkdir -p ~/.gemini/config/plugins
-	$(MAKE) plugin-unlink
-	@ln -sf "$(shell pwd)" ~/.gemini/config/plugins/synapse
-	@echo "✅ Linked $(shell pwd) to ~/.gemini/config/plugins/synapse"
+	$(MAKE) unlink:antigravity
+	@mkdir -p ~/.gemini/config/plugins/synapse
+	@ln -sf "$(shell pwd)/plugin.json" ~/.gemini/config/plugins/synapse/plugin.json
+	@ln -sf "$(shell pwd)/.agent/skills" ~/.gemini/config/plugins/synapse/skills
+	@echo "✅ Linked plugin.json and .agent/skills directly to ~/.gemini/config/plugins/synapse"
 
 # Remove the plugin link from ~/.gemini/config/plugins
-plugin-unlink:
-	@rm -f ~/.gemini/config/plugins/synapse
+unlink\:antigravity:
+	@rm -rf ~/.gemini/config/plugins/synapse
 	@echo "✅ Unlinked synapse plugin from ~/.gemini/config/plugins/synapse"

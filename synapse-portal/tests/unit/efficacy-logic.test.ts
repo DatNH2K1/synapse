@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { knowledgeService } from "@/lib/services/knowledge-service";
 import { prisma } from "@/lib/db";
 
 // Mock the prisma client
-vi.mock("../lib/db", () => {
+vi.mock("@/lib/db", () => {
   return {
     prisma: {
       node: {
@@ -52,9 +52,9 @@ describe("Efficacy Tracker Logic", () => {
       memory_tier: "ACTIVE",
       embeddingModel: null,
       tags: [],
-    } as any);
+    } as object as Awaited<ReturnType<typeof prisma.node.findUnique>>);
 
-    vi.mocked(prisma.node.update).mockResolvedValue(mockUpdatedNode as any);
+    vi.mocked(prisma.node.update).mockResolvedValue(mockUpdatedNode as object as Awaited<ReturnType<typeof prisma.node.update>>);
 
     const result = await knowledgeService.incrementSuccessCount(mockNodeId);
 
@@ -87,7 +87,7 @@ describe("Efficacy Tracker Logic", () => {
       memory_tier: "ACTIVE",
       embeddingModel: null,
       tags: [],
-    } as any);
+    } as object as Awaited<ReturnType<typeof prisma.node.findUnique>>);
 
     vi.mocked(prisma.node.update).mockRejectedValue(
       new Error("Record to update not found."),
@@ -127,13 +127,13 @@ describe("Efficacy Tracker Logic", () => {
       ],
     };
 
-    vi.mocked(prisma.node.findUnique).mockResolvedValue(mockNode as any);
-    vi.mocked(prisma.nodeTag.update).mockResolvedValue({} as any);
+    vi.mocked(prisma.node.findUnique).mockResolvedValue(mockNode as object as Awaited<ReturnType<typeof prisma.node.findUnique>>);
+    vi.mocked(prisma.nodeTag.update).mockResolvedValue({} as object as Awaited<ReturnType<typeof prisma.nodeTag.update>>);
     vi.mocked(prisma.node.update).mockResolvedValue({
       ...mockNode,
       memory_tier: "ACTIVE",
       success_count: 2,
-    } as any);
+    } as object as Awaited<ReturnType<typeof prisma.node.update>>);
 
     const result = await knowledgeService.incrementSuccessCount(mockNodeId);
 

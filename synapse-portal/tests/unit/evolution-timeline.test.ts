@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { knowledgeService } from "@/lib/services/knowledge-service";
 import { prisma } from "@/lib/db";
 import { queueService } from "@/lib/services/queue-service";
 
 // Mock prisma client
-vi.mock("../lib/db", () => {
+vi.mock("@/lib/db", () => {
   const mockPrisma = {
     node: {
       update: vi.fn(),
@@ -33,7 +33,7 @@ vi.mock("../lib/db", () => {
 });
 
 // Mock queueService
-vi.mock("../lib/services/queue-service", () => ({
+vi.mock("@/lib/services/queue-service", () => ({
   queueService: {
     enqueueEmbeddingTask: vi.fn().mockResolvedValue({}),
   },
@@ -50,7 +50,7 @@ describe("Evolution History & Timeline Undo Unit Tests", () => {
       vi.mocked(prisma.node.update).mockResolvedValue({
         id: mockId,
         status: "REJECTED",
-      } as any);
+      } as object as Awaited<ReturnType<typeof prisma.node.create>>);
 
       await knowledgeService.rejectPendingUpdate(mockId);
 
@@ -83,7 +83,7 @@ describe("Evolution History & Timeline Undo Unit Tests", () => {
       vi.mocked(prisma.node.create).mockResolvedValue({
         id: "merged-target-id",
         label: "Merged Topic",
-      } as any);
+      } as object as Awaited<ReturnType<typeof prisma.node.create>>);
 
       await knowledgeService.mergeNodes(mockParams);
 
@@ -127,7 +127,7 @@ describe("Evolution History & Timeline Undo Unit Tests", () => {
       vi.mocked(prisma.node.update).mockResolvedValue({
         id: mockId,
         label: "Rejected Lesson",
-      } as any);
+      } as object as Awaited<ReturnType<typeof prisma.node.update>>);
 
       const result = await knowledgeService.undoAction(mockId, "REJECTED");
 
@@ -154,19 +154,19 @@ describe("Evolution History & Timeline Undo Unit Tests", () => {
         id: "archive-id-1",
         fromNodeId: mockSourceId,
         toNodeId: mockTargetId,
-      } as any);
+      } as object as Awaited<ReturnType<typeof prisma.archive.findFirst>>);
 
       // Mock all sibling archives
       vi.mocked(prisma.archive.findMany).mockResolvedValue([
         { id: "archive-id-1", fromNodeId: "source-1", toNodeId: mockTargetId },
         { id: "archive-id-2", fromNodeId: "source-2", toNodeId: mockTargetId },
-      ] as any);
+      ] as object as Awaited<ReturnType<typeof prisma.archive.findMany>>);
 
       // Mock restored nodes labels
       vi.mocked(prisma.node.findMany).mockResolvedValue([
         { id: "source-1", label: "Source Lesson 1" },
         { id: "source-2", label: "Source Lesson 2" },
-      ] as any);
+      ] as object as Awaited<ReturnType<typeof prisma.node.findMany>>);
 
       const result = await knowledgeService.undoAction(mockSourceId, "ARCHIVE");
 

@@ -47,15 +47,13 @@ export default function Avatar({
     async function loadAvatar() {
       try {
         // 1. Check local storage
-        if (typeof window !== "undefined") {
-          const cached = localStorage.getItem(cacheKey);
-          if (cached) {
-            if (active) {
-              setSvgContent(cached);
-              setLoading(false);
-            }
-            return;
+        const cached = localStorage.getItem(cacheKey);
+        if (cached) {
+          if (active) {
+            setSvgContent(cached);
+            setLoading(false);
           }
+          return;
         }
 
         // 2. Fetch from Dicebear API
@@ -69,9 +67,7 @@ export default function Avatar({
         const text = await res.text();
 
         // 3. Cache it
-        if (typeof window !== "undefined") {
-          localStorage.setItem(cacheKey, text);
-        }
+        localStorage.setItem(cacheKey, text);
 
         if (active) {
           setSvgContent(text);
@@ -126,15 +122,11 @@ export default function Avatar({
   }
 
   // Render cached SVG
-  if (svgContent) {
-    return (
-      <div
-        className={`inline-block rounded-full overflow-hidden transition-opacity duration-300 ease-in opacity-100 ${className}`}
-        style={sizeStyle}
-        dangerouslySetInnerHTML={{ __html: svgContent }}
-      />
-    );
-  }
-
-  return null;
+  return (
+    <div
+      className={`inline-block rounded-full overflow-hidden transition-opacity duration-300 ease-in opacity-100 ${className}`}
+      style={sizeStyle}
+      dangerouslySetInnerHTML={{ __html: svgContent || "" }}
+    />
+  );
 }

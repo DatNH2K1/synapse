@@ -1,6 +1,6 @@
 export async function register() {
   if (process.env.NEXT_RUNTIME === "nodejs") {
-    const globalForScheduler = globalThis as unknown as {
+    const globalForScheduler = globalThis as object as {
       schedulerRegistered?: boolean;
     };
 

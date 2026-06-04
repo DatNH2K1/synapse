@@ -6,6 +6,10 @@ const MAX_CONCURRENCY = 3;
 const MAX_RETRIES = 3;
 const BASE_DELAY_MS = 2000;
 
+const logQueueError = (err: Error) => {
+  console.error("[QueueService] Queue loop error:", err);
+};
+
 const processQueue = async (): Promise<void> => {
   if (runningTasks >= MAX_CONCURRENCY) {
     return;
@@ -42,9 +46,7 @@ const processQueue = async (): Promise<void> => {
 
   runningTasks++;
 
-  processQueue().catch((err) =>
-    console.error("[QueueService] Loop dispatch error:", err),
-  );
+  processQueue().catch(logQueueError);
 
   try {
     console.log(
@@ -80,9 +82,7 @@ const processQueue = async (): Promise<void> => {
               attempts: nextAttempts,
             },
           });
-          processQueue().catch((err) =>
-            console.error("[QueueService] Loop retry dispatch error:", err),
-          );
+          processQueue().catch(logQueueError);
         } catch (createErr) {
           console.error(
             "[QueueService] Failed to reschedule task in DB:",
@@ -97,9 +97,7 @@ const processQueue = async (): Promise<void> => {
     }
   } finally {
     runningTasks--;
-    processQueue().catch((err) =>
-      console.error("[QueueService] Loop complete dispatch error:", err),
-    );
+    processQueue().catch(logQueueError);
   }
 };
 
@@ -117,9 +115,7 @@ export const queueService = {
         },
       });
 
-      processQueue().catch((err) =>
-        console.error("[QueueService] Trigger queue execution error:", err),
-      );
+      processQueue().catch(logQueueError);
     } catch (err) {
       console.error(
         `[QueueService] Failed to schedule task for ${nodeId}:`,
@@ -127,4 +123,5 @@ export const queueService = {
       );
     }
   },
+  _logQueueError: logQueueError,
 };

@@ -9,7 +9,7 @@ export async function POST() {
       message: "REM Sleep Cycle executed successfully.",
       summary,
     });
-  } catch (error: unknown) {
+  } catch (error) {
     console.error("[SLEEP_CYCLE_API] Error:", error);
     const errorMessage =
       error instanceof Error ? error.message : "Internal Server Error";

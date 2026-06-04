@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 // Set env variables BEFORE any imports so the module-level constants evaluate correctly
 process.env.GEMINI_API_KEY = "test-key";
 process.env.GEMINI_EMBEDDING_MODEL = "test-model";
@@ -69,7 +69,7 @@ describe("VectorService Tests", () => {
       const dummyEmbedding = new Array(3072).fill(0.1);
       embedContentMock.mockResolvedValue({
         embedding: { values: dummyEmbedding },
-      } as any);
+      } as object as { embedding: { values: number[] } });
 
       const embedding = await vectorService.generateEmbedding("test text");
       expect(embedding).toEqual(dummyEmbedding);
@@ -84,7 +84,7 @@ describe("VectorService Tests", () => {
       const dummyEmbedding = [0.1, 0.2];
       embedContentMock.mockResolvedValue({
         embedding: { values: dummyEmbedding },
-      } as any);
+      } as object as { embedding: { values: number[] } });
 
       const embedding = await vectorService.generateEmbedding("test text");
       expect(embedding).toBeNull();
@@ -122,7 +122,7 @@ describe("VectorService Tests", () => {
       const dummyEmbedding = new Array(3072).fill(0.1);
       embedContentMock.mockResolvedValue({
         embedding: { values: dummyEmbedding },
-      } as any);
+      } as object as { embedding: { values: number[] } });
 
       const mockDbResults = [
         { id: "node-1", label: "Similar Node 1", score: 0.85 },
@@ -144,7 +144,7 @@ describe("VectorService Tests", () => {
       const dummyEmbedding = new Array(3072).fill(0.1);
       embedContentMock.mockResolvedValue({
         embedding: { values: dummyEmbedding },
-      } as any);
+      } as object as { embedding: { values: number[] } });
 
       vi.mocked(prisma.$queryRaw).mockRejectedValue(new Error("DB Error"));
 
@@ -164,7 +164,7 @@ describe("VectorService Tests", () => {
         id: "node-abc",
         label: "Source Node",
         properties: JSON.stringify({ content: "Source content" }),
-      } as any);
+      } as object as Awaited<ReturnType<typeof prisma.node.findUnique>>);
 
       vi.mocked(prisma.$queryRaw)
         .mockResolvedValueOnce([{ has_embedding: true }]) // first raw call: embeddingCheck
@@ -192,7 +192,7 @@ describe("VectorService Tests", () => {
         id: "node-abc",
         label: "Source Node",
         properties: JSON.stringify({ content: "Source content" }),
-      } as any);
+      } as object as Awaited<ReturnType<typeof prisma.node.findUnique>>);
 
       vi.mocked(prisma.$queryRaw)
         .mockResolvedValueOnce([{ has_embedding: false }]) // embeddingCheck
@@ -203,7 +203,7 @@ describe("VectorService Tests", () => {
       const dummyEmbedding = new Array(3072).fill(0.1);
       embedContentMock.mockResolvedValue({
         embedding: { values: dummyEmbedding },
-      } as any);
+      } as object as { embedding: { values: number[] } });
 
       const results = await vectorService.findSimilarToNode(
         "node-abc",
@@ -226,7 +226,7 @@ describe("VectorService Tests", () => {
       const dummyEmbedding = new Array(3072).fill(0.1);
       embedContentMock.mockResolvedValue({
         embedding: { values: dummyEmbedding },
-      } as any);
+      } as object as { embedding: { values: number[] } });
 
       const success = await vectorService.updateNodeEmbedding(
         "node-id",

@@ -18,7 +18,7 @@ export async function POST(request: Request) {
       nodeId: updatedNode.id,
       successCount: updatedNode.success_count,
     });
-  } catch (error: unknown) {
+  } catch (error) {
     console.error("[API Nodes Efficacy] Error:", error);
     const errorMessage =
       error instanceof Error ? error.message : "Failed to increment efficacy";

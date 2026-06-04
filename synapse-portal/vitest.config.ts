@@ -21,6 +21,7 @@ export default defineConfig({
       ".git",
       ".cache"
     ],
+    environment: "jsdom",
     coverage: {
       enabled: true,
       provider: "v8",

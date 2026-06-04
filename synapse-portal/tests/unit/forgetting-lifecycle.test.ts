@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { sleepCycleService } from "@/lib/services/sleep-cycle-service";
 import { prisma } from "@/lib/db";
@@ -6,7 +5,7 @@ import { aiService } from "@/lib/services/ai-service";
 import { vectorService } from "@/lib/services/vector-service";
 
 // Mock the dependencies
-vi.mock("../lib/db", () => {
+vi.mock("@/lib/db", () => {
   const mockPrisma = {
     systemConfig: {
       findUnique: vi.fn(),
@@ -35,19 +34,19 @@ vi.mock("../lib/db", () => {
   return { prisma: mockPrisma };
 });
 
-vi.mock("../lib/services/ai-service", () => ({
+vi.mock("@/lib/services/ai-service", () => ({
   aiService: {
     synthesizeKnowledge: vi.fn(),
   },
 }));
 
-vi.mock("../lib/services/vector-service", () => ({
+vi.mock("@/lib/services/vector-service", () => ({
   vectorService: {
     findSimilarToNode: vi.fn(),
   },
 }));
 
-vi.mock("../lib/services/queue-service", () => ({
+vi.mock("@/lib/services/queue-service", () => ({
   queueService: {
     enqueueEmbeddingTask: vi.fn().mockResolvedValue({}),
   },
@@ -61,19 +60,22 @@ describe("Forgetting Lifecycle Integration Tests", () => {
   describe("Memory Decay Loop", () => {
     it("should decay a node to COLD tier if all its connections exceed virtual age 90 and score falls below 40", async () => {
       // Configure config mocks
-      vi.mocked(prisma.systemConfig.findUnique as any).mockImplementation(
-        (params: any) => {
-          if (params.where.key === "forget_mode_enabled") {
+      (vi.mocked(prisma.systemConfig.findUnique) as object as { mockImplementation: (fn: (params: object) => Promise<object | null>) => void }).mockImplementation(
+        (params: object) => {
+          const uParams = params as object as { where: { key: string } };
+          if (uParams.where.key === "forget_mode_enabled") {
             return Promise.resolve({
               key: "forget_mode_enabled",
               value: "true",
-            } as any);
+              updatedAt: new Date(),
+            } as object as Awaited<ReturnType<typeof prisma.systemConfig.findUnique>>);
           }
-          if (params.where.key === "forget_dry_run_enabled") {
+          if (uParams.where.key === "forget_dry_run_enabled") {
             return Promise.resolve({
               key: "forget_dry_run_enabled",
               value: "false",
-            } as any);
+              updatedAt: new Date(),
+            } as object as Awaited<ReturnType<typeof prisma.systemConfig.findUnique>>);
           }
           return Promise.resolve(null);
         },
@@ -104,7 +106,7 @@ describe("Forgetting Lifecycle Integration Tests", () => {
 
       vi.mocked(prisma.node.findMany).mockResolvedValue([
         mockActiveNode,
-      ] as any);
+      ] as object as Awaited<ReturnType<typeof prisma.node.findMany>>);
 
       const logs: string[] = [];
       await sleepCycleService.runDecayLoop(logs);
@@ -124,19 +126,22 @@ describe("Forgetting Lifecycle Integration Tests", () => {
     });
 
     it("should NOT decay a node if its score is kept high by QA Agent modifier (3.0x)", async () => {
-      vi.mocked(prisma.systemConfig.findUnique as any).mockImplementation(
-        (params: any) => {
-          if (params.where.key === "forget_mode_enabled") {
+      (vi.mocked(prisma.systemConfig.findUnique) as object as { mockImplementation: (fn: (params: object) => Promise<object | null>) => void }).mockImplementation(
+        (params: object) => {
+          const uParams = params as object as { where: { key: string } };
+          if (uParams.where.key === "forget_mode_enabled") {
             return Promise.resolve({
               key: "forget_mode_enabled",
               value: "true",
-            } as any);
+              updatedAt: new Date(),
+            } as object as Awaited<ReturnType<typeof prisma.systemConfig.findUnique>>);
           }
-          if (params.where.key === "forget_dry_run_enabled") {
+          if (uParams.where.key === "forget_dry_run_enabled") {
             return Promise.resolve({
               key: "forget_dry_run_enabled",
               value: "false",
-            } as any);
+              updatedAt: new Date(),
+            } as object as Awaited<ReturnType<typeof prisma.systemConfig.findUnique>>);
           }
           return Promise.resolve(null);
         },
@@ -167,7 +172,7 @@ describe("Forgetting Lifecycle Integration Tests", () => {
 
       vi.mocked(prisma.node.findMany).mockResolvedValue([
         mockActiveNode,
-      ] as any);
+      ] as object as Awaited<ReturnType<typeof prisma.node.findMany>>);
 
       const logs: string[] = [];
       await sleepCycleService.runDecayLoop(logs);
@@ -220,10 +225,10 @@ describe("Forgetting Lifecycle Integration Tests", () => {
         },
       ];
 
-      vi.mocked(prisma.node.findMany).mockResolvedValue(mockColdNodes as any);
+      vi.mocked(prisma.node.findMany).mockResolvedValue(mockColdNodes as object as Awaited<ReturnType<typeof prisma.node.findMany>>);
       vi.mocked(vectorService.findSimilarToNode).mockResolvedValue([
         { id: "cold-2", score: 0.88, label: "Cold Rule 2" },
-      ] as any);
+      ] as object as Awaited<ReturnType<typeof vectorService.findSimilarToNode>>);
       vi.mocked(aiService.synthesizeKnowledge).mockResolvedValue({
         label: "React Computed Properties Best Practice",
         content: "Consolidated React guideline regarding redundant state.",
@@ -233,12 +238,12 @@ describe("Forgetting Lifecycle Integration Tests", () => {
       vi.mocked(prisma.node.create).mockResolvedValue({
         id: "new-crystal-id",
         label: "🔮 Crystal: React Computed Properties Best Practice",
-      } as any);
+      } as object as Awaited<ReturnType<typeof prisma.node.create>>);
 
       vi.mocked(prisma.tag.findUnique).mockResolvedValue({
         id: "tag-react",
         virtual_clock: 12,
-      } as any);
+      } as object as Awaited<ReturnType<typeof prisma.tag.findUnique>>);
 
       const logs: string[] = [];
       await sleepCycleService.consolidateColdNodes(logs);

@@ -36,7 +36,7 @@ export const knowledgeService = {
         success_count: true,
         embeddingModel: true,
       },
-    }) as unknown as Promise<Node[]>;
+    }) as object as Promise<Node[]>;
   },
 
   getNodesWithColor: async (): Promise<
@@ -84,7 +84,7 @@ export const knowledgeService = {
         properties: n.properties || "{}",
         color: sortedTags[0]?.color || "#64748b",
       };
-    }) as unknown as (Node & { color: string; tags: Tag[] })[];
+    }) as object as (Node & { color: string; tags: Tag[] })[];
   },
 
   getNodesWithTagsByIds: async (ids: string[]) => {
@@ -132,7 +132,7 @@ export const knowledgeService = {
           select: { tagId: true },
         },
       },
-    })) as unknown as { id: string; tags: { tagId: string }[] }[];
+    })) as object as { id: string; tags: { tagId: string }[] }[];
 
     const edges: Edge[] = [];
     let idx = 0;
@@ -730,7 +730,7 @@ export const knowledgeService = {
       };
     });
 
-    return finalNodes as unknown as Node[];
+    return finalNodes as object as Node[];
   },
 
   updateTagColor: async (tagId: string, color: string) => {

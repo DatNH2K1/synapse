@@ -235,7 +235,7 @@ export const sleepCycleService = {
               logs.push(successMsg);
               console.log(successMsg);
               autoMergedCount++;
-            } catch (err: unknown) {
+            } catch (err) {
               const errMsg = `[SleepCycle] [Error] Failed to auto-consolidate proposal ${proposal.id}: ${err instanceof Error ? err.message : err}`;
               logs.push(errMsg);
               console.error(errMsg);
@@ -273,7 +273,7 @@ export const sleepCycleService = {
               logs.push(successMsg);
               console.log(successMsg);
               autoApprovedCount++;
-            } catch (err: unknown) {
+            } catch (err) {
               const errMsg = `[SleepCycle] [Error] Failed to auto-approve proposal ${proposal.id}: ${err instanceof Error ? err.message : err}`;
               logs.push(errMsg);
               console.error(errMsg);

@@ -114,7 +114,7 @@ export default function OverviewPageContent({
 
   const topLessonsData = useMemo(() => {
     return [...nodes]
-      .filter((n) => n.type === "LESSON")
+      .filter((n) => n.type === "LESSON" && n.success_count > 0)
       .sort((a, b) => b.success_count - a.success_count)
       .slice(0, 5)
       .map((n) => ({

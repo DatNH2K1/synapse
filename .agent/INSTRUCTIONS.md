@@ -58,5 +58,10 @@ To prevent context window degradation, sub-agents MUST receive only high-signal,
 ### 3. Delegation & Escalation Rules
 - **Parallelism**: Spawn independent tasks simultaneously (e.g. Frontend and Backend tasks).
 - **Sequential Chaining**: Run tasks sequentially when a step depends on the output of the previous one (e.g. Plan -> Code -> Test).
+- **Explicit Scoping**: All queries and records MUST include the `project:<name>` tag AND the calling agent's tag (e.g., `agent:synapse-agent-web-dev`):
+  - The agent tag value **MUST** be the canonical agent folder name (e.g. the directory name under `agents/`, or the `name` column in [.agent/manifests/agent-manifest.csv](./manifests/agent-manifest.csv)), NOT the persona display name.
+  - Refer to [agent-manifest.csv](./manifests/agent-manifest.csv) to retrieve the list of valid agents.
+  - **CRITICAL**: Orchestrators/modes (such as `synapse-party-mode` or `party-mode`) are NOT agents and MUST NEVER be used as the agent tag value.
+  - When recording lessons/insights during Party Mode, the node MUST be tagged with the specific agent who contributed the insight (e.g., `agent:synapse-agent-architect`), not the orchestrator/mode.
 - **Escalation**: If a sub-agent fails 3+ times on the same task, escalate to the User immediately.
 - **Skill Discovery & Lazy Loading**: Parent agents should select and inject relevant skill paths into the sub-agent prompt. If a sub-agent receives a complex/specialized task without specific skill pointers, it MUST lazily read both [skill-manifest.csv](./manifests/skill-manifest.csv) and [addition-skill-manifest.csv](./manifests/addition-skill-manifest.csv) (if it exists) to discover and load matching skills instead of writing custom code or solutions from scratch.

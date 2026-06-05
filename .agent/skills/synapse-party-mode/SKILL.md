@@ -133,3 +133,5 @@ As the conversation grows, you'll need to summarize prior rounds rather than pas
 ## Exit
 
 When the user says they're done (any natural phrasing — "thanks", "that's all", "end party mode", etc.), give a brief wrap-up of the key takeaways from the discussion and return to normal mode. Don't force exit triggers — just read the room.
+
+**Memory Persistence Scoping Guardrail**: When recording any insights, lessons, or context learned during the session, NEVER use `agent:synapse-party-mode` or `agent:party-mode` as a tag. Instead, coordinate with the specific sub-agents to record their respective contributions using their canonical agent folder tags (e.g. `agent:synapse-agent-architect`, `agent:synapse-agent-web-dev`), or record them under the specific contributing agent's tag yourself.

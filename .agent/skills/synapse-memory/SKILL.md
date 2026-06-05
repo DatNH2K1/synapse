@@ -56,7 +56,11 @@ To prevent cross-project context contamination, all agents MUST follow these rul
 
 1. **Zero Assumption Rule**: Never assume the project name (e.g., `project:synapse-portal`) from history or previous sessions.
 2. **Workspace Verification**: Before executing `query.py`, inspect the active workspace paths. If multiple projects are open (e.g., `synapse`), you MUST confirm the target project with the user.
-3. **Explicit Scoping**: All queries and records MUST automatically include the `project:<name>` tag AND the calling agent's tag (e.g., `agent:synapse-agent-web-dev`). The agent tag value **MUST be the agent folder name** (the directory name under `agents/`), NOT the agent's display name or persona name. The agent invoking this skill must supply its own identity tag to prevent context contamination across different agents.
+3. **Explicit Scoping**: All queries and records MUST include the `project:<name>` tag AND the calling agent's tag (e.g., `agent:synapse-agent-web-dev`):
+   - The agent tag value **MUST** be the canonical agent folder name (e.g., the directory name under `agents/`, or the `name` column in [agent-manifest.csv](../../manifests/agent-manifest.csv)), NOT the persona display name.
+   - Refer to [agent-manifest.csv](../../manifests/agent-manifest.csv) to retrieve the list of valid agents.
+   - **CRITICAL**: Orchestrators/modes (such as `synapse-party-mode` or `party-mode`) are NOT agents and MUST NEVER be used as the agent tag value.
+   - When recording lessons during Party Mode, the node MUST be tagged with the specific agent who contributed the insight (e.g., `agent:synapse-agent-architect`), not the orchestrator/mode.
 4. **Context Grounding**: Only apply retrieved knowledge that explicitly matches the current active workspace.
 
 ---

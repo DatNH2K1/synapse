@@ -7,11 +7,14 @@ metadata:
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
-- [ ] **JIT Grounding**: Have I retrieved current project context before proceeding?
-- [ ] **Memory Persistence**: Have I planned to record insights to the Knowledge Portal?
+> [!IMPORTANT]
+> **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
+
+- [ ] **System Instructions**: Read global instructions at `../../../../.agent/INSTRUCTIONS.md` (relative to this skill file).
+- [ ] **Playbook Selection**: Per INSTRUCTIONS.md — ask user to explicitly select the active Playbook (e.g. `engineering-workflow` or `repo-indexer`) and state which was chosen.
 
 > [!MANDATORY]
-> **STOP!** If the items in the Checklist above are not checked, the Agent is NOT ALLOWED to proceed. Compliance is mandatory for knowledge integrity.
+> **STOP!** If these items are not checked and printed in your response, you are NOT ALLOWED to proceed. Compliance is mandatory.
 
 # UI/UX Pro Max - Design Intelligence
 
@@ -585,7 +588,6 @@ Scope notice: The rules below are for App UI (iOS/Android/React Native/Flutter),
 | **Touch Target Minimum** | Minimum 44×44pt interactive area (use hitSlop if icon is smaller). | Small icons without expanded tap area. | Meets accessibility and platform usability standards. |
 | **Icon Alignment** | Align icons to text baseline and maintain consistent padding. | Misaligned icons or inconsistent spacing around them. | Prevents subtle visual imbalance that reduces perceived quality. |
 | **Icon Contrast** | Follow WCAG contrast standards: 4.5:1 for small elements, 3:1 minimum for larger UI glyphs. | Low-contrast icons that blend into the background. | Ensures accessibility in both light and dark modes. |
-
 
 ### Interaction (App)
 

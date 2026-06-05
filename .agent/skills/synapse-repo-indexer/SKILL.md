@@ -1,58 +1,90 @@
 ---
 name: synapse-repo-indexer
-description: Build a lightweight repo index from filesystem signals only. Use when the user needs a fast AI-facing map of an unfamiliar project without a preexisting manifest or metadata.
+description: Scan and build AST dependency graphs (JS/TS, Python, Go, PHP) for the current or specified project, automatically installing dependencies and syncing directly to the Synapse Portal PostgreSQL database.
 ---
 
-# Repo Indexer
+# Repo Indexer Skill
 
-Generate a cheap, local-first index for an unfamiliar repository using only the filesystem and shallow code hints.
+This skill scans the project's source code (JS/TS, Python, Go, PHP) using static AST Parsing to extract imports/exports and synchronizes them directly to the local Synapse Portal PostgreSQL database. It also provides API endpoints to query these dependency structures.
 
 ## Use When
 
-- The repo has no useful manifest.
-- The user wants an AI-friendly project map before deeper analysis.
-- You need to avoid reading every file in full.
+- You need to visualize the dependency graph and analyze the reverse impact (Blast Radius) of a repository.
+- You need to index the current workspace or scan any external repository/directory specified by the user.
+- You need to programmatically query the dependency relationship or blast radius of a file during research/coding.
 
-## Workflow
+## Instructions for AI Agent (AI Agent Execution)
 
-1. Scan the tree.
-   - Record folders, filenames, extensions, and file sizes.
-   - Skip obvious noise like vendor, cache, build output, and lockfiles unless the user wants them included.
-2. Extract shallow signals.
-   - Sample only enough content to detect exports, classes, functions, routes, tests, schemas, and configs.
-   - Do not infer project meaning from full-file reading.
-3. Rank the repo.
-   - Prioritize entrypoints, configs, routes, tests, and top-level modules.
-   - Deprioritize generated files and large leaf files with no clear role.
-4. Emit a compact index.
-   - Prefer one short line per file or module.
-   - Keep descriptions factual and local to what is observable.
-   - Use the bundled script to do the scan instead of hand-reading the tree.
+> [!IMPORTANT]
+> If you encounter environment errors, missing runtimes (e.g. PHP/Node), or database sync failures, **STOP execution immediately** and report the issue to the user.
+> Do NOT attempt to run any ad-hoc diagnostic or troubleshooting commands (e.g., raw Python one-liners, running custom container commands) that are not explicitly defined in this skill file. Allow the user to resolve the environment issue manually first.
 
-## Output Shape
+---
 
-- Root summary: what the repo appears to be from path and file signals.
-- Tree summary: notable directories and files.
-- Priority list: all indexed files, ordered by likely value.
-- Notes: uncertainty, generated areas, and places needing deeper inspection.
+## ⚙️ PORTAL SYNC Workflow (Indexing)
 
-## Heuristics
+To scan and synchronize a repository, run the CLI tool from the workspace root.
 
-- Treat `README`, entrypoints, configs, routes, and tests as high priority.
-- Use filename and path conventions before opening file bodies.
-- Use shallow code hints only when they are cheap to extract.
-- If the repo is large, stop at a useful partial index instead of forcing full coverage.
+*   **Sync Current Workspace:**
+    ```bash
+    PYTHONPATH=scripts/utils python3 .agent/skills/synapse-repo-indexer/scripts/index_repo.py
+    ```
 
-## Script
+*   **Sync Custom Path / Directory:**
+    Use the `--path` parameter to specify another project directory:
+    ```bash
+    PYTHONPATH=scripts/utils python3 .agent/skills/synapse-repo-indexer/scripts/index_repo.py --path /path/to/target/project
+    ```
 
-Use `scripts/index_repo.py` to generate the index.
+*   **Parsing a Single File (Testing / Verification):**
+    To parse a single file and output the parsed exports/imports JSON structure:
+    ```bash
+    PYTHONPATH=scripts/utils python3 .agent/skills/synapse-repo-indexer/scripts/index_repo.py --parse /path/to/file.ts
+    ```
 
-- The current working directory is the repo root.
-- Default output file is `.agent/repo-index.md`.
-- `--format json` writes JSON instead of markdown.
+---
 
-## Constraints
+## 🔍 PORTAL QUERY Workflow (API Integration)
 
-- Keep the index cheap to generate.
-- Do not invent semantics the filesystem does not support.
-- Prefer a minimal stale-tolerant inventory over a fragile smart summary.
+AI Agents MUST query the Portal's AI-friendly HTTP endpoints to inspect codebase structures, imports/exports, or evaluate blast radius programmatically to avoid context bloat and format mismatches.
+
+> [!NOTE]
+> The Portal port must be fetched dynamically using the environment configuration loader. Use the `{SYNAPSE_PORTAL_PORT}` variable loaded from `env_loader.py`.
+
+### 1. Get Dependency Graph (AI-friendly)
+Retrieve all files, symbols, and relative dependency relations for a specific repository.
+- **Endpoint:** `GET http://localhost:{SYNAPSE_PORTAL_PORT}/api/indexer/ai/graph?repo=<repo_name>`
+- **Example request (using python / curl):**
+  ```bash
+  curl "http://localhost:${SYNAPSE_PORTAL_PORT}/api/indexer/ai/graph?repo=synapse"
+  ```
+
+### 2. Get Reverse Impact / Blast Radius (AI-friendly)
+Find all files that import or depend on a specific file.
+- **Endpoint:** `GET http://localhost:{SYNAPSE_PORTAL_PORT}/api/indexer/ai/impact?file=<file_path>&repo=<repo_name>`
+- **Example request (using python / curl):**
+  ```bash
+  curl "http://localhost:${SYNAPSE_PORTAL_PORT}/api/indexer/ai/impact?file=src/index.ts&repo=synapse"
+  ```
+
+### 3. Get File Details (AI-friendly)
+Retrieve detailed symbols, direct imports, and direct dependents for a file.
+- **Endpoint:** `GET http://localhost:{SYNAPSE_PORTAL_PORT}/api/indexer/ai/details?file=<file_path>&repo=<repo_name>`
+
+### 4. List Scanned Repositories
+Retrieve a list of all indexed repositories.
+- **Endpoint:** `GET http://localhost:{SYNAPSE_PORTAL_PORT}/api/indexer/repos`
+
+---
+
+## Automated Steps Executed by the Skill
+
+1. **Auto-Dependency Installation**:
+   - If the project contains JS/TS or PHP files, the skill checks and automatically installs `@babel/parser` / `nikic/php-parser` in `package.json` / `composer.json` (as dev dependencies).
+   - If the host machine lacks the runtime environments (Node, PHP, Go), the skill automatically detects running Docker Compose container services in the target project to execute the installs and parsing.
+2. **AST Parsing Lifecycle**:
+   - The CLI writes temporary hidden parser scripts (e.g. `.synapse_parser_temp.js`) in the target project's root folder so that they can be accessed easily from both the host and the container.
+   - The parser reads code from `stdin` to extract symbols and dependencies.
+   - The CLI automatically deletes the temporary scripts after parsing completes.
+3. **Database Synchronization**:
+   - The CLI sends the parsed data directly to the API endpoint `POST http://localhost:{SYNAPSE_PORTAL_PORT}/api/indexer/sync` to update PostgreSQL.

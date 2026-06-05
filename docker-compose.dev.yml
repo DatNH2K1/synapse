@@ -8,3 +8,4 @@ services:
       - ./synapse-portal:/app
       - /app/node_modules
       - /app/.next
+    command: sh -c "npx prisma generate && npx prisma db push && npm run dev"

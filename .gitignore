@@ -6,7 +6,6 @@
 .vscode/
 
 _synapse-output/
-.agent/repo-index.md
 .agent/manifests/addition-skill-manifest.csv
 
 

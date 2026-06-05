@@ -74,8 +74,14 @@ describe("components/gate/MergeModal", () => {
     );
 
     // Trigger type change
-    const typeSelect = screen.getByRole("combobox");
-    fireEvent.change(typeSelect, { target: { value: "Concept" } });
+    const typeLabel = screen.getByText("type_label");
+    const selectContainer = typeLabel.nextElementSibling;
+    const typeTrigger = selectContainer?.querySelector("button");
+    if (!typeTrigger) throw new Error("Could not find type trigger button");
+    fireEvent.click(typeTrigger);
+    
+    const conceptOption = screen.getByText("Concept");
+    fireEvent.click(conceptOption);
     expect(onUpdateMergeData).toHaveBeenCalledWith(
       expect.objectContaining({ type: "Concept" })
     );

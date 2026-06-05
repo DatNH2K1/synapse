@@ -7,12 +7,14 @@ description: "Submit and retrieve AI lessons via the Synapse Knowledge Portal. U
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
-- [ ] **JIT Grounding**: Have I retrieved current project context before proceeding?
-- [ ] **Efficacy Tracking**: Have I planned to increment the success count of retrieved lessons that were successfully applied?
-- [ ] **Memory Persistence**: Have I planned to record new insights to the Knowledge Portal?
+> [!IMPORTANT]
+> **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
+
+- [ ] **System Instructions**: Read global instructions at `../../.agent/INSTRUCTIONS.md` (relative to this skill file).
+- [ ] **Playbook Selection**: Per INSTRUCTIONS.md — ask user to explicitly select the active Playbook (e.g. `engineering-workflow` or `repo-indexer`) and state which was chosen.
 
 > [!MANDATORY]
-> **STOP!** If the items in the Checklist above are not checked, the Agent is NOT ALLOWED to proceed. Compliance is mandatory for knowledge integrity.
+> **STOP!** If these items are not checked and printed in your response, you are NOT ALLOWED to proceed. Compliance is mandatory.
 
 # synapse-memory
 
@@ -163,7 +165,6 @@ python3 skills/synapse-memory/scripts/efficacy.py --node-id "1992455f-5d0b-4b2c-
 ```
 
 ---
-
 
 ## PORTAL READ Workflow (JIT Grounding)
 

@@ -15,18 +15,23 @@ describe("components/shared/FormSelect", () => {
     
     expect(screen.getByText("Choose option")).toBeDefined();
     expect(screen.getByText("Option 1")).toBeDefined();
-    expect(screen.getByText("Option 2")).toBeDefined();
   });
 
   it("should fire onChange event when select option changes", () => {
     cleanup();
     const handleChange = vi.fn();
-    render(<FormSelect options={options} onChange={handleChange} />);
+    render(<FormSelect options={options} defaultValue="opt1" onChange={handleChange} />);
     
-    const select = screen.getByRole("combobox") as HTMLSelectElement;
-    fireEvent.change(select, { target: { value: "opt2" } });
+    // The select is closed initially, clicking the button triggers open
+    const triggerButton = screen.getByRole("button");
+    fireEvent.click(triggerButton);
     
-    expect(handleChange).toHaveBeenCalled();
-    expect(select.value).toBe("opt2");
+    // Now both options should be visible
+    const option2 = screen.getByText("Option 2");
+    fireEvent.click(option2);
+    
+    expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({
+      target: { value: "opt2" }
+    }));
   });
 });

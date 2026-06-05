@@ -67,11 +67,11 @@ describe("components/dashboard/Sidebar", () => {
     fireEvent.click(btn);
 
     // After clicking menu button, mobile items should be rendered
-    expect(screen.getAllByTestId("navitem").length).toBeGreaterThan(4); // Desktop items + Mobile items
+    expect(screen.getAllByTestId("navitem").length).toBeGreaterThan(5); // Desktop items + Mobile items
 
     // Click outside
     fireEvent.mouseDown(screen.getByTestId("outside"));
     // Mobile items should be closed
-    expect(screen.getAllByTestId("navitem").length).toBe(4); // Back to just desktop items
+    expect(screen.getAllByTestId("navitem").length).toBe(5); // Back to just desktop items
   });
 });

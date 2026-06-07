@@ -12,6 +12,7 @@ import {
   Bell,
   ChevronUp,
   Menu,
+  Network,
 } from "lucide-react";
 import NavItem from "@/components/shared/NavItem";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -81,6 +82,11 @@ export default function Sidebar({
             icon={<LayoutDashboard size={18} />}
             label={t("overview")}
             href="/dashboard"
+          />
+          <NavItem
+            icon={<Network size={18} />}
+            label={t("dependency_graph")}
+            href="/dependency-graph"
           />
           <NavItem
             icon={<ShieldCheck size={18} />}
@@ -166,6 +172,13 @@ export default function Sidebar({
                     icon={<LayoutDashboard size={16} />}
                     label={t("overview")}
                     href="/dashboard"
+                    compact
+                    mobileOnly
+                  />
+                  <NavItem
+                    icon={<Network size={16} />}
+                    label={t("dependency_graph")}
+                    href="/dependency-graph"
                     compact
                     mobileOnly
                   />

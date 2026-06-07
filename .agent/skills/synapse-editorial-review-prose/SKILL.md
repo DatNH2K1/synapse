@@ -4,11 +4,14 @@ description: 'Clinical copy-editor that reviews text for communication issues. U
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
-- [ ] **JIT Grounding**: Have I retrieved current project context before proceeding?
-- [ ] **Memory Persistence**: Have I planned to record insights to the Knowledge Portal?
+> [!IMPORTANT]
+> **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
+
+- [ ] **System Instructions**: Read global instructions at `../../.agent/INSTRUCTIONS.md` (relative to this skill file).
+- [ ] **Playbook Selection**: Per INSTRUCTIONS.md — ask user to explicitly select the active Playbook (e.g. `engineering-workflow` or `repo-indexer`) and state which was chosen.
 
 > [!MANDATORY]
-> **STOP!** If the items in the Checklist above are not checked, the Agent is NOT ALLOWED to proceed. Compliance is mandatory for knowledge integrity.
+> **STOP!** If these items are not checked and printed in your response, you are NOT ALLOWED to proceed. Compliance is mandatory.
 
 # Editorial Review - Prose
 
@@ -23,7 +26,6 @@ description: 'Clinical copy-editor that reviews text for communication issues. U
 - **style_guide** (optional) — Project-specific style guide. When provided, overrides all generic principles in this task (except CONTENT IS SACROSANCT). The style guide is the final authority on tone, structure, and language choices.
 - **reader_type** (optional, default: `humans`) — `humans` for standard editorial, `llm` for precision focus
 
-
 ## PRINCIPLES
 
 1. **Minimal intervention:** Apply the smallest fix that achieves clarity
@@ -35,7 +37,6 @@ description: 'Clinical copy-editor that reviews text for communication issues. U
 7. **Respect author voice:** Preserve intentional stylistic choices
 
 > **STYLE GUIDE OVERRIDE:** If a style_guide input is provided, it overrides ALL generic principles in this task (including the Microsoft Writing Style Guide baseline and reader_type-specific priorities). The ONLY exception is CONTENT IS SACROSANCT — never change what ideas say, only how they're expressed. When style guide conflicts with this task, style guide wins.
-
 
 ## STEPS
 
@@ -84,7 +85,6 @@ description: 'Clinical copy-editor that reviews text for communication issues. U
 |---------------|--------------|---------|
 | The system will processes data and it handles errors. | The system processes data and handles errors. | Fixed subject-verb agreement ("will processes" to "processes"); removed redundant "it" |
 | Users can chose from options (lines 12, 45, 78) | Users can choose from options | Fixed spelling: "chose" to "choose" (appears in 3 locations) |
-
 
 ## HALT CONDITIONS
 

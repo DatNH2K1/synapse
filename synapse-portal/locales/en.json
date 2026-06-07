@@ -1,6 +1,7 @@
 {
   "overview": "Overview",
   "knowledge_graph": "Knowledge Graph",
+  "dependency_graph": "Dependency Graph",
   "the_gate": "The Gate",
   "agents_skills": "Agents & Skills",
   "settings": "Settings",
@@ -191,5 +192,22 @@
   "knowledge_explorer": "Knowledge Explorer",
   "hiding_empty": "Hiding Empty",
   "showing_all": "Showing All",
-  "theme": "Theme"
+  "theme": "Theme",
+  "dep_graph_subtitle": "Visualize dependency graph and analyze multi-language blast radius (Blast Radius).",
+  "files_count": "{count} Files",
+  "details": "Details",
+  "md5_hash": "MD5 Content Hash",
+  "exported_symbols": "Exported Symbols ({count})",
+  "no_exports": "No exports.",
+  "blast_radius": "Blast Radius (Dependents)",
+  "no_dependents": "This file is standalone; no other files are impacted.",
+  "select_file_analyze": "Select a file to analyze",
+  "click_node_instruction": "Click a node on the graph to view exported symbols and analyze reverse impact.",
+  "search_file_placeholder": "Search file...",
+  "depth_label": "depth",
+  "analyzing_graph": "Analyzing graph...",
+  "postgresql": "PostgreSQL",
+  "select_repository": "Select Repository",
+  "no_data_indexed": "No repository has been indexed yet.",
+  "folder_tree": "Folder Tree"
 }

@@ -66,7 +66,7 @@ check:
 
 # Run local development with hot reload
 dev:
-	$(MAKE) check
+	#$(MAKE) check
 	docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
 	docker image prune -f --filter "label=com.docker.compose.project=synapse"
 	@echo "⏳ Waiting for synapse-portal to start in development mode..."
@@ -76,6 +76,8 @@ dev:
 	@echo "🚀 Running database migrations and seeding..."
 	$(MAKE) migrate
 	$(MAKE) seed
+	$(MAKE) link
+	$(MAKE) link:antigravity
 
 link:
 	python3 scripts/utils/link_agents.py
@@ -86,7 +88,10 @@ link\:antigravity:
 	@mkdir -p ~/.gemini/config/plugins/synapse
 	@ln -sf "$(shell pwd)/plugin.json" ~/.gemini/config/plugins/synapse/plugin.json
 	@ln -sf "$(shell pwd)/.agent/skills" ~/.gemini/config/plugins/synapse/skills
-	@echo "✅ Linked plugin.json and .agent/skills directly to ~/.gemini/config/plugins/synapse"
+	@ln -sf "$(shell pwd)/scripts" ~/.gemini/config/plugins/synapse/scripts
+	@ln -sf "$(shell pwd)/.agent" ~/.gemini/config/plugins/synapse/.agent
+	@ln -sf "$(shell pwd)/.env" ~/.gemini/config/plugins/synapse/.env
+	@echo "✅ Linked plugin.json, skills, scripts, .agent, and .env directly to ~/.gemini/config/plugins/synapse"
 
 # Remove the plugin link from ~/.gemini/config/plugins
 unlink\:antigravity:

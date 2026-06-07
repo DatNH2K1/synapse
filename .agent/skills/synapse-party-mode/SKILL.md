@@ -4,11 +4,14 @@ description: 'Orchestrates group discussions between installed Synapse agents, e
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
-- [ ] **JIT Grounding**: Have I retrieved current project context before proceeding?
-- [ ] **Memory Persistence**: Have I planned to record insights to the Knowledge Portal?
+> [!IMPORTANT]
+> **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
+
+- [ ] **System Instructions**: Read global instructions at `../../.agent/INSTRUCTIONS.md` (relative to this skill file).
+- [ ] **Playbook Selection**: Per INSTRUCTIONS.md — ask user to explicitly select the active Playbook (e.g. `engineering-workflow` or `repo-indexer`) and state which was chosen.
 
 > [!MANDATORY]
-> **STOP!** If the items in the Checklist above are not checked, the Agent is NOT ALLOWED to proceed. Compliance is mandatory for knowledge integrity.
+> **STOP!** If these items are not checked and printed in your response, you are NOT ALLOWED to proceed. Compliance is mandatory.
 
 # Party Mode
 
@@ -26,7 +29,6 @@ Party mode accepts optional arguments when invoked:
 - `--solo` — Run without subagents. Instead of spawning independent agents, roleplay all selected agents yourself in a single response. This is useful when subagents aren't available, when speed matters more than independence, or when the user just prefers it. Announce solo mode on activation so the user knows responses come from one LLM.
 
 ## On Activation
-
 
 1. **Load System Configuration (MANDATORY)**: First, read the `CLAUDE.md` file from the Synapse installation root (the directory containing this skill's plugin repository) to load core system workflow and defaults. Then, read the `CLAUDE.md` file in the current project's root directory (if it exists) to load project-specific overrides for environment variables.
 

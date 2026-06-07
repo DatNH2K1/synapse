@@ -1,6 +1,7 @@
 {
   "overview": "Tổng quan",
   "knowledge_graph": "Đồ thị tri thức",
+  "dependency_graph": "Đồ thị phụ thuộc",
   "the_gate": "Cửa kiểm soát (The Gate)",
   "agents_skills": "Agents & Kỹ năng",
   "settings": "Cài đặt",
@@ -191,5 +192,22 @@
   "knowledge_explorer": "Trình khám phá tri thức",
   "hiding_empty": "Đang ẩn trống",
   "showing_all": "Đang hiện tất cả",
-  "theme": "Giao diện"
+  "theme": "Giao diện",
+  "dep_graph_subtitle": "Trực quan hóa đồ thị phụ thuộc và phân tích vùng ảnh hưởng (Blast Radius) đa ngôn ngữ.",
+  "files_count": "{count} Files",
+  "details": "Details",
+  "md5_hash": "MD5 Content Hash",
+  "exported_symbols": "Exported Symbols ({count})",
+  "no_exports": "Không có export nào.",
+  "blast_radius": "Blast Radius (Dependents)",
+  "no_dependents": "File này độc lập, không có tệp nào khác bị ảnh hưởng.",
+  "select_file_analyze": "Chọn tệp cần phân tích",
+  "click_node_instruction": "Click vào một node trên đồ thị để xem chi tiết symbol export và phân tích tác động ảnh hưởng ngược.",
+  "search_file_placeholder": "Tìm kiếm tệp...",
+  "depth_label": "depth",
+  "analyzing_graph": "Đang phân tích đồ thị...",
+  "postgresql": "PostgreSQL",
+  "select_repository": "Chọn Repository",
+  "no_data_indexed": "Chưa có dự án nào được quét.",
+  "folder_tree": "Cấu trúc thư mục"
 }

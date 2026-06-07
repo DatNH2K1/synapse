@@ -11,6 +11,15 @@
 
 ## Playbooks
 
+> [!IMPORTANT]
+> **🛑 MANDATORY PLAYBOOK SELECTION PROTOCOL (DO NOT SKIP)**
+> The AI agent MUST NOT automatically guess, predict, or select a playbook on its own.
+> You MUST stop the execution flow and ask the user to explicitly select the active playbook for the task before executing any code changes, calling other tools (except for reading instructions/prerequisites), or proceeding with the task.
+> Bypassing this step or executing tools without the user explicitly choosing the playbook is a strict protocol violation.
+> **Note**: If the user does not select a playbook, default to "Engineering Workflow".
+> Once the playbook is chosen or defaulted, you MUST explicitly state the active Playbook in your response (e.g., `Active Playbook: Engineering Workflow`) and follow its instructions.
+> **CRITICAL RULE**: When a Playbook is active, the Agent MUST prioritize using its defined APIs, skills, and automated workflows for investigation and implementation. Relying on manual directory listing (`list_dir`) or generic folder crawling to understand the project structure is strictly prohibited if specialized query APIs or indexer tools are available.
+
 ### Prerequisite: Initialize (Mandatory for all tasks)
 Always run `PYTHONPATH=scripts/utils python3 scripts/utils/env_loader.py` to retrieve environment configuration safely before executing any playbooks or skills. DO NOT read the `.env` file directly with `view_file` to avoid exposing sensitive keys (such as `GEMINI_API_KEY` or `POSTGRES_PASSWORD`). The keys returned are:
 - `SYNAPSE_USER_NAME` (resolves `{user_name}`)
@@ -27,11 +36,16 @@ When using a skill to work on another repository, verify Docker in that target r
 - Fall back to host execution only when Docker is unavailable in the target repo, the container is not running, or the task explicitly requires host-only tooling.
 - Keep the decision local to the target repo: check Docker first, then choose the shortest safe path for the command you need to run.
 
+> [!MANDATORY]
+> **PLAYBOOK COMPLIANCE IS STRICTLY COMPULSORY**: You MUST read and follow the referenced playbook for the respective activation context before starting work. Relying on default memory or bypassing these playbooks is a protocol violation.
+
 Based on your active task type, refer to and follow the appropriate playbook below:
 
 | Playbook | Link | Description | Activation Context |
 | :--- | :--- | :--- | :--- |
 | **Engineering Workflow** | [engineering-workflow](./playbooks/engineering-workflow.md) | Standard flow for JIT retrieval, development, testing, and memory recording. | Whenever performing a code implementation, task, feature, or bug fix. |
+| **Repo Indexer** | [repo-indexer](./playbooks/repo-indexer.md) | Flow for scanning codebase structures and syncing dependency graphs to the Portal database. | When starting a new project, after significant refactoring, or before a new sprint. |
+
 
 ## Sub-agent Delegation Rules
 

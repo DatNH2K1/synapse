@@ -69,7 +69,8 @@ model Archive {
 }
 
 model SystemConfig {
-  key       String   @id
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  key       String   @unique
   value     String
   updatedAt DateTime @updatedAt @default(now())
 }
@@ -81,3 +82,48 @@ model QueueTask {
   attempts  Int      @default(0)
   createdAt DateTime @default(now())
 }
+
+model IndexerRepo {
+  id           String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String        @unique
+  lastSyncedAt DateTime      @default(now())
+  files        IndexerFile[]
+}
+
+model IndexerFile {
+  id        String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  repoId    String            @db.Uuid
+  repo      IndexerRepo       @relation(fields: [repoId], references: [id], onDelete: Cascade)
+  path      String
+  hash      String
+  symbols   IndexerSymbol[]
+  
+  dependencies IndexerDependency[] @relation("DependentFile")
+  dependents   IndexerDependency[] @relation("DependencyFile")
+
+  @@unique([repoId, path])
+}
+
+model IndexerSymbol {
+  id      String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fileId  String      @db.Uuid
+  name    String
+  kind    String      // 'class' | 'function' | 'variable'
+  range   String      // e.g. "1:0-15:20"
+  
+  file    IndexerFile @relation(fields: [fileId], references: [id], onDelete: Cascade)
+}
+
+model IndexerDependency {
+  id                 String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  dependentFileId    String      @db.Uuid
+  dependencyFileId   String      @db.Uuid
+  symbolName         String?     // Specific symbol imported (optional)
+
+  dependentFile      IndexerFile @relation("DependentFile", fields: [dependentFileId], references: [id], onDelete: Cascade)
+  dependencyFile     IndexerFile @relation("DependencyFile", fields: [dependencyFileId], references: [id], onDelete: Cascade)
+
+  @@index([dependentFileId])
+  @@index([dependencyFileId])
+}
+

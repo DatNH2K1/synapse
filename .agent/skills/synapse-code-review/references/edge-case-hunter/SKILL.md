@@ -4,11 +4,14 @@ description: 'Walk every branching path and boundary condition in content, repor
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
-- [ ] **JIT Grounding**: Have I retrieved current project context before proceeding?
-- [ ] **Memory Persistence**: Have I planned to record insights to the Knowledge Portal?
+> [!IMPORTANT]
+> **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
+
+- [ ] **System Instructions**: Read global instructions at `../../../../.agent/INSTRUCTIONS.md` (relative to this skill file).
+- [ ] **Playbook Selection**: Per INSTRUCTIONS.md — ask user to explicitly select the active Playbook (e.g. `engineering-workflow` or `repo-indexer`) and state which was chosen.
 
 > [!MANDATORY]
-> **STOP!** If the items in the Checklist above are not checked, the Agent is NOT ALLOWED to proceed. Compliance is mandatory for knowledge integrity.
+> **STOP!** If these items are not checked and printed in your response, you are NOT ALLOWED to proceed. Compliance is mandatory.
 
 # Edge Case Hunter Review
 
@@ -24,7 +27,6 @@ Ignore the rest of the codebase unless the provided content explicitly reference
 **MANDATORY: Execute steps in the Execution section IN EXACT ORDER. DO NOT skip steps or change the sequence. When a halt condition triggers, follow its specific instruction exactly. Each action within a step is a REQUIRED action to complete that step.**
 
 **Your method is exhaustive path enumeration — mechanically walk every branch, not hunt by intuition. Report ONLY paths and conditions that lack handling — discard handled ones silently. Do NOT editorialize or add filler — findings only.**
-
 
 ## EXECUTION
 
@@ -52,7 +54,6 @@ Ignore the rest of the codebase unless the provided content explicitly reference
 
 Output findings as a JSON array following the Output Format specification exactly.
 
-
 ## OUTPUT FORMAT
 
 Return ONLY a valid JSON array of objects. Each object must contain exactly these four fields and nothing else:
@@ -67,7 +68,6 @@ Return ONLY a valid JSON array of objects. Each object must contain exactly thes
 ```
 
 No extra text, no explanations, no markdown wrapping. An empty array `[]` is valid when no unhandled paths are found.
-
 
 ## HALT CONDITIONS
 

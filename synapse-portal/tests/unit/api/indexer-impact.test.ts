@@ -31,7 +31,9 @@ describe("API Indexer Impact Route", () => {
   it("should return exists: false if file is not found in database", async () => {
     vi.mocked(prisma.indexerFile.findFirst).mockResolvedValue(null);
 
-    const req = new Request("http://localhost/api/indexer/impact?file=unknown.ts");
+    const req = new Request(
+      "http://localhost/api/indexer/impact?file=unknown.ts",
+    );
     const response = await GET(req);
     const data = await response.json();
 
@@ -53,13 +55,17 @@ describe("API Indexer Impact Route", () => {
 
   it("should return impacted files with depths on success", async () => {
     const mockFileNode = { id: "uuid-123", path: "target.ts", repo: "synapse" };
-    vi.mocked(prisma.indexerFile.findFirst).mockResolvedValue(mockFileNode as unknown as IndexerFile);
+    vi.mocked(prisma.indexerFile.findFirst).mockResolvedValue(
+      mockFileNode as unknown as IndexerFile,
+    );
     vi.mocked(prisma.$queryRaw).mockResolvedValue([
       { path: "dependent-1.ts", depth: 1 },
       { path: "dependent-2.ts", depth: 2 },
     ] as unknown as { path: string; depth: number }[]);
 
-    const req = new Request("http://localhost/api/indexer/impact?file=target.ts&repo=synapse");
+    const req = new Request(
+      "http://localhost/api/indexer/impact?file=target.ts&repo=synapse",
+    );
     const response = await GET(req);
     const data = await response.json();
 
@@ -75,9 +81,13 @@ describe("API Indexer Impact Route", () => {
   });
 
   it("should return 500 error on query failure", async () => {
-    vi.mocked(prisma.indexerFile.findFirst).mockRejectedValue(new Error("Query Failure"));
+    vi.mocked(prisma.indexerFile.findFirst).mockRejectedValue(
+      new Error("Query Failure"),
+    );
 
-    const req = new Request("http://localhost/api/indexer/impact?file=error.ts");
+    const req = new Request(
+      "http://localhost/api/indexer/impact?file=error.ts",
+    );
     const response = await GET(req);
     const data = await response.json();
 
@@ -104,7 +114,9 @@ describe("API Indexer Impact Route", () => {
   it("should handle non-Error exceptions gracefully", async () => {
     vi.mocked(prisma.indexerFile.findFirst).mockRejectedValue("String error");
 
-    const req = new Request("http://localhost/api/indexer/impact?file=error.ts");
+    const req = new Request(
+      "http://localhost/api/indexer/impact?file=error.ts",
+    );
     const response = await GET(req);
     const data = await response.json();
 

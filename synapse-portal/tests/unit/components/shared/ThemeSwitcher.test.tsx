@@ -29,18 +29,18 @@ describe("components/shared/ThemeSwitcher", () => {
 
   it("should render current theme and toggle dropdown", () => {
     render(<ThemeSwitcher />);
-    
+
     // Find the toggle button
     const btn = screen.getByRole("button");
     expect(screen.getByText("Midnight")).toBeDefined();
-    
+
     // Dropdown should be closed initially, Arctic theme options not visible
     expect(screen.queryByText("Arctic")).toBeNull();
-    
+
     // Click button to open dropdown
     fireEvent.click(btn);
     expect(screen.getByText("Arctic")).toBeDefined();
-    
+
     // Click button to close
     fireEvent.click(btn);
     expect(screen.queryByText("Arctic")).toBeNull();
@@ -48,14 +48,14 @@ describe("components/shared/ThemeSwitcher", () => {
 
   it("should change theme and close dropdown on selection", () => {
     render(<ThemeSwitcher />);
-    
+
     const btn = screen.getByRole("button");
     fireEvent.click(btn);
-    
+
     // Select Neon theme
     const neonBtn = screen.getByText("Neon");
     fireEvent.click(neonBtn);
-    
+
     expect(mockSetTheme).toHaveBeenCalledWith("neon");
     expect(screen.queryByText("Neon")).toBeNull(); // Closed
   });
@@ -65,13 +65,13 @@ describe("components/shared/ThemeSwitcher", () => {
       <div>
         <div data-testid="outside">Outside Element</div>
         <ThemeSwitcher />
-      </div>
+      </div>,
     );
-    
+
     const btn = screen.getByRole("button");
     fireEvent.click(btn);
     expect(screen.getByText("Arctic")).toBeDefined();
-    
+
     // Click outside
     fireEvent.mouseDown(screen.getByTestId("outside"));
     expect(screen.queryByText("Arctic")).toBeNull();

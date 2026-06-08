@@ -1,9 +1,10 @@
 ---
 name: synapse-index-docs
-description: 'Generates or updates an index.md to reference all docs in the folder. Use if user requests to create or update an index of all files in a specific folder'
+description: "Generates or updates an index.md to reference all docs in the folder. Use if user requests to create or update an index of all files in a specific folder"
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
+
 > [!IMPORTANT]
 > **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
 

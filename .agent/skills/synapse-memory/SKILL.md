@@ -7,6 +7,7 @@ description: "Submit and retrieve AI lessons via the Synapse Knowledge Portal. U
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
+
 > [!IMPORTANT]
 > **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
 
@@ -29,19 +30,21 @@ Manages AI lessons and project context via the **Synapse Knowledge Portal**. Thi
 - Use to **retrieve** context when starting new features or debugging known issues.
 
 ### 🚫 When NOT to Record Anything
+
 Do **NOT** record a knowledge node for:
+
 - Minor refactorings or code tweaks (e.g., renaming classes, variables, or functions).
 - Small bug fixes or formatting updates.
 - Simple, localized changes that have no architectural impact, safety implications, or reuse potential.
 - Cluttering the database with localized implementation details.
 
 ### 📌 Node Type Selection Criteria
+
 Only record when there is a significant, reusable insight or documentation requirement. Choose the type strictly according to these boundaries:
 
 1. **`LESSON`**:
    - **Definition**: A rule, pattern, best practice, or anti-pattern to prevent future mistakes or maintain strict coding standards.
    - **Example**: Mandatory security headers, API route conventions, or a lesson learned from a major bug.
-   
 2. **`FEATURE`**:
    - **Definition**: Complete technical documentation of a newly shipped major feature, database schema, API design, or workspace integration.
    - **Example**: A newly implemented OAuth login flow, indexing job, or dashboard page structure.
@@ -66,19 +69,20 @@ To prevent cross-project context contamination, all agents MUST follow these rul
 4. **Context Grounding**: Only apply retrieved knowledge that explicitly matches the current active workspace.
 
 ---
+
 ## Tag Definitions & Conventions
 
 To ensure consistent retrieval, all tags **MUST** follow the `scope:value` format. There are **NO OTHER** allowed tag formats.
 
 ### Allowed Scopes
 
-| Scope        | Definition | Example | Requirement Level |
-| :----------- | :--------- | :------ | :----------------- |
-| `section`    | Mandatory category for lessons (defines where it appears in the Portal). | `section:mistakes-to-avoid` | **Required** for `LESSON` type, N/A/Optional for other types. |
-| `project`    | Links knowledge to a specific repository or project name. | `project:synapse-portal` | **Required** for project-specific nodes (unless `global` is set). |
-| `global`     | Sets global-wide visibility, making the knowledge node accessible across all projects. | `global:global` | **Required** if `project` scope is NOT provided. |
-| `technology` | Defines the tech stack or library related to the insight. | `technology:react@18` | **Optional**. |
-| `agent`      | Identifies the agent who generated or is most relevant to the insight. Value **MUST** be the **agent folder name** (e.g. the directory under `agents/`), NOT the persona display name. | `agent:synapse-agent-web-dev` | **Optional/Recommended**. |
+| Scope        | Definition                                                                                                                                                                             | Example                       | Requirement Level                                                 |
+| :----------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------- | :---------------------------------------------------------------- |
+| `section`    | Mandatory category for lessons (defines where it appears in the Portal).                                                                                                               | `section:mistakes-to-avoid`   | **Required** for `LESSON` type, N/A/Optional for other types.     |
+| `project`    | Links knowledge to a specific repository or project name.                                                                                                                              | `project:synapse-portal`      | **Required** for project-specific nodes (unless `global` is set). |
+| `global`     | Sets global-wide visibility, making the knowledge node accessible across all projects.                                                                                                 | `global:global`               | **Required** if `project` scope is NOT provided.                  |
+| `technology` | Defines the tech stack or library related to the insight.                                                                                                                              | `technology:react@18`         | **Optional**.                                                     |
+| `agent`      | Identifies the agent who generated or is most relevant to the insight. Value **MUST** be the **agent folder name** (e.g. the directory under `agents/`), NOT the persona display name. | `agent:synapse-agent-web-dev` | **Optional/Recommended**.                                         |
 
 ### Naming Rules
 
@@ -156,9 +160,9 @@ To track which lessons are most effective, the Portal tracks a `success_count` f
 
 Use the automated efficacy script to register a successful application of a lesson.
 
-| Parameter   | Required | Description                                                         |
-| :---------- | :------- | :------------------------------------------------------------------ |
-| `--node-id` | Yes      | The UUID of the Lesson node that was applied successfully.           |
+| Parameter   | Required | Description                                                |
+| :---------- | :------- | :--------------------------------------------------------- |
+| `--node-id` | Yes      | The UUID of the Lesson node that was applied successfully. |
 
 ```bash
 python3 skills/synapse-memory/scripts/efficacy.py --node-id "1992455f-5d0b-4b2c-9d30-927bc5161894"

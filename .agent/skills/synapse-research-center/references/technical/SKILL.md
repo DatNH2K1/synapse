@@ -1,9 +1,10 @@
 ---
 name: synapse-research-center
-description: 'Conduct technical research on technologies and architecture. Use when the user says they would like to do or produce a technical research report'
+description: "Conduct technical research on technologies and architecture. Use when the user says they would like to do or produce a technical research report"
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
+
 > [!IMPORTANT]
 > **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
 

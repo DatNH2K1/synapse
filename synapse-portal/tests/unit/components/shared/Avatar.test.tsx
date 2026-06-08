@@ -50,7 +50,7 @@ describe("components/shared/Avatar", () => {
     });
 
     expect(fetch).toHaveBeenCalledWith(
-      "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=new-seed"
+      "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=new-seed",
     );
     expect(mockLocalStorage["synapse_avatar_new-seed"]).toBe(mockResponseText);
     const svgDiv = containerElement?.querySelector("div");

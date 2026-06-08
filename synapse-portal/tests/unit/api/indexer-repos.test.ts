@@ -42,7 +42,9 @@ describe("API Indexer Repos Route", () => {
   });
 
   it("should return 500 error on database failure", async () => {
-    vi.mocked(prisma.indexerRepo.findMany).mockRejectedValue(new Error("DB Error"));
+    vi.mocked(prisma.indexerRepo.findMany).mockRejectedValue(
+      new Error("DB Error"),
+    );
 
     const response = await GET();
     const data = await response.json();

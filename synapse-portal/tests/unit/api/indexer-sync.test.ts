@@ -27,7 +27,14 @@ const mockTx = {
 vi.mock("@/lib/db", () => {
   return {
     prisma: {
-      $transaction: vi.fn((cb) => cb(mockTx as unknown as Omit<typeof prisma, "$connect" | "$disconnect" | "$on" | "$use" | "$extends">)),
+      $transaction: vi.fn((cb) =>
+        cb(
+          mockTx as unknown as Omit<
+            typeof prisma,
+            "$connect" | "$disconnect" | "$on" | "$use" | "$extends"
+          >,
+        ),
+      ),
     },
   };
 });
@@ -35,14 +42,29 @@ vi.mock("@/lib/db", () => {
 describe("API Indexer Sync Route", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(prisma.$transaction).mockImplementation((cb) => cb(mockTx as unknown as Omit<typeof prisma, "$connect" | "$disconnect" | "$on" | "$use" | "$extends">));
+    vi.mocked(prisma.$transaction).mockImplementation((cb) =>
+      cb(
+        mockTx as unknown as Omit<
+          typeof prisma,
+          "$connect" | "$disconnect" | "$on" | "$use" | "$extends"
+        >,
+      ),
+    );
     mockTx.indexerRepo.upsert.mockResolvedValue({ id: "repo-id-1" });
     mockTx.indexerFile.upsert.mockResolvedValue({} as unknown as IndexerFile);
-    mockTx.indexerFile.create.mockResolvedValue({ id: "created-id" } as unknown as IndexerFile);
-    mockTx.indexerFile.findUnique.mockResolvedValue({ id: "existing-id" } as unknown as IndexerFile);
+    mockTx.indexerFile.create.mockResolvedValue({
+      id: "created-id",
+    } as unknown as IndexerFile);
+    mockTx.indexerFile.findUnique.mockResolvedValue({
+      id: "existing-id",
+    } as unknown as IndexerFile);
     mockTx.indexerFile.findMany.mockResolvedValue([]);
-    mockTx.indexerSymbol.create.mockResolvedValue({} as unknown as IndexerSymbol);
-    mockTx.indexerDependency.create.mockResolvedValue({} as unknown as IndexerDependency);
+    mockTx.indexerSymbol.create.mockResolvedValue(
+      {} as unknown as IndexerSymbol,
+    );
+    mockTx.indexerDependency.create.mockResolvedValue(
+      {} as unknown as IndexerDependency,
+    );
   });
 
   it("should return 400 if files is not an array", async () => {
@@ -55,7 +77,9 @@ describe("API Indexer Sync Route", () => {
     const data = await response.json();
 
     expect(response.status).toBe(400);
-    expect(data).toEqual({ error: "Invalid payload: 'files' must be an array" });
+    expect(data).toEqual({
+      error: "Invalid payload: 'files' must be an array",
+    });
   });
 
   it("should sync files inside a transaction on success", async () => {
@@ -144,7 +168,11 @@ describe("API Indexer Sync Route", () => {
     await POST(req);
 
     expect(mockTx.indexerFile.create).toHaveBeenCalledWith({
-      data: { repoId: "repo-id-1", path: "src/unknown.ts", hash: "placeholder" },
+      data: {
+        repoId: "repo-id-1",
+        path: "src/unknown.ts",
+        hash: "placeholder",
+      },
     });
 
     expect(mockTx.indexerDependency.create).toHaveBeenCalledWith({
@@ -157,7 +185,9 @@ describe("API Indexer Sync Route", () => {
   });
 
   it("should return 500 error on transaction failure", async () => {
-    vi.mocked(prisma.$transaction).mockRejectedValue(new Error("Transaction Error"));
+    vi.mocked(prisma.$transaction).mockRejectedValue(
+      new Error("Transaction Error"),
+    );
 
     const req = new Request("http://localhost/api/indexer/sync", {
       method: "POST",
@@ -245,7 +275,9 @@ describe("API Indexer Sync Route", () => {
   });
 
   it("should handle non-Error exceptions gracefully in transaction", async () => {
-    vi.mocked(prisma.$transaction).mockRejectedValue("String transaction error");
+    vi.mocked(prisma.$transaction).mockRejectedValue(
+      "String transaction error",
+    );
 
     const req = new Request("http://localhost/api/indexer/sync", {
       method: "POST",

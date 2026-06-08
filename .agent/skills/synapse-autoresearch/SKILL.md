@@ -8,6 +8,7 @@ metadata:
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
+
 > [!IMPORTANT]
 > **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
 
@@ -25,10 +26,10 @@ Improve measurable project metrics (test coverage, bundle size, ESLint errors) t
 
 1. **Baseline:** Measure the current metric using a `Verify` command.
 2. **Iteration:**
-    - Perform ONE atomic change to the code in the defined `Scope`.
-    - Commit the change.
-    - Run `Verify` to measure the new metric.
-    - Run `Guard` to ensure no regressions (e.g., tests still pass).
+   - Perform ONE atomic change to the code in the defined `Scope`.
+   - Commit the change.
+   - Run `Verify` to measure the new metric.
+   - Run `Guard` to ensure no regressions (e.g., tests still pass).
 3. **Keep/Discard:** If the metric improved, KEEP the commit. If not, REVERT.
 4. **Learn:** Use the results of the previous iteration to inform the next change.
 
@@ -41,15 +42,17 @@ Improve measurable project metrics (test coverage, bundle size, ESLint errors) t
 - **Direction:** `higher` (e.g., coverage) or `lower` (e.g., bundle size).
 
 ## Example
+
 ```markdown
 Goal: Reduce main bundle size below 200KB
-Scope: src/**/*.ts, src/**/*.tsx
+Scope: src/**/\*.ts, src/**/\*.tsx
 Verify: npx vite build 2>/dev/null | grep "dist/index" | awk '{print $2}' | sed 's/kB//'
 Guard: npx tsc --noEmit
 Direction: lower
 ```
 
 ## Constraints
+
 - Requires a clean Git working tree before starting.
 - Each iteration must be atomic.
 - Sequential execution only.

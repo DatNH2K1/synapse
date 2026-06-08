@@ -19,7 +19,9 @@ describe("GET /api/updates (SSE)", () => {
   it("should connect, stream pending count, and handle eventBus events", async () => {
     vi.mocked(knowledgeService.getPendingUpdates).mockResolvedValue([
       { id: "node-1" },
-    ] as object as Awaited<ReturnType<typeof knowledgeService.getPendingUpdates>>);
+    ] as object as Awaited<
+      ReturnType<typeof knowledgeService.getPendingUpdates>
+    >);
 
     const mockReq = {
       signal: {
@@ -48,7 +50,9 @@ describe("GET /api/updates (SSE)", () => {
     vi.mocked(knowledgeService.getPendingUpdates).mockResolvedValue([
       { id: "node-1" },
       { id: "node-2" },
-    ] as object as Awaited<ReturnType<typeof knowledgeService.getPendingUpdates>>);
+    ] as object as Awaited<
+      ReturnType<typeof knowledgeService.getPendingUpdates>
+    >);
 
     eventBus.emit(EVENTS.PROPOSAL_CREATED, {
       id: "node-2",
@@ -77,7 +81,7 @@ describe("GET /api/updates (SSE)", () => {
       expect.any(Function),
     );
     const abortListener = vi.mocked(mockReq.signal.addEventListener).mock
-      .calls[0][1] as object as (() => void);
+      .calls[0][1] as object as () => void;
 
     const offSpy = vi.spyOn(eventBus, "off");
     abortListener();
@@ -85,7 +89,9 @@ describe("GET /api/updates (SSE)", () => {
   });
 
   it("should gracefully handle database error in initial pending count fetch", async () => {
-    vi.mocked(knowledgeService.getPendingUpdates).mockRejectedValue(new Error("Init DB error"));
+    vi.mocked(knowledgeService.getPendingUpdates).mockRejectedValue(
+      new Error("Init DB error"),
+    );
 
     const mockReq = {
       signal: {
@@ -103,7 +109,11 @@ describe("GET /api/updates (SSE)", () => {
   });
 
   it("should handle error in onProposalCreated listener", async () => {
-    vi.mocked(knowledgeService.getPendingUpdates).mockResolvedValue([] as object as Awaited<ReturnType<typeof knowledgeService.getPendingUpdates>>);
+    vi.mocked(knowledgeService.getPendingUpdates).mockResolvedValue(
+      [] as object as Awaited<
+        ReturnType<typeof knowledgeService.getPendingUpdates>
+      >,
+    );
 
     const mockReq = {
       signal: {
@@ -115,7 +125,9 @@ describe("GET /api/updates (SSE)", () => {
     expect(response.status).toBe(200);
 
     // Next call inside onProposalCreated throws
-    vi.mocked(knowledgeService.getPendingUpdates).mockRejectedValue(new Error("Event DB error"));
+    vi.mocked(knowledgeService.getPendingUpdates).mockRejectedValue(
+      new Error("Event DB error"),
+    );
 
     // Emit event
     eventBus.emit(EVENTS.PROPOSAL_CREATED, {
@@ -126,7 +138,11 @@ describe("GET /api/updates (SSE)", () => {
   });
 
   it("should handle error in onProposalUpdated listener", async () => {
-    vi.mocked(knowledgeService.getPendingUpdates).mockResolvedValue([] as object as Awaited<ReturnType<typeof knowledgeService.getPendingUpdates>>);
+    vi.mocked(knowledgeService.getPendingUpdates).mockResolvedValue(
+      [] as object as Awaited<
+        ReturnType<typeof knowledgeService.getPendingUpdates>
+      >,
+    );
 
     const mockReq = {
       signal: {
@@ -138,7 +154,9 @@ describe("GET /api/updates (SSE)", () => {
     expect(response.status).toBe(200);
 
     // Next call inside onProposalUpdated throws
-    vi.mocked(knowledgeService.getPendingUpdates).mockRejectedValue(new Error("Event DB error"));
+    vi.mocked(knowledgeService.getPendingUpdates).mockRejectedValue(
+      new Error("Event DB error"),
+    );
 
     // Emit event
     eventBus.emit(EVENTS.PROPOSAL_UPDATED, {
@@ -149,7 +167,11 @@ describe("GET /api/updates (SSE)", () => {
 
   it("should send keepalive pings and handle keepalive failures", async () => {
     vi.useFakeTimers();
-    vi.mocked(knowledgeService.getPendingUpdates).mockResolvedValue([] as object as Awaited<ReturnType<typeof knowledgeService.getPendingUpdates>>);
+    vi.mocked(knowledgeService.getPendingUpdates).mockResolvedValue(
+      [] as object as Awaited<
+        ReturnType<typeof knowledgeService.getPendingUpdates>
+      >,
+    );
 
     const mockReq = {
       signal: {

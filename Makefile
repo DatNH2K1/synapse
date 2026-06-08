@@ -43,14 +43,14 @@ shell:
 seed:
 	docker compose exec synapse-portal npx prisma db seed
 
-# Run database migrations (prisma push)
+# Run database migrations (prisma migrate deploy)
 migrate:
-	docker compose exec synapse-portal npx prisma db push --accept-data-loss
+	docker compose exec synapse-portal npx prisma migrate deploy
 
 
-# Full database refresh (Wipe + Seed + Push Lessons)
+# Full database refresh (Wipe + Seed)
 db-refresh:
-	docker compose exec synapse-portal npx prisma db push --force-reset
+	docker compose exec synapse-portal npx prisma migrate reset --force
 	docker compose exec synapse-portal npx prisma db seed
 
 test:
@@ -61,6 +61,9 @@ check:
 		echo "📦 synapse-portal node_modules not found. Running npm install on host..."; \
 		cd synapse-portal && npm install; \
 	fi
+	# Format files in workspace, excluding build outputs like .next
+	cd synapse-portal && npx prettier --write .
+	cd synapse-portal && npx prettier --write "../.agent/**/*.{md,json}" "../*.md"
 	cd synapse-portal && npx prisma generate && npm run check
 	$(MAKE) test
 

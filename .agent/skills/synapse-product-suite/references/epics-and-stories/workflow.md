@@ -39,7 +39,6 @@ This uses **step-file architecture** for disciplined execution:
 
 ## Activation
 
- 
 2. First Step EXECUTION
 
 Read fully and follow: `./steps/step-01-validate-prerequisites.md` to begin the workflow.

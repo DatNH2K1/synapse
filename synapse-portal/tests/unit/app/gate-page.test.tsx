@@ -5,7 +5,9 @@ import GatePage from "@/app/(dashboard)/gate/page";
 
 vi.mock("@/lib/services/knowledge-service", () => ({
   knowledgeService: {
-    getPendingUpdates: async () => [{ id: "update-1", label: "Pending Proposal" }],
+    getPendingUpdates: async () => [
+      { id: "update-1", label: "Pending Proposal" },
+    ],
     getNodes: async () => [{ id: "node-1", label: "Existing Node" }],
   },
 }));

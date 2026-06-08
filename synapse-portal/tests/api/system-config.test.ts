@@ -1,4 +1,3 @@
-
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import {
   GET as getSystemConfig,
@@ -84,7 +83,9 @@ describe("System Config API Routes Tests", () => {
         body: JSON.stringify({ key: "rem_similarity_threshold", value: "0.8" }),
       });
 
-      vi.mocked(prisma.systemConfig.upsert).mockResolvedValue({} as object as Awaited<ReturnType<typeof prisma.systemConfig.upsert>>);
+      vi.mocked(prisma.systemConfig.upsert).mockResolvedValue(
+        {} as object as Awaited<ReturnType<typeof prisma.systemConfig.upsert>>,
+      );
 
       const response = await postSystemConfig(req);
       expect(response.status).toBe(200);

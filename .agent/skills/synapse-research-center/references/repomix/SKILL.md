@@ -8,6 +8,7 @@ metadata:
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
+
 > [!IMPORTANT]
 > **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
 
@@ -31,6 +32,7 @@ Repomix packs entire repositories into single, AI-friendly files. Perfect for fe
 ## Usage
 
 ### Basic Usage
+
 ```bash
 # Package current directory (generates repomix-output.xml)
 npx repomix

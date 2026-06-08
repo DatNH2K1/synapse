@@ -4,7 +4,10 @@ import * as fs from "fs";
 import * as path from "path";
 
 describe("Repo Indexer Parser Adapters", () => {
-  const indexerScript = path.resolve(__dirname, "../../../.agent/skills/synapse-repo-indexer/scripts/index_repo.py");
+  const indexerScript = path.resolve(
+    __dirname,
+    "../../../.agent/skills/synapse-repo-indexer/scripts/index_repo.py",
+  );
 
   it("should parse JS/TS files correctly using Babel adapter", () => {
     const testFile = path.resolve(__dirname, "temp-test.ts");
@@ -16,17 +19,19 @@ describe("Repo Indexer Parser Adapters", () => {
     fs.writeFileSync(testFile, code, "utf-8");
 
     try {
-      const stdout = execSync(`python3 "${indexerScript}" --parse "${testFile}"`).toString();
+      const stdout = execSync(
+        `python3 "${indexerScript}" --parse "${testFile}"`,
+      ).toString();
       const result = JSON.parse(stdout);
 
       expect(result.exports).toContainEqual(
-        expect.objectContaining({ name: "hello", kind: "function" })
+        expect.objectContaining({ name: "hello", kind: "function" }),
       );
       expect(result.exports).toContainEqual(
-        expect.objectContaining({ name: "Greet", kind: "class" })
+        expect.objectContaining({ name: "Greet", kind: "class" }),
       );
       expect(result.imports).toContainEqual(
-        expect.objectContaining({ name: "foo", from: "./other" })
+        expect.objectContaining({ name: "foo", from: "./other" }),
       );
     } finally {
       if (fs.existsSync(testFile)) {
@@ -47,17 +52,19 @@ class Calculator:
     fs.writeFileSync(testFile, code, "utf-8");
 
     try {
-      const stdout = execSync(`python3 "${indexerScript}" --parse "${testFile}"`).toString();
+      const stdout = execSync(
+        `python3 "${indexerScript}" --parse "${testFile}"`,
+      ).toString();
       const result = JSON.parse(stdout);
 
       expect(result.exports).toContainEqual(
-        expect.objectContaining({ name: "calc_hypot", kind: "function" })
+        expect.objectContaining({ name: "calc_hypot", kind: "function" }),
       );
       expect(result.exports).toContainEqual(
-        expect.objectContaining({ name: "Calculator", kind: "class" })
+        expect.objectContaining({ name: "Calculator", kind: "class" }),
       );
       expect(result.imports).toContainEqual(
-        expect.objectContaining({ name: "sqrt", from: "math" })
+        expect.objectContaining({ name: "sqrt", from: "math" }),
       );
     } finally {
       if (fs.existsSync(testFile)) {
@@ -91,20 +98,31 @@ class Calculator:
       } catch (_err) {}
 
       if (phpAvailable) {
-        const stdout = execSync(`python3 "${indexerScript}" --parse "${testFile}"`).toString();
+        const stdout = execSync(
+          `python3 "${indexerScript}" --parse "${testFile}"`,
+        ).toString();
         const result = JSON.parse(stdout);
 
         expect(result.exports).toContainEqual(
-          expect.objectContaining({ name: "App\\Tests\\TestController", kind: "class" })
+          expect.objectContaining({
+            name: "App\\Tests\\TestController",
+            kind: "class",
+          }),
         );
         expect(result.exports).toContainEqual(
-          expect.objectContaining({ name: "App\\Tests\\helper_func", kind: "function" })
+          expect.objectContaining({
+            name: "App\\Tests\\helper_func",
+            kind: "function",
+          }),
         );
         expect(result.imports).toContainEqual(
-          expect.objectContaining({ name: "AuthService", from: "App\\Services\\AuthService" })
+          expect.objectContaining({
+            name: "AuthService",
+            from: "App\\Services\\AuthService",
+          }),
         );
         expect(result.imports).toContainEqual(
-          expect.objectContaining({ name: "User", from: "App\\Models\\User" })
+          expect.objectContaining({ name: "User", from: "App\\Models\\User" }),
         );
       }
     } finally {

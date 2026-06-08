@@ -20,7 +20,9 @@ vi.mock("@/lib/hooks", () => ({
 }));
 
 vi.mock("recharts", () => {
-  const Dummy = ({ children }: { children?: React.ReactNode }) => <div>{children}</div>;
+  const Dummy = ({ children }: { children?: React.ReactNode }) => (
+    <div>{children}</div>
+  );
   return {
     ResponsiveContainer: ({ children }: { children: React.ReactNode }) => (
       <div data-testid="responsive-container">{children}</div>
@@ -42,9 +44,11 @@ vi.mock("recharts", () => {
       <div data-testid="pie-chart">{children}</div>
     ),
     Pie: Dummy,
-    Legend: ({ formatter }: { formatter?: (value: string) => React.ReactNode }) => (
-      <div>{formatter ? formatter("mock-legend-val") : null}</div>
-    ),
+    Legend: ({
+      formatter,
+    }: {
+      formatter?: (value: string) => React.ReactNode;
+    }) => <div>{formatter ? formatter("mock-legend-val") : null}</div>,
   };
 });
 
@@ -53,8 +57,12 @@ describe("components/dashboard/OverviewCharts", () => {
   const distributionData = [{ name: "Scope 1", value: 5, color: "#ff0000" }];
   const typeDistributionData = [{ name: "Type 1", value: 3, color: "#00ff00" }];
   const topLessonsData = [{ name: "Lesson 1", value: 90 }];
-  const agentContributionData = [{ name: "Agent 1", value: 8, color: "#0000ff" }];
-  const statusDistributionData = [{ name: "Merged", value: 12, color: "#8884d8" }];
+  const agentContributionData = [
+    { name: "Agent 1", value: 8, color: "#0000ff" },
+  ];
+  const statusDistributionData = [
+    { name: "Merged", value: 12, color: "#8884d8" },
+  ];
 
   beforeEach(() => {
     cleanup();
@@ -71,7 +79,7 @@ describe("components/dashboard/OverviewCharts", () => {
         agentContributionData={agentContributionData}
         statusDistributionData={statusDistributionData}
         archiveCount={4}
-      />
+      />,
     );
 
     expect(screen.getByText("node_growth")).toBeDefined();
@@ -83,7 +91,9 @@ describe("components/dashboard/OverviewCharts", () => {
     expect(screen.getByText("archive_merges_4")).toBeDefined();
 
     // Check Recharts mock wrapper divs
-    expect(screen.getAllByTestId("responsive-container").length).toBeGreaterThan(0);
+    expect(
+      screen.getAllByTestId("responsive-container").length,
+    ).toBeGreaterThan(0);
     expect(screen.getAllByTestId("area-chart").length).toBeGreaterThan(0);
     expect(screen.getAllByTestId("bar-chart").length).toBeGreaterThan(0);
     expect(screen.getAllByTestId("pie-chart").length).toBeGreaterThan(0);
@@ -100,7 +110,7 @@ describe("components/dashboard/OverviewCharts", () => {
         agentContributionData={[]}
         statusDistributionData={[]}
         archiveCount={0}
-      />
+      />,
     );
     expect(screen.queryByText("node_growth")).toBeNull();
   });
@@ -115,7 +125,7 @@ describe("components/dashboard/OverviewCharts", () => {
         agentContributionData={[]}
         statusDistributionData={statusDistributionData}
         archiveCount={0}
-      />
+      />,
     );
     expect(screen.getByText("no_success_lessons_data")).toBeDefined();
     expect(screen.getByText("no_agent_contributions")).toBeDefined();

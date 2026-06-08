@@ -1,4 +1,3 @@
-
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { GET as getNodes } from "@/app/api/nodes/route";
 import { POST as postEfficacy } from "@/app/api/nodes/efficacy/route";
@@ -20,7 +19,9 @@ describe("Nodes API Routes Tests", () => {
     it("should return nodes list on success", async () => {
       const mockNodes = [{ id: "node-1", label: "Node 1" }];
       vi.mocked(knowledgeService.getNodesWithColor).mockResolvedValue(
-        mockNodes as object as Awaited<ReturnType<typeof knowledgeService.getNodesWithColor>>,
+        mockNodes as object as Awaited<
+          ReturnType<typeof knowledgeService.getNodesWithColor>
+        >,
       );
 
       const response = await getNodes();
@@ -63,7 +64,9 @@ describe("Nodes API Routes Tests", () => {
       vi.mocked(knowledgeService.incrementSuccessCount).mockResolvedValue({
         id: "node-123",
         success_count: 3,
-      } as object as Awaited<ReturnType<typeof knowledgeService.incrementSuccessCount>>);
+      } as object as Awaited<
+        ReturnType<typeof knowledgeService.incrementSuccessCount>
+      >);
 
       const response = await postEfficacy(req);
       expect(response.status).toBe(200);
@@ -96,7 +99,9 @@ describe("Nodes API Routes Tests", () => {
         body: JSON.stringify({ nodeId: "node-123" }),
       });
 
-      vi.mocked(knowledgeService.incrementSuccessCount).mockRejectedValue("String error rejection");
+      vi.mocked(knowledgeService.incrementSuccessCount).mockRejectedValue(
+        "String error rejection",
+      );
 
       const response = await postEfficacy(req);
       expect(response.status).toBe(500);

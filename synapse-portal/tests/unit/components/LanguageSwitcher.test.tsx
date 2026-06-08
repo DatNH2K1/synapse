@@ -43,7 +43,7 @@ describe("components/LanguageSwitcher", () => {
       <div>
         <div data-testid="outside">Outside</div>
         <LanguageSwitcher />
-      </div>
+      </div>,
     );
 
     const btn = screen.getByRole("button");

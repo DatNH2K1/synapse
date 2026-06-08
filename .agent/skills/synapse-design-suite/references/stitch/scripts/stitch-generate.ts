@@ -19,18 +19,31 @@ const QUOTA_FILE = path.join(QUOTA_DIR, ".stitch-quota.json");
 // Stitch free tier: 400 daily credits. No API to fetch real usage.
 const DEFAULT_LIMIT = parseInt(process.env.STITCH_QUOTA_LIMIT || "400", 10);
 
-interface QuotaState { date: string; count: number; limit: number; }
+interface QuotaState {
+  date: string;
+  count: number;
+  limit: number;
+}
 
-function todayUTC(): string { return new Date().toISOString().slice(0, 10); }
+function todayUTC(): string {
+  return new Date().toISOString().slice(0, 10);
+}
 
 function loadQuota(): QuotaState {
   try {
     if (fs.existsSync(QUOTA_FILE)) {
       const data = JSON.parse(fs.readFileSync(QUOTA_FILE, "utf-8"));
-      if (data.date !== todayUTC()) return { date: todayUTC(), count: 0, limit: data.limit || DEFAULT_LIMIT };
+      if (data.date !== todayUTC())
+        return {
+          date: todayUTC(),
+          count: 0,
+          limit: data.limit || DEFAULT_LIMIT,
+        };
       return data;
     }
-  } catch { /* corrupted — start fresh */ }
+  } catch {
+    /* corrupted — start fresh */
+  }
   return { date: todayUTC(), count: 0, limit: DEFAULT_LIMIT };
 }
 
@@ -68,20 +81,29 @@ const projectId =
 // SDK expects uppercase device types: MOBILE, DESKTOP, TABLET, AGNOSTIC
 const deviceFlag = getFlag("device");
 const DEVICE_MAP: Record<string, "MOBILE" | "DESKTOP" | "TABLET"> = {
-  mobile: "MOBILE", desktop: "DESKTOP", tablet: "TABLET",
+  mobile: "MOBILE",
+  desktop: "DESKTOP",
+  tablet: "TABLET",
 };
 const deviceType = deviceFlag
-  ? DEVICE_MAP[deviceFlag.toLowerCase()] || (deviceFlag.toUpperCase() as "MOBILE" | "DESKTOP" | "TABLET")
+  ? DEVICE_MAP[deviceFlag.toLowerCase()] ||
+    (deviceFlag.toUpperCase() as "MOBILE" | "DESKTOP" | "TABLET")
   : undefined;
-const variantCount = getFlag("variants") ? parseInt(getFlag("variants")!, 10) : 0;
+const variantCount = getFlag("variants")
+  ? parseInt(getFlag("variants")!, 10)
+  : 0;
 
 if (!prompt) {
-  console.error("Usage: npx tsx stitch-generate.ts <prompt> [--project <id>] [--device mobile|desktop|tablet] [--variants <count>]");
+  console.error(
+    "Usage: npx tsx stitch-generate.ts <prompt> [--project <id>] [--device mobile|desktop|tablet] [--variants <count>]",
+  );
   process.exit(1);
 }
 
 if (!process.env.STITCH_API_KEY) {
-  console.error("[X] STITCH_API_KEY not set. Get one at https://stitch.withgoogle.com/settings/api");
+  console.error(
+    "[X] STITCH_API_KEY not set. Get one at https://stitch.withgoogle.com/settings/api",
+  );
   process.exit(1);
 }
 
@@ -94,11 +116,17 @@ async function main() {
     const quota = loadQuota();
     const remaining = quota.limit - quota.count;
     if (remaining < creditsNeeded) {
-      console.error(`[X] Not enough credits: need ${creditsNeeded}, have ${remaining}/${quota.limit}.`);
-      console.error("[i] Use ck:ui-ux-pro-max as fallback, or wait until midnight UTC.");
+      console.error(
+        `[X] Not enough credits: need ${creditsNeeded}, have ${remaining}/${quota.limit}.`,
+      );
+      console.error(
+        "[i] Use ck:ui-ux-pro-max as fallback, or wait until midnight UTC.",
+      );
       process.exit(2);
     }
-    console.error(`[i] Credits: ${remaining}/${quota.limit} remaining (this run costs ${creditsNeeded})`);
+    console.error(
+      `[i] Credits: ${remaining}/${quota.limit} remaining (this run costs ${creditsNeeded})`,
+    );
     console.error(`[i] Prompt: "${prompt}"`);
 
     // Resolve project — use existing or create if "claudekit-default" doesn't exist
@@ -106,7 +134,9 @@ async function main() {
     let resolvedProjectId = projectId;
     if (isDefaultProject) {
       const projects = await stitch.projects();
-      const existing = projects.find(p => p.data?.title === "claudekit-default");
+      const existing = projects.find(
+        (p) => p.data?.title === "claudekit-default",
+      );
       if (existing) {
         resolvedProjectId = existing.id;
         console.error(`[i] Using project: ${resolvedProjectId}`);
@@ -146,7 +176,7 @@ async function main() {
         variants.map(async (v) => ({
           screenId: v.id,
           imageUrl: await v.getImage(),
-        }))
+        })),
       );
     }
 
@@ -155,7 +185,9 @@ async function main() {
     postQuota.count += creditsNeeded;
     saveQuota(postQuota);
     const postRemaining = postQuota.limit - postQuota.count;
-    console.error(`[OK] Quota updated: ${postQuota.count}/${postQuota.limit} used (${postRemaining} remaining)`);
+    console.error(
+      `[OK] Quota updated: ${postQuota.count}/${postQuota.limit} used (${postRemaining} remaining)`,
+    );
 
     result.creditsUsed = creditsNeeded;
     result.creditsRemaining = postRemaining;
@@ -169,7 +201,9 @@ async function main() {
       const q = loadQuota();
       q.count = q.limit;
       saveQuota(q);
-      console.error("[X] Daily quota exceeded (local tracker synced). Try tomorrow or use ck:ui-ux-pro-max.");
+      console.error(
+        "[X] Daily quota exceeded (local tracker synced). Try tomorrow or use ck:ui-ux-pro-max.",
+      );
     } else if (err.code === "AUTH_FAILED") {
       console.error("[X] Authentication failed. Check STITCH_API_KEY env var.");
     } else {

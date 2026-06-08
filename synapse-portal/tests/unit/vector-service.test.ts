@@ -1,4 +1,3 @@
- 
 // Set env variables BEFORE any imports so the module-level constants evaluate correctly
 process.env.GEMINI_API_KEY = "test-key";
 process.env.GEMINI_EMBEDDING_MODEL = "test-model";

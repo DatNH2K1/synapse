@@ -1,9 +1,10 @@
 ---
 name: synapse-code-review
-description: 'Walk every branching path and boundary condition in content, report only unhandled edge cases. Orthogonal to adversarial review - method-driven not attitude-driven. Use when you need exhaustive edge-case analysis of code, specs, or diffs.'
+description: "Walk every branching path and boundary condition in content, report only unhandled edge cases. Orthogonal to adversarial review - method-driven not attitude-driven. Use when you need exhaustive edge-case analysis of code, specs, or diffs."
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
+
 > [!IMPORTANT]
 > **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
 
@@ -21,6 +22,7 @@ When no diff is provided (full file or function), treat the entire provided cont
 Ignore the rest of the codebase unless the provided content explicitly references external functions.
 
 **Inputs:**
+
 - **content** — Content to review: diff, full file, or function
 - **also_consider** (optional) — Areas to keep in mind during review alongside normal edge-case analysis
 
@@ -59,12 +61,14 @@ Output findings as a JSON array following the Output Format specification exactl
 Return ONLY a valid JSON array of objects. Each object must contain exactly these four fields and nothing else:
 
 ```json
-[{
-  "location": "file:start-end (or file:line when single line, or file:hunk when exact line unavailable)",
-  "trigger_condition": "one-line description (max 15 words)",
-  "guard_snippet": "minimal code sketch that closes the gap (single-line escaped string, no raw newlines or unescaped quotes)",
-  "potential_consequence": "what could actually go wrong (max 15 words)"
-}]
+[
+  {
+    "location": "file:start-end (or file:line when single line, or file:hunk when exact line unavailable)",
+    "trigger_condition": "one-line description (max 15 words)",
+    "guard_snippet": "minimal code sketch that closes the gap (single-line escaped string, no raw newlines or unescaped quotes)",
+    "potential_consequence": "what could actually go wrong (max 15 words)"
+  }
+]
 ```
 
 No extra text, no explanations, no markdown wrapping. An empty array `[]` is valid when no unhandled paths are found.

@@ -1,6 +1,6 @@
 ---
-main_config: '.env'
-outputFile: '{planning_artifacts}/prd.md'
+main_config: ".env"
+outputFile: "{planning_artifacts}/prd.md"
 ---
 
 # PRD Create Workflow

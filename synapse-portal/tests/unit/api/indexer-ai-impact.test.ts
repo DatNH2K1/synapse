@@ -32,36 +32,50 @@ describe("API Indexer AI Impact Route", () => {
   it("should return 404 if file is not found in database", async () => {
     vi.mocked(prisma.indexerFile.findFirst).mockResolvedValue(null);
 
-    const req = new Request("http://localhost/api/indexer/ai/impact?file=unknown.ts");
+    const req = new Request(
+      "http://localhost/api/indexer/ai/impact?file=unknown.ts",
+    );
     const response = await GET(req);
     const data = await response.json();
 
     expect(response.status).toBe(404);
-    expect(data).toEqual({ error: "File not found: unknown.ts in repository synapse" });
+    expect(data).toEqual({
+      error: "File not found: unknown.ts in repository synapse",
+    });
   });
 
   it("should return blast radius partition on success", async () => {
     const mockFile = { id: "uuid-1" };
-    vi.mocked(prisma.indexerFile.findFirst).mockResolvedValue(mockFile as unknown as IndexerFile);
+    vi.mocked(prisma.indexerFile.findFirst).mockResolvedValue(
+      mockFile as unknown as IndexerFile,
+    );
     vi.mocked(prisma.$queryRaw).mockResolvedValue([
       { path: "src/app.ts", depth: 1 },
       { path: "src/main.ts", depth: 2 },
     ]);
 
-    const req = new Request("http://localhost/api/indexer/ai/impact?file=src/index.ts");
+    const req = new Request(
+      "http://localhost/api/indexer/ai/impact?file=src/index.ts",
+    );
     const response = await GET(req);
     const data = await response.json();
 
     expect(response.status).toBe(200);
     expect(data.success).toBe(true);
     expect(data.directlyAffected).toEqual(["src/app.ts"]);
-    expect(data.indirectlyAffected).toEqual([{ path: "src/main.ts", depth: 2 }]);
+    expect(data.indirectlyAffected).toEqual([
+      { path: "src/main.ts", depth: 2 },
+    ]);
   });
 
   it("should handle exceptions gracefully", async () => {
-    vi.mocked(prisma.indexerFile.findFirst).mockRejectedValue(new Error("Database failure"));
+    vi.mocked(prisma.indexerFile.findFirst).mockRejectedValue(
+      new Error("Database failure"),
+    );
 
-    const req = new Request("http://localhost/api/indexer/ai/impact?file=src/index.ts");
+    const req = new Request(
+      "http://localhost/api/indexer/ai/impact?file=src/index.ts",
+    );
     const response = await GET(req);
     const data = await response.json();
 

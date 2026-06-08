@@ -23,7 +23,7 @@ describe("components/landing/TiltCard", () => {
     const { getByText } = render(
       <TiltCard>
         <div>Test Child</div>
-      </TiltCard>
+      </TiltCard>,
     );
     expect(getByText("Test Child")).toBeDefined();
   });
@@ -32,11 +32,11 @@ describe("components/landing/TiltCard", () => {
     const { container } = render(
       <TiltCard className="test-card">
         <div>Test Child</div>
-      </TiltCard>
+      </TiltCard>,
     );
 
     const card = container.firstChild as HTMLDivElement;
-    
+
     // Mock getBoundingClientRect
     card.getBoundingClientRect = () => ({
       left: 10,
@@ -53,7 +53,7 @@ describe("components/landing/TiltCard", () => {
     fireEvent.mouseMove(card, { clientX: 20, clientY: 20 });
     // Fire a second time to trigger cancelAnimationFrame
     fireEvent.mouseMove(card, { clientX: 25, clientY: 25 });
-    
+
     expect(card.style.transform).toContain("perspective(800px)");
     expect(card.style.getPropertyValue("--mouse-x")).toBe("15px");
     expect(card.style.getPropertyValue("--mouse-y")).toBe("15px");
@@ -63,7 +63,7 @@ describe("components/landing/TiltCard", () => {
     const { container } = render(
       <TiltCard>
         <div>Test Child</div>
-      </TiltCard>
+      </TiltCard>,
     );
 
     const card = container.firstChild as HTMLDivElement;
@@ -78,7 +78,7 @@ describe("components/landing/TiltCard", () => {
     const { container } = render(
       <TiltCard disableTilt>
         <div>Test Child</div>
-      </TiltCard>
+      </TiltCard>,
     );
 
     const card = container.firstChild as HTMLDivElement;
@@ -109,13 +109,13 @@ describe("components/landing/TiltCard", () => {
     const { container } = render(
       <TiltCard>
         <div>Test Child</div>
-      </TiltCard>
+      </TiltCard>,
     );
 
     const card = container.firstChild as HTMLDivElement;
     fireEvent.mouseMove(card, { clientX: 20, clientY: 20 });
     fireEvent.mouseLeave(card);
-    
+
     expect(card.style.transform).toBe("");
   });
 });

@@ -283,9 +283,7 @@ export default function EvolutionTimeline({
           <p className="text-lg font-black tracking-tight text-dashboard-fg/60 uppercase">
             {t("no_history_found")}
           </p>
-          <p className="text-xs text-dashboard-fg/45">
-            {t("no_history_desc")}
-          </p>
+          <p className="text-xs text-dashboard-fg/45">{t("no_history_desc")}</p>
         </div>
       )}
     </div>

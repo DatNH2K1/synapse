@@ -10,7 +10,15 @@ vi.mock("next/navigation", () => ({
 
 // Mock next/link
 vi.mock("next/link", () => ({
-  default: ({ children, href, className }: { children: React.ReactNode; href: string; className?: string }) => (
+  default: ({
+    children,
+    href,
+    className,
+  }: {
+    children: React.ReactNode;
+    href: string;
+    className?: string;
+  }) => (
     <a href={href} className={className} data-testid="nav-link">
       {children}
     </a>
@@ -30,7 +38,7 @@ describe("components/shared/NavItem", () => {
         label="Dashboard"
         href="/dashboard"
         badge={5}
-      />
+      />,
     );
 
     const link = screen.getByTestId("nav-link");
@@ -44,11 +52,7 @@ describe("components/shared/NavItem", () => {
   it("should render inactive NavItem when paths do not match", () => {
     mockPathname = "/other";
     render(
-      <NavItem
-        icon={<span>🏠</span>}
-        label="Dashboard"
-        href="/dashboard"
-      />
+      <NavItem icon={<span>🏠</span>} label="Dashboard" href="/dashboard" />,
     );
 
     const link = screen.getByTestId("nav-link");
@@ -64,7 +68,7 @@ describe("components/shared/NavItem", () => {
         href="/dashboard"
         compact
         badge={2}
-      />
+      />,
     );
 
     const link = screen.getByTestId("nav-link");

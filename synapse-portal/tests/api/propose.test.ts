@@ -36,9 +36,7 @@ describe("POST /api/propose", () => {
     });
 
     const mockResult = { success: true, id: "prop-id" };
-    vi.mocked(knowledgeService.proposeKnowledge).mockResolvedValue(
-      mockResult,
-    );
+    vi.mocked(knowledgeService.proposeKnowledge).mockResolvedValue(mockResult);
 
     const response = await postPropose(req);
     expect(response.status).toBe(200);
@@ -64,5 +62,26 @@ describe("POST /api/propose", () => {
     expect(response.status).toBe(500);
     const data = await response.json();
     expect(data.error).toBe("Propose error");
+  });
+
+  it("should return 400 if a validation error is thrown", async () => {
+    const req = new Request("http://localhost/api/propose", {
+      method: "POST",
+      body: JSON.stringify({
+        label: "Test",
+        content: "Body",
+        type: "LESSON",
+        tags: ["section:invalid"],
+      }),
+    });
+
+    vi.mocked(knowledgeService.proposeKnowledge).mockRejectedValue(
+      new Error('Invalid section tag: "invalid". Allowed sections: ...'),
+    );
+
+    const response = await postPropose(req);
+    expect(response.status).toBe(400);
+    const data = await response.json();
+    expect(data.error).toContain("Invalid section tag");
   });
 });

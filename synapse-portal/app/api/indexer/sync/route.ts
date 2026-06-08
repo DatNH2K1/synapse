@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     if (!Array.isArray(files)) {
       return NextResponse.json(
         { error: "Invalid payload: 'files' must be an array" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -70,7 +70,11 @@ export async function POST(request: Request) {
             // If it doesn't exist, create a placeholder for it
             if (!targetFile) {
               targetFile = await tx.indexerFile.create({
-                data: { repoId: dbRepo.id, path: imp.from, hash: "placeholder" },
+                data: {
+                  repoId: dbRepo.id,
+                  path: imp.from,
+                  hash: "placeholder",
+                },
               });
             }
 
@@ -88,7 +92,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, syncedFilesCount: files.length });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Internal Server Error";
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error";
     console.error("[API Indexer Sync] Error:", error);
     return NextResponse.json({ error: message }, { status: 500 });
   }

@@ -62,7 +62,7 @@ describe("lib/db", () => {
         password: "password",
       },
     }));
-    
+
     const { prisma } = await import("@/lib/db");
     expect(prisma).toBeDefined();
   });
@@ -75,7 +75,7 @@ describe("lib/db", () => {
         host: undefined,
       },
     }));
-    
+
     const { prisma } = await import("@/lib/db");
     expect(prisma).toBeDefined();
   });
@@ -88,7 +88,7 @@ describe("lib/db", () => {
         host: "localhost",
       },
     }));
-    
+
     const { prisma } = await import("@/lib/db");
     expect(prisma).toBeDefined();
   });
@@ -101,15 +101,16 @@ describe("lib/db", () => {
         host: undefined,
       },
     }));
-    
+
     const { prisma } = await import("@/lib/db");
     expect(prisma).toBeDefined();
   });
 
   it("should use globalThis.prismaGlobal if it is already defined", async () => {
     const dummyClient = { isDummy: true };
-    globalThis.prismaGlobal = dummyClient as object as import("@prisma/client").PrismaClient;
-    
+    globalThis.prismaGlobal =
+      dummyClient as object as import("@prisma/client").PrismaClient;
+
     const { prisma } = await import("@/lib/db");
     expect(prisma).toBe(dummyClient);
   });

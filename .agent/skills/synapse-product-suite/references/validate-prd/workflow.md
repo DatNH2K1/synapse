@@ -1,6 +1,6 @@
 ---
-main_config: '.env'
-validateWorkflow: './steps-v/step-v-01-discovery.md'
+main_config: ".env"
+validateWorkflow: "./steps-v/step-v-01-discovery.md"
 ---
 
 # PRD Validate Workflow

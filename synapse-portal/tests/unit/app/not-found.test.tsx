@@ -10,7 +10,13 @@ vi.mock("@/lib/i18n", () => ({
 }));
 
 vi.mock("next/link", () => ({
-  default: ({ children, href }: { children: React.ReactNode; href: string }) => (
+  default: ({
+    children,
+    href,
+  }: {
+    children: React.ReactNode;
+    href: string;
+  }) => (
     <a href={href} data-testid="next-link">
       {children}
     </a>

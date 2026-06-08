@@ -11,7 +11,7 @@ describe("components/shared/StatCard", () => {
         label="Total Requests"
         value={150}
         icon={<span data-testid="mock-icon">📊</span>}
-      />
+      />,
     );
 
     expect(screen.getByText("Total Requests")).toBeDefined();

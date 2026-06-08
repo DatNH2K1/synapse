@@ -8,7 +8,6 @@
 
 ## INITIALIZATION
 
-
 1. **Load System Configuration (MANDATORY)**: First, read the `CLAUDE.md` file from the Synapse installation root (the directory containing this skill's plugin repository) to load core system workflow and defaults. Then, read the `CLAUDE.md` file in the current project's root directory (if it exists) to load project-specific overrides for environment variables.
 
 ### Paths
@@ -17,14 +16,14 @@
 
 ### Input Files
 
-| Input | Path | Load Strategy |
-|-------|------|---------------|
-| PRD | `{planning_artifacts}/*prd*.md` (whole) or `{planning_artifacts}/*prd*/*.md` (sharded) | FULL_LOAD |
-| Epics | `{planning_artifacts}/*epic*.md` (whole) or `{planning_artifacts}/*epic*/*.md` (sharded) | FULL_LOAD |
-| Architecture | `{planning_artifacts}/*architecture*.md` (whole) or `{planning_artifacts}/*architecture*/*.md` (sharded) | FULL_LOAD |
-| UX Design | `{planning_artifacts}/*ux*.md` (whole) or `{planning_artifacts}/*ux*/*.md` (sharded) | FULL_LOAD |
-| Spec | `{planning_artifacts}/*spec-*.md` (whole) | FULL_LOAD |
-| Document Project | `{project_knowledge}/index.md` (sharded) | INDEX_GUIDED |
+| Input            | Path                                                                                                     | Load Strategy |
+| ---------------- | -------------------------------------------------------------------------------------------------------- | ------------- |
+| PRD              | `{planning_artifacts}/*prd*.md` (whole) or `{planning_artifacts}/*prd*/*.md` (sharded)                   | FULL_LOAD     |
+| Epics            | `{planning_artifacts}/*epic*.md` (whole) or `{planning_artifacts}/*epic*/*.md` (sharded)                 | FULL_LOAD     |
+| Architecture     | `{planning_artifacts}/*architecture*.md` (whole) or `{planning_artifacts}/*architecture*/*.md` (sharded) | FULL_LOAD     |
+| UX Design        | `{planning_artifacts}/*ux*.md` (whole) or `{planning_artifacts}/*ux*/*.md` (sharded)                     | FULL_LOAD     |
+| Spec             | `{planning_artifacts}/*spec-*.md` (whole)                                                                | FULL_LOAD     |
+| Document Project | `{project_knowledge}/index.md` (sharded)                                                                 | INDEX_GUIDED  |
 
 ### Context
 

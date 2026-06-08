@@ -32,15 +32,8 @@ const eslintConfig = defineConfig([
       "i18next/no-literal-string": [
         "warn",
         {
-          "ignore": [
-            "•",
-            "✓",
-            "%",
-            ":",
-            "• ",
-            "•"
-          ]
-        }
+          ignore: ["•", "✓", "%", ":", "• ", "•"],
+        },
       ],
     },
   },

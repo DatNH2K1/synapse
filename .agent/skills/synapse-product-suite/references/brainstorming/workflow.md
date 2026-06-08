@@ -1,5 +1,5 @@
 ---
-context_file: '' # Optional context file path for project-specific guidance
+context_file: "" # Optional context file path for project-specific guidance
 ---
 
 # Brainstorming Session Workflow
@@ -30,7 +30,6 @@ This uses **micro-file architecture** for disciplined execution:
 
 ## INITIALIZATION
 
-
 1. **Load System Configuration (MANDATORY)**: First, read the `CLAUDE.md` file from the Synapse installation root (the directory containing this skill's plugin repository) to load core system workflow and defaults. Then, read the `CLAUDE.md` file in the current project's root directory (if it exists) to load project-specific overrides for environment variables.
 
 ### Paths
@@ -38,7 +37,9 @@ This uses **micro-file architecture** for disciplined execution:
 - `brainstorming_session_output_file` = `{output_folder}/brainstorming/brainstorming-session-{{date}}-{{time}}.md` (evaluated once at workflow start)
 
 All steps MUST reference `{brainstorming_session_output_file}` instead of the full path pattern.
+
 - `context_file` = Optional context file path from workflow invocation for project-specific guidance
+
 ---
 
 ## EXECUTION

@@ -42,8 +42,6 @@ interface Dependency {
   symbolName: string | null;
 }
 
-
-
 export default function DependencyGraphContent({
   initialRepos,
 }: {
@@ -53,9 +51,9 @@ export default function DependencyGraphContent({
 
   const [repos] = useState<string[]>(initialRepos);
   const [selectedRepo, setSelectedRepo] = useState<string>(
-    initialRepos[0] || "synapse"
+    initialRepos[0] || "synapse",
   );
-  
+
   const [files, setFiles] = useState<FileNode[]>([]);
   const [dependencies, setDependencies] = useState<Dependency[]>([]);
   const [isLoadingGraph, setIsLoadingGraph] = useState(false);
@@ -64,8 +62,12 @@ export default function DependencyGraphContent({
   const [searchQuery, setSearchQuery] = useState("");
   const [activeMatchIndex, setActiveMatchIndex] = useState(0);
   const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"tree" | "graph" | "details">("graph");
-  const [impactData, setImpactData] = useState<{ path: string; depth: number }[]>([]);
+  const [activeTab, setActiveTab] = useState<"tree" | "graph" | "details">(
+    "graph",
+  );
+  const [impactData, setImpactData] = useState<
+    { path: string; depth: number }[]
+  >([]);
   const [isLoadingImpact, setIsLoadingImpact] = useState(false);
 
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set());
@@ -92,7 +94,10 @@ export default function DependencyGraphContent({
     return files.filter((f) => !connectedNodeIds.has(f.id));
   }, [files, connectedNodeIds, filterOrphans]);
 
-  if (filterOrphans !== prevFilterOrphans || filteredFiles !== prevFilteredFiles) {
+  if (
+    filterOrphans !== prevFilterOrphans ||
+    filteredFiles !== prevFilteredFiles
+  ) {
     setPrevFilterOrphans(filterOrphans);
     setPrevFilteredFiles(filteredFiles);
     if (filterOrphans) {
@@ -124,21 +129,26 @@ export default function DependencyGraphContent({
   };
 
   const fileTree = useMemo(() => {
-    const rootNode: TreeNode = { name: "Root", path: "", type: "folder", children: [] };
-    
+    const rootNode: TreeNode = {
+      name: "Root",
+      path: "",
+      type: "folder",
+      children: [],
+    };
+
     filteredFiles.forEach((file) => {
       const parts = file.path.split("/");
       let current = rootNode;
       let currentPath = "";
-      
+
       parts.forEach((part, index) => {
         currentPath = currentPath ? `${currentPath}/${part}` : part;
         const isLast = index === parts.length - 1;
-        
+
         if (!current.children) {
           current.children = [];
         }
-        
+
         let found = current.children.find((child) => child.name === part);
         if (!found) {
           found = {
@@ -153,7 +163,7 @@ export default function DependencyGraphContent({
         current = found;
       });
     });
-    
+
     const sortTree = (node: TreeNode) => {
       if (node.children) {
         node.children.sort((a, b) => {
@@ -165,12 +175,10 @@ export default function DependencyGraphContent({
         node.children.forEach(sortTree);
       }
     };
-    
+
     sortTree(rootNode);
     return rootNode.children || [];
   }, [filteredFiles]);
-
-
 
   const graphRef = useRef<{
     zoomIn: () => void;
@@ -179,10 +187,14 @@ export default function DependencyGraphContent({
   } | null>(null);
 
   const handleOnRef = React.useCallback(
-    (ref: { zoomIn: () => void; zoomOut: () => void; zoomToFit: (d?: number) => void }) => {
+    (ref: {
+      zoomIn: () => void;
+      zoomOut: () => void;
+      zoomToFit: (d?: number) => void;
+    }) => {
       graphRef.current = ref;
     },
-    []
+    [],
   );
 
   // Load graph data dynamically when selectedRepo changes
@@ -192,7 +204,7 @@ export default function DependencyGraphContent({
       setIsLoadingGraph(true);
       try {
         const res = await fetch(
-          `/api/indexer/graph?repo=${encodeURIComponent(selectedRepo)}`
+          `/api/indexer/graph?repo=${encodeURIComponent(selectedRepo)}`,
         );
         const data = await res.json();
         if (data.success !== false && active) {
@@ -234,8 +246,6 @@ export default function DependencyGraphContent({
 
     return { nodes: gNodes, links: gLinks };
   }, [files, dependencies]);
-
-
 
   const filteredNodes = useMemo(() => {
     if (!filterOrphans) return nodes;
@@ -293,8 +303,8 @@ export default function DependencyGraphContent({
     try {
       const response = await fetch(
         `/api/indexer/impact?file=${encodeURIComponent(
-          file.path
-        )}&repo=${encodeURIComponent(selectedRepo)}`
+          file.path,
+        )}&repo=${encodeURIComponent(selectedRepo)}`,
       );
       const data = await response.json();
       if (data.success !== false) {
@@ -306,8 +316,6 @@ export default function DependencyGraphContent({
       setIsLoadingImpact(false);
     }
   };
-
-
 
   const handleZoomIn = () => graphRef.current?.zoomIn();
   const handleZoomOut = () => graphRef.current?.zoomOut();
@@ -350,7 +358,14 @@ export default function DependencyGraphContent({
                   : "border-white/5 bg-dashboard-bg/85 text-slate-400 hover:bg-white/5 hover:text-slate-300"
               }`}
             >
-              <Network size={14} className={filterOrphans ? "text-amber-400 animate-pulse" : "text-amber-500"} />
+              <Network
+                size={14}
+                className={
+                  filterOrphans
+                    ? "text-amber-400 animate-pulse"
+                    : "text-amber-500"
+                }
+              />
               <span>
                 {filterOrphans ? "Orphans Only" : `Orphans (${orphanCount})`}
               </span>
@@ -368,7 +383,9 @@ export default function DependencyGraphContent({
         <button
           onClick={() => setActiveTab("tree")}
           className={`flex-1 py-2 text-center text-xs font-bold rounded-lg transition-all ${
-            activeTab === "tree" ? "bg-indigo-600 text-white shadow" : "text-slate-400 hover:text-slate-200"
+            activeTab === "tree"
+              ? "bg-indigo-600 text-white shadow"
+              : "text-slate-400 hover:text-slate-200"
           }`}
         >
           {t("folder_tree")}
@@ -376,7 +393,9 @@ export default function DependencyGraphContent({
         <button
           onClick={() => setActiveTab("graph")}
           className={`flex-1 py-2 text-center text-xs font-bold rounded-lg transition-all ${
-            activeTab === "graph" ? "bg-indigo-600 text-white shadow" : "text-slate-400 hover:text-slate-200"
+            activeTab === "graph"
+              ? "bg-indigo-600 text-white shadow"
+              : "text-slate-400 hover:text-slate-200"
           }`}
         >
           {t("dependency_graph")}
@@ -384,7 +403,9 @@ export default function DependencyGraphContent({
         <button
           onClick={() => setActiveTab("details")}
           className={`flex-1 py-2 text-center text-xs font-bold rounded-lg transition-all relative ${
-            activeTab === "details" ? "bg-indigo-600 text-white shadow" : "text-slate-400 hover:text-slate-200"
+            activeTab === "details"
+              ? "bg-indigo-600 text-white shadow"
+              : "text-slate-400 hover:text-slate-200"
           }`}
         >
           {t("details")}
@@ -394,13 +415,17 @@ export default function DependencyGraphContent({
         </button>
       </div>
 
-      <div className={`grid grid-cols-1 gap-6 lg:grid-cols-12 2xl:grid-cols-12 ${isFullscreen ? "h-full w-full" : ""}`}>
+      <div
+        className={`grid grid-cols-1 gap-6 lg:grid-cols-12 2xl:grid-cols-12 ${isFullscreen ? "h-full w-full" : ""}`}
+      >
         {/* Folder Tree Sidebar */}
         <div
           className={`rounded-2xl glass p-5 border border-white/5 flex flex-col gap-4 shadow-2xl overflow-y-auto lg:col-span-4 lg:row-start-1 2xl:col-span-3 ${
             activeTab === "tree" ? "flex" : "hidden lg:flex"
           } ${
-            isFullscreen ? "h-[90vh]" : "h-[calc(100vh-16rem)] min-h-[500px] lg:h-[calc(50vh-9rem)] lg:min-h-[250px] 2xl:h-[calc(100vh-16rem)] 2xl:min-h-[500px]"
+            isFullscreen
+              ? "h-[90vh]"
+              : "h-[calc(100vh-16rem)] min-h-[500px] lg:h-[calc(50vh-9rem)] lg:min-h-[250px] 2xl:h-[calc(100vh-16rem)] 2xl:min-h-[500px]"
           }`}
         >
           <FolderTree
@@ -420,7 +445,9 @@ export default function DependencyGraphContent({
           className={`relative overflow-hidden rounded-2xl glass shadow-2xl border border-white/5 lg:col-span-8 lg:row-span-2 2xl:col-span-6 2xl:row-span-1 ${
             activeTab === "graph" ? "block" : "hidden lg:block"
           } ${
-            isFullscreen ? "h-[90vh]" : "h-[calc(100vh-16rem)] min-h-[520px] 2xl:min-h-[500px]"
+            isFullscreen
+              ? "h-[90vh]"
+              : "h-[calc(100vh-16rem)] min-h-[520px] 2xl:min-h-[500px]"
           }`}
         >
           {isLoadingGraph ? (
@@ -434,7 +461,7 @@ export default function DependencyGraphContent({
             </div>
           ) : null}
 
-           <ForceGraph
+          <ForceGraph
             nodes={filteredNodes}
             links={filteredLinks}
             onNodeClick={handleNodeClick}
@@ -495,7 +522,9 @@ export default function DependencyGraphContent({
           className={`rounded-2xl glass p-6 border border-white/5 flex flex-col gap-6 shadow-2xl overflow-y-auto lg:col-span-4 lg:row-start-2 2xl:col-span-3 2xl:row-start-1 ${
             activeTab === "details" ? "flex" : "hidden lg:flex"
           } ${
-            isFullscreen ? "h-[90vh]" : "h-[calc(100vh-16rem)] min-h-[500px] lg:h-[calc(50vh-9rem)] lg:min-h-[250px] 2xl:h-[calc(100vh-16rem)] 2xl:min-h-[500px]"
+            isFullscreen
+              ? "h-[90vh]"
+              : "h-[calc(100vh-16rem)] min-h-[500px] lg:h-[calc(50vh-9rem)] lg:min-h-[250px] 2xl:h-[calc(100vh-16rem)] 2xl:min-h-[500px]"
           }`}
         >
           {selectedFile ? (
@@ -524,7 +553,9 @@ export default function DependencyGraphContent({
               {/* Exports */}
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">
-                  {t("exported_symbols", { count: selectedFile.symbols.length })}
+                  {t("exported_symbols", {
+                    count: selectedFile.symbols.length,
+                  })}
                 </p>
                 {selectedFile.symbols.length > 0 ? (
                   <div className="flex flex-col gap-1.5 max-h-40 overflow-y-auto">
@@ -543,21 +574,28 @@ export default function DependencyGraphContent({
                     ))}
                   </div>
                 ) : (
-                  <p className="text-xs text-slate-600 italic">{t("no_exports")}</p>
+                  <p className="text-xs text-slate-600 italic">
+                    {t("no_exports")}
+                  </p>
                 )}
               </div>
 
               {/* Impact / Blast Radius */}
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2 flex items-center gap-1">
-                  <Network size={12} className="text-accent-primary animate-pulse" />
+                  <Network
+                    size={12}
+                    className="text-accent-primary animate-pulse"
+                  />
                   {t("blast_radius")}
                 </p>
 
                 {isLoadingImpact ? (
                   <div className="flex items-center gap-2 py-4 justify-center">
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-indigo-500 border-t-transparent"></div>
-                    <span className="text-xs text-slate-500">{t("analyzing_graph")}</span>
+                    <span className="text-xs text-slate-500">
+                      {t("analyzing_graph")}
+                    </span>
                   </div>
                 ) : impactData.length > 0 ? (
                   <div className="flex flex-col gap-1.5 max-h-48 overflow-y-auto">
@@ -570,7 +608,8 @@ export default function DependencyGraphContent({
                           {item.path.split("/").pop()}
                         </span>
                         <span className="flex items-center gap-1 text-[9px] font-black text-rose-400">
-                          {t("depth_label")} <ChevronRight size={8} /> {item.depth}
+                          {t("depth_label")} <ChevronRight size={8} />{" "}
+                          {item.depth}
                         </span>
                       </div>
                     ))}
@@ -584,7 +623,10 @@ export default function DependencyGraphContent({
             </>
           ) : (
             <div className="flex flex-col items-center justify-center h-full text-center p-4">
-              <Network size={48} className="text-slate-700 animate-pulse mb-3" />
+              <Network
+                size={48}
+                className="text-slate-700 animate-pulse mb-3"
+              />
               <h4 className="text-sm font-bold text-slate-400 uppercase tracking-wider">
                 {t("select_file_analyze")}
               </h4>

@@ -27,13 +27,24 @@ describe("API Indexer Graph Route", () => {
       { id: "file-2", path: "src/utils.ts", repo: "test-repo", symbols: [] },
     ];
     const mockDeps = [
-      { id: "dep-1", dependentFileId: "file-1", dependencyFileId: "file-2", symbolName: "foo" },
+      {
+        id: "dep-1",
+        dependentFileId: "file-1",
+        dependencyFileId: "file-2",
+        symbolName: "foo",
+      },
     ];
 
-    vi.mocked(prisma.indexerFile.findMany).mockResolvedValue(mockFiles as unknown as IndexerFile[]);
-    vi.mocked(prisma.indexerDependency.findMany).mockResolvedValue(mockDeps as unknown as IndexerDependency[]);
+    vi.mocked(prisma.indexerFile.findMany).mockResolvedValue(
+      mockFiles as unknown as IndexerFile[],
+    );
+    vi.mocked(prisma.indexerDependency.findMany).mockResolvedValue(
+      mockDeps as unknown as IndexerDependency[],
+    );
 
-    const req = new Request("http://localhost/api/indexer/graph?repo=test-repo");
+    const req = new Request(
+      "http://localhost/api/indexer/graph?repo=test-repo",
+    );
     const response = await GET(req);
     const data = await response.json();
 
@@ -78,7 +89,9 @@ describe("API Indexer Graph Route", () => {
   });
 
   it("should return 500 error on database failure", async () => {
-    vi.mocked(prisma.indexerFile.findMany).mockRejectedValue(new Error("DB Error"));
+    vi.mocked(prisma.indexerFile.findMany).mockRejectedValue(
+      new Error("DB Error"),
+    );
 
     const req = new Request("http://localhost/api/indexer/graph");
     const response = await GET(req);

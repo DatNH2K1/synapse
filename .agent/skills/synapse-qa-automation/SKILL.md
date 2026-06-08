@@ -7,6 +7,7 @@ description: "Advanced QA Automation: End-to-End browser testing, visual regress
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
+
 > [!IMPORTANT]
 > **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
 
@@ -25,9 +26,11 @@ This skill provides comprehensive methodologies and guidelines to automate brows
 ## Core Workflows & Methodologies
 
 ### 1. End-to-End (E2E) Browser Testing
+
 Write robust, non-flaky automated browser tests using Playwright or Cypress to simulate multi-step user journeys and assert application states.
 
 **Workflow Steps**:
+
 1. **Define Test Scenarios**: Extract user stories and Acceptance Criteria (AC) to map key workflows (e.g., "Add product to cart, check out, verify order receipt").
 2. **Page Object Model (POM)**: Structure test code using the POM pattern to separate element selectors from test logic.
 3. **Execute Assertions**: Ensure tests assert state changes (e.g., database writes, page navigation, success notification visibilities).
@@ -36,9 +39,11 @@ Write robust, non-flaky automated browser tests using Playwright or Cypress to s
 ---
 
 ### 2. Visual Regression Testing
+
 Automatically verify visual pixel-perfection across commits to catch UI shifts, layout breaks, or font sizing issues.
 
 **Workflow Steps**:
+
 1. **Take Baseline Screenshots**: Capture golden screenshots of key responsive layouts (Mobile, Tablet, Desktop) on clean builds.
 2. **Execute Comparators**: Run visual difference tools on subsequent commits (e.g., `expect(page).toHaveScreenshot()`).
 3. **Analyze Differences**: Generate pixel-diff overlays highlighting any unexpected font, padding, margin, or color changes.
@@ -47,9 +52,11 @@ Automatically verify visual pixel-perfection across commits to catch UI shifts, 
 ---
 
 ### 3. Accessibility Testing (A11y Compliance)
+
 Audit the interface to ensure WCAG (Web Content Accessibility Guidelines) AA/AAA compliance.
 
 **Workflow Steps**:
+
 1. **Automated Audits**: Run `axe-core` engines within E2E test scripts to detect issues like missing alt texts, improper heading structures, and bad ARIA attributes.
 2. **Color Contrast Audits**: Check color contrast ratios (minimum 4.5:1 for normal text, 3:1 for large text).
 3. **Keyboard Nav Audits**: Assert that all interactive elements can be focused and triggered using ONLY keyboard inputs (`Tab`, `Enter`, `Space`).
@@ -57,6 +64,7 @@ Audit the interface to ensure WCAG (Web Content Accessibility Guidelines) AA/AAA
 ---
 
 ### 4. Performance & Core Web Vitals Audits
+
 Measure, track, and enforce page speed budgets to guarantee a premium, instantaneous user experience.
 
 - **Largest Contentful Paint (LCP)**: Verify main page content renders in under 2.5 seconds.
@@ -69,4 +77,5 @@ Measure, track, and enforce page speed budgets to guarantee a premium, instantan
 ## Output Templates
 
 Refer to the official template when outputting an automated testing strategy and coverage plan:
+
 - [E2E Test Plan Template](./templates/e2e-test-plan.md)

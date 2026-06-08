@@ -29,8 +29,19 @@ vi.mock("@/lib/db", () => ({
 vi.mock("@/lib/services/manifest-service", () => ({
   manifestService: {
     getAgents: () => [
-      { name: "agent-1", displayName: "Sally Agent", title: "Sally", icon: "user", role: "UX Designer" },
-      { name: "agent-2", title: "Winston", icon: "cpu", capabilities: "Architecture" },
+      {
+        name: "agent-1",
+        displayName: "Sally Agent",
+        title: "Sally",
+        icon: "user",
+        role: "UX Designer",
+      },
+      {
+        name: "agent-2",
+        title: "Winston",
+        icon: "cpu",
+        capabilities: "Architecture",
+      },
     ],
   },
 }));
@@ -46,14 +57,19 @@ vi.mock("@/lib/services/knowledge-service", () => ({
       { id: "u-2" },
       { id: "u-3" },
     ],
-    getTags: async () => [
-      { id: "t-1" },
-    ],
+    getTags: async () => [{ id: "t-1" }],
   },
 }));
 
 vi.mock("@/components/landing/LandingPageContent", () => ({
-  default: ({ userName, nodesCount, lessonCount, pendingCount, tagsCount, agents }: LandingPageContentProps) => (
+  default: ({
+    userName,
+    nodesCount,
+    lessonCount,
+    pendingCount,
+    tagsCount,
+    agents,
+  }: LandingPageContentProps) => (
     <div data-testid="landing-content">
       <span>User: {userName}</span>
       <span>Nodes: {nodesCount}</span>

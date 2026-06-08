@@ -1,7 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import React from "react";
 import { render, screen, act, cleanup } from "@testing-library/react";
-import RealtimeProvider, { useRealtime } from "@/components/shared/RealtimeProvider";
+import RealtimeProvider, {
+  useRealtime,
+} from "@/components/shared/RealtimeProvider";
 
 // Mock EventSource
 interface MockEventSourceInstance {
@@ -32,7 +34,10 @@ class MockNotification {
   static instances: MockNotification[] = [];
   onclick: (() => void) | null = null;
 
-  constructor(public title: string, public options?: NotificationOptions) {
+  constructor(
+    public title: string,
+    public options?: NotificationOptions,
+  ) {
     MockNotification.instances.push(this);
   }
 }
@@ -65,7 +70,11 @@ vi.mock("@/lib/i18n", () => ({
 }));
 
 // Test helper component to consume hook
-function Consumer({ onRender }: { onRender: (context: ReturnType<typeof useRealtime>) => void }) {
+function Consumer({
+  onRender,
+}: {
+  onRender: (context: ReturnType<typeof useRealtime>) => void;
+}) {
   const context = useRealtime();
   onRender(context);
   return <div>Pending: {context.pendingCount}</div>;
@@ -93,7 +102,7 @@ describe("components/shared/RealtimeProvider", () => {
     render(
       <RealtimeProvider>
         <div>Child Content</div>
-      </RealtimeProvider>
+      </RealtimeProvider>,
     );
 
     expect(screen.getByText("Child Content")).toBeDefined();
@@ -106,8 +115,12 @@ describe("components/shared/RealtimeProvider", () => {
 
     render(
       <RealtimeProvider>
-        <Consumer onRender={(c) => { capturedContext = c; }} />
-      </RealtimeProvider>
+        <Consumer
+          onRender={(c) => {
+            capturedContext = c;
+          }}
+        />
+      </RealtimeProvider>,
     );
 
     expect(capturedContext?.pendingCount).toBe(0);
@@ -130,8 +143,12 @@ describe("components/shared/RealtimeProvider", () => {
     let capturedContext: ReturnType<typeof useRealtime> | undefined;
     render(
       <RealtimeProvider>
-        <Consumer onRender={(c) => { capturedContext = c; }} />
-      </RealtimeProvider>
+        <Consumer
+          onRender={(c) => {
+            capturedContext = c;
+          }}
+        />
+      </RealtimeProvider>,
     );
 
     expect(capturedContext?.pendingCount).toBe(0);
@@ -150,11 +167,13 @@ describe("components/shared/RealtimeProvider", () => {
   });
 
   it("should attempt reconnect on error", () => {
-    const consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const consoleWarnSpy = vi
+      .spyOn(console, "warn")
+      .mockImplementation(() => {});
     render(
       <RealtimeProvider>
         <div>Child</div>
-      </RealtimeProvider>
+      </RealtimeProvider>,
     );
 
     const firstInstance = activeInstance;
@@ -182,8 +201,12 @@ describe("components/shared/RealtimeProvider", () => {
     let capturedContext: ReturnType<typeof useRealtime> | undefined;
     render(
       <RealtimeProvider>
-        <Consumer onRender={(c) => { capturedContext = c; }} />
-      </RealtimeProvider>
+        <Consumer
+          onRender={(c) => {
+            capturedContext = c;
+          }}
+        />
+      </RealtimeProvider>,
     );
 
     const mockCallback = vi.fn();
@@ -212,7 +235,7 @@ describe("components/shared/RealtimeProvider", () => {
     render(
       <RealtimeProvider>
         <div>Child</div>
-      </RealtimeProvider>
+      </RealtimeProvider>,
     );
     expect(mockRequestPermission).toHaveBeenCalled();
   });
@@ -222,7 +245,7 @@ describe("components/shared/RealtimeProvider", () => {
     render(
       <RealtimeProvider>
         <div>Child</div>
-      </RealtimeProvider>
+      </RealtimeProvider>,
     );
 
     act(() => {
@@ -256,7 +279,7 @@ describe("components/shared/RealtimeProvider", () => {
     render(
       <RealtimeProvider>
         <div>Child</div>
-      </RealtimeProvider>
+      </RealtimeProvider>,
     );
 
     act(() => {

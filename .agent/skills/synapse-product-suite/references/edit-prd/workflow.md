@@ -1,5 +1,5 @@
 ---
-main_config: '.env'
+main_config: ".env"
 ---
 
 # PRD Edit Workflow

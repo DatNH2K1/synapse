@@ -10,7 +10,6 @@ export function getNodeCategoryLabel(node: Node): string {
   return node.type || "Knowledge Node";
 }
 
-
 export function groupTagsByScope(tags: Tag[]) {
   const groups: Record<string, Tag[]> = {};
   tags.forEach((t) => {

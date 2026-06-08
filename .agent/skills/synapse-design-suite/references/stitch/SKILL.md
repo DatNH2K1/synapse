@@ -14,6 +14,7 @@ metadata:
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
+
 > [!IMPORTANT]
 > **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
 
@@ -107,6 +108,7 @@ npx tsx scripts/stitch-export.ts <screen-id> [--format html|image|all] [--output
 ```
 
 Outputs:
+
 - `design.html` — Semantic HTML with Tailwind CSS classes
 - `design.png` — Screenshot of the design
 - `DESIGN.md` — Agent-readable design spec (colors, typography, spacing, components)
@@ -126,7 +128,9 @@ npx tsx scripts/stitch-quota.ts reset       # Force reset (auto-resets daily)
 Refine an existing design.
 
 ```typescript
-const editedScreen = await screen.edit("Make the header darker and add a search bar");
+const editedScreen = await screen.edit(
+  "Make the header darker and add a search bar",
+);
 ```
 
 ## Orchestration Pipeline
@@ -173,9 +177,9 @@ See `references/quota-management.md` for strategies.
 
 ## References
 
-| Topic | File |
-|-------|------|
-| SDK API | `references/stitch-sdk-api.md` |
-| MCP Setup | `references/stitch-mcp-setup.md` |
+| Topic             | File                                    |
+| ----------------- | --------------------------------------- |
+| SDK API           | `references/stitch-sdk-api.md`          |
+| MCP Setup         | `references/stitch-mcp-setup.md`        |
 | Pipeline Patterns | `references/design-to-code-pipeline.md` |
-| Quota Strategy | `references/quota-management.md` |
+| Quota Strategy    | `references/quota-management.md`        |

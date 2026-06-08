@@ -68,7 +68,8 @@ export default function Sidebar({
             </div>
             <div>
               <p className="text-lg font-black leading-none tracking-tight text-dashboard-fg">
-                {t("brand_name")}<span className="text-accent-primary">.</span>
+                {t("brand_name")}
+                <span className="text-accent-primary">.</span>
               </p>
               <p className="mt-1 text-[9px] font-bold uppercase tracking-widest text-dashboard-fg/55">
                 {t("intelligence_os")}
@@ -142,7 +143,8 @@ export default function Sidebar({
             </div>
             <div className="hidden min-[390px]:block">
               <p className="text-sm font-black leading-none tracking-tight text-dashboard-fg">
-                {t("brand_name")}<span className="text-accent-primary">.</span>
+                {t("brand_name")}
+                <span className="text-accent-primary">.</span>
               </p>
               <p className="mt-0.5 text-[8px] font-bold uppercase tracking-widest text-dashboard-fg/55">
                 {t("intelligence_os")}

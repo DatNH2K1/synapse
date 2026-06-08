@@ -14,13 +14,7 @@ export default defineConfig({
     onConsoleLog() {
       return false;
     },
-    exclude: [
-      "node_modules",
-      ".next",
-      "dist",
-      ".git",
-      ".cache"
-    ],
+    exclude: ["node_modules", ".next", "dist", ".git", ".cache"],
     environment: "jsdom",
     coverage: {
       enabled: true,

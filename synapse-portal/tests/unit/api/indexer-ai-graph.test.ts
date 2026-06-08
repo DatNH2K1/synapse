@@ -24,7 +24,11 @@ describe("API Indexer AI Graph Route", () => {
 
   it("should return dependency graph for given repo on success", async () => {
     const mockFiles = [
-      { id: "id-1", path: "src/main.ts", symbols: [{ name: "main", kind: "function", range: "1:0" }] },
+      {
+        id: "id-1",
+        path: "src/main.ts",
+        symbols: [{ name: "main", kind: "function", range: "1:0" }],
+      },
       { id: "id-2", path: "src/utils.ts", symbols: [] },
     ];
     const mockDeps = [
@@ -33,8 +37,12 @@ describe("API Indexer AI Graph Route", () => {
       { dependentFileId: "id-1", dependencyFileId: "id-invalid" }, // invalid
     ];
 
-    vi.mocked(prisma.indexerFile.findMany).mockResolvedValue(mockFiles as unknown as IndexerFile[]);
-    vi.mocked(prisma.indexerDependency.findMany).mockResolvedValue(mockDeps as unknown as IndexerDependency[]);
+    vi.mocked(prisma.indexerFile.findMany).mockResolvedValue(
+      mockFiles as unknown as IndexerFile[],
+    );
+    vi.mocked(prisma.indexerDependency.findMany).mockResolvedValue(
+      mockDeps as unknown as IndexerDependency[],
+    );
 
     const req = new Request("http://localhost/api/indexer/ai/graph");
     const response = await GET(req);
@@ -44,11 +52,15 @@ describe("API Indexer AI Graph Route", () => {
     expect(data.success).toBe(true);
     expect(data.graph["src/main.ts"]).toBeDefined();
     expect(data.graph["src/main.ts"].dependencies).toEqual(["src/utils.ts"]);
-    expect(data.graph["src/main.ts"].symbols).toEqual([{ name: "main", kind: "function", range: "1:0" }]);
+    expect(data.graph["src/main.ts"].symbols).toEqual([
+      { name: "main", kind: "function", range: "1:0" },
+    ]);
   });
 
   it("should handle exceptions gracefully", async () => {
-    vi.mocked(prisma.indexerFile.findMany).mockRejectedValue(new Error("Database failure"));
+    vi.mocked(prisma.indexerFile.findMany).mockRejectedValue(
+      new Error("Database failure"),
+    );
 
     const req = new Request("http://localhost/api/indexer/ai/graph");
     const response = await GET(req);

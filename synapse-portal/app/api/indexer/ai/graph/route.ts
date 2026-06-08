@@ -47,7 +47,13 @@ export async function GET(request: Request) {
       }
     });
 
-    const graph: Record<string, { symbols: { name: string; kind: string; range: string }[]; dependencies: string[] }> = {};
+    const graph: Record<
+      string,
+      {
+        symbols: { name: string; kind: string; range: string }[];
+        dependencies: string[];
+      }
+    > = {};
 
     files.forEach((file) => {
       graph[file.path] = {
@@ -66,7 +72,8 @@ export async function GET(request: Request) {
       graph,
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Internal Server Error";
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

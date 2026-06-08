@@ -4,6 +4,7 @@ description: Lossless LLM-optimized compression of source documents. Use when th
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
+
 > [!IMPORTANT]
 > **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
 
@@ -32,16 +33,16 @@ This is a compression task, not a summarization task. Summaries are lossy. Disti
    - **output_path** (optional) — Where to save. When omitted, save adjacent to the primary source document with `-distillate.md` suffix.
    - **--validate** (flag) — Run round-trip reconstruction test after producing the distillate.
 
-2. **Route** — proceed to Stage 1.
+3. **Route** — proceed to Stage 1.
 
 ## Stages
 
-| # | Stage | Purpose |
-|---|-------|---------|
-| 1 | Analyze | Run analysis script, determine routing and splitting |
-| 2 | Compress | Spawn compressor agent(s) to produce the distillate |
-| 3 | Verify & Output | Completeness check, format check, save output |
-| 4 | Round-Trip Validate | (--validate only) Reconstruct and diff against originals |
+| #   | Stage               | Purpose                                                  |
+| --- | ------------------- | -------------------------------------------------------- |
+| 1   | Analyze             | Run analysis script, determine routing and splitting     |
+| 2   | Compress            | Spawn compressor agent(s) to produce the distillate      |
+| 3   | Verify & Output     | Completeness check, format check, save output            |
+| 4   | Round-Trip Validate | (--validate only) Reconstruct and diff against originals |
 
 ### Stage 1: Analyze
 
@@ -92,7 +93,7 @@ After the compressor (or merge compressor) returns:
      - "{relative path to source file 2}"
    downstream_consumer: "{consumer or 'general'}"
    created: "{date}"
-   token_estimate: {approximate token count}
+   token_estimate: { approximate token count }
    parts: 1
    ---
    ```
@@ -169,18 +170,22 @@ This stage proves the distillate is lossless by reconstructing source documents 
    ---
 
    ## Validation Summary
+
    - Status: PASS | PASS_WITH_WARNINGS | FAIL
    - Information preserved: {percentage estimate}
    - Gaps found: {count}
    - Hallucinations detected: {count}
 
    ## Gaps (information in originals but missing from reconstruction)
+
    - {gap description} — Source: {which original}, Section: {where}
 
    ## Hallucinations (information in reconstruction not traceable to originals)
+
    - {hallucination description} — appears to fill gap in: {section}
 
    ## Possible Gap Markers (flagged by reconstructor)
+
    - {marker description}
    ```
 

@@ -26,12 +26,13 @@ describe("components/shared/ThemeProvider", () => {
     const mockConsoleError = vi.fn();
     console.error = mockConsoleError;
 
-    const { default: ThemeProvider } = await import("@/components/shared/ThemeProvider");
-    
+    const { default: ThemeProvider } =
+      await import("@/components/shared/ThemeProvider");
+
     render(
       <ThemeProvider>
         <div data-testid="child">Test</div>
-      </ThemeProvider>
+      </ThemeProvider>,
     );
 
     // Trigger the modified console.error

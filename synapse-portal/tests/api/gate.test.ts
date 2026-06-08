@@ -1,4 +1,3 @@
-
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { POST as postGate } from "@/app/api/gate/route";
 import { POST as postMerge } from "@/app/api/gate/merge/route";
@@ -283,7 +282,11 @@ describe("Gate API Routes Tests", () => {
   describe("POST /api/gate/sleep-cycle", () => {
     it("should trigger sleep cycle service successfully", async () => {
       const mockSummary = { forgotten: 2, kept: 8 };
-      vi.mocked(sleepCycleService.run).mockResolvedValue(mockSummary as object as Awaited<ReturnType<typeof sleepCycleService.run>>);
+      vi.mocked(sleepCycleService.run).mockResolvedValue(
+        mockSummary as object as Awaited<
+          ReturnType<typeof sleepCycleService.run>
+        >,
+      );
 
       const response = await postSleepCycle();
       expect(response.status).toBe(200);
@@ -305,7 +308,9 @@ describe("Gate API Routes Tests", () => {
     });
 
     it("should return 500 with default message if sleep cycle service fails with non-Error", async () => {
-      vi.mocked(sleepCycleService.run).mockRejectedValue("Unexpected rejection string");
+      vi.mocked(sleepCycleService.run).mockRejectedValue(
+        "Unexpected rejection string",
+      );
 
       const response = await postSleepCycle();
       expect(response.status).toBe(500);

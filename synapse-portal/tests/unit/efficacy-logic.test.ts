@@ -1,4 +1,3 @@
- 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { knowledgeService } from "@/lib/services/knowledge-service";
 import { prisma } from "@/lib/db";
@@ -54,7 +53,11 @@ describe("Efficacy Tracker Logic", () => {
       tags: [],
     } as object as Awaited<ReturnType<typeof prisma.node.findUnique>>);
 
-    vi.mocked(prisma.node.update).mockResolvedValue(mockUpdatedNode as object as Awaited<ReturnType<typeof prisma.node.update>>);
+    vi.mocked(prisma.node.update).mockResolvedValue(
+      mockUpdatedNode as object as Awaited<
+        ReturnType<typeof prisma.node.update>
+      >,
+    );
 
     const result = await knowledgeService.incrementSuccessCount(mockNodeId);
 
@@ -127,8 +130,12 @@ describe("Efficacy Tracker Logic", () => {
       ],
     };
 
-    vi.mocked(prisma.node.findUnique).mockResolvedValue(mockNode as object as Awaited<ReturnType<typeof prisma.node.findUnique>>);
-    vi.mocked(prisma.nodeTag.update).mockResolvedValue({} as object as Awaited<ReturnType<typeof prisma.nodeTag.update>>);
+    vi.mocked(prisma.node.findUnique).mockResolvedValue(
+      mockNode as object as Awaited<ReturnType<typeof prisma.node.findUnique>>,
+    );
+    vi.mocked(prisma.nodeTag.update).mockResolvedValue(
+      {} as object as Awaited<ReturnType<typeof prisma.nodeTag.update>>,
+    );
     vi.mocked(prisma.node.update).mockResolvedValue({
       ...mockNode,
       memory_tier: "ACTIVE",

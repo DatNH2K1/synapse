@@ -8,7 +8,7 @@ export default async function DependencyGraphPage() {
   let initialRepos: string[] = [];
 
   try {
-        if (prisma && prisma.indexerRepo) {
+    if (prisma && prisma.indexerRepo) {
       const dbRepos = await prisma.indexerRepo.findMany({
         select: { name: true },
         orderBy: { lastSyncedAt: "desc" },

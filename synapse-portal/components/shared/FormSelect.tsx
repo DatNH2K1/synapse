@@ -19,7 +19,9 @@ export default function FormSelect({
   className = "",
 }: FormSelectProps) {
   // Use state to track the value only if it is uncontrolled
-  const [localValue, setLocalValue] = React.useState(defaultValue || (options[0]?.value ?? ""));
+  const [localValue, setLocalValue] = React.useState(
+    defaultValue || (options[0]?.value ?? ""),
+  );
 
   // Derive the active value based on control status
   const currentValue = value !== undefined ? value : localValue;

@@ -77,7 +77,9 @@ describe("QueueService Persistent DB Queue", () => {
   });
 
   it("TC3: Should return early when database claim fails", async () => {
-    vi.mocked(prisma.$queryRaw).mockRejectedValue(new Error("DB Connection Error"));
+    vi.mocked(prisma.$queryRaw).mockRejectedValue(
+      new Error("DB Connection Error"),
+    );
 
     await queueService.enqueueEmbeddingTask("node-3", "error text");
     await vi.runAllTimersAsync();
@@ -113,7 +115,7 @@ describe("QueueService Persistent DB Queue", () => {
     vi.mocked(prisma.queueTask.create).mockResolvedValue({} as QueueTask);
 
     await queueService.enqueueEmbeddingTask("node-retry", "retry text");
-    
+
     // Run initial execution
     await vi.advanceTimersByTimeAsync(50);
 
@@ -123,7 +125,7 @@ describe("QueueService Persistent DB Queue", () => {
 
     // Advance time to trigger setTimeout retry scheduling
     await vi.runAllTimersAsync();
-    
+
     // Now it should have rescheduled the task, making it 2 calls in total
     expect(prisma.queueTask.create).toHaveBeenCalledTimes(2);
     expect(prisma.queueTask.create).toHaveBeenLastCalledWith({
@@ -148,7 +150,9 @@ describe("QueueService Persistent DB Queue", () => {
       .mockResolvedValueOnce([mockTaskMaxAttempts])
       .mockResolvedValue([]);
 
-    vi.mocked(vectorService.updateNodeEmbedding).mockRejectedValue(new Error("Embedding calculation failure"));
+    vi.mocked(vectorService.updateNodeEmbedding).mockRejectedValue(
+      new Error("Embedding calculation failure"),
+    );
 
     await queueService.enqueueEmbeddingTask("node-failed", "failed text");
     await vi.runAllTimersAsync();
@@ -171,12 +175,17 @@ describe("QueueService Persistent DB Queue", () => {
       .mockResolvedValueOnce([mockTaskRescheduleFail])
       .mockResolvedValue([]);
 
-    vi.mocked(vectorService.updateNodeEmbedding).mockRejectedValue(new Error("Embedding error"));
+    vi.mocked(vectorService.updateNodeEmbedding).mockRejectedValue(
+      new Error("Embedding error"),
+    );
     vi.mocked(prisma.queueTask.create)
       .mockResolvedValueOnce({} as QueueTask) // First call (enqueue) succeeds
       .mockRejectedValueOnce(new Error("DB insert error during reschedule")); // Second call (reschedule) fails
 
-    await queueService.enqueueEmbeddingTask("node-reschedule-fail", "fail text");
+    await queueService.enqueueEmbeddingTask(
+      "node-reschedule-fail",
+      "fail text",
+    );
     await vi.runAllTimersAsync();
 
     // 1 call for enqueue, 1 call for scheduled retry (which fails)
@@ -184,20 +193,24 @@ describe("QueueService Persistent DB Queue", () => {
   });
 
   it("TC8: Should handle error during enqueue task", async () => {
-    vi.mocked(prisma.queueTask.create).mockRejectedValue(new Error("Database insert error during enqueue"));
-    
+    vi.mocked(prisma.queueTask.create).mockRejectedValue(
+      new Error("Database insert error during enqueue"),
+    );
+
     // This should not throw, but log error internally
     await queueService.enqueueEmbeddingTask("node-enqueue-fail", "fail text");
-    
+
     expect(prisma.queueTask.create).toHaveBeenCalled();
   });
 
   it("TC9: Should cover the logQueueError function directly", () => {
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-    
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
     // Call the private exposed function directly to cover it
     queueService._logQueueError(new Error("Test queue loop error"));
-    
+
     expect(consoleErrorSpy).toHaveBeenCalled();
     consoleErrorSpy.mockRestore();
   });

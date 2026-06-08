@@ -24,15 +24,39 @@ describe("components/gate/MergeModal", () => {
     sourceNodeIds: ["node-1", "node-2"],
     proposalId: "prop-123",
     sourceNodes: [
-      { id: "node-1", label: "Node A", type: "Feature", content: "Details A", isProposal: true },
-      { id: "node-2", label: "Node B", type: "Feature", content: "Details B", isProposal: false },
+      {
+        id: "node-1",
+        label: "Node A",
+        type: "Feature",
+        content: "Details A",
+        isProposal: true,
+      },
+      {
+        id: "node-2",
+        label: "Node B",
+        type: "Feature",
+        content: "Details B",
+        isProposal: false,
+      },
     ],
     label: "Merged Label",
     type: "Feature",
     content: "Synthesized content",
     allTags: [
-      { id: "tag-1", scope: "agent", name: "winston", version: null, color: "#ff0000" },
-      { id: "tag-2", scope: "project", name: "synapse", version: null, color: "#00ff00" },
+      {
+        id: "tag-1",
+        scope: "agent",
+        name: "winston",
+        version: null,
+        color: "#ff0000",
+      },
+      {
+        id: "tag-2",
+        scope: "project",
+        name: "synapse",
+        version: null,
+        color: "#00ff00",
+      },
     ],
     selectedTagIds: ["tag-1"],
     reason: "Duplicate concept",
@@ -58,7 +82,7 @@ describe("components/gate/MergeModal", () => {
         onClose={onClose}
         onConfirm={onConfirm}
         onUpdateMergeData={onUpdateMergeData}
-      />
+      />,
     );
 
     expect(screen.getByText("knowledge_synthesis")).toBeDefined();
@@ -70,7 +94,7 @@ describe("components/gate/MergeModal", () => {
     const labelInput = screen.getByDisplayValue("Merged Label");
     fireEvent.change(labelInput, { target: { value: "New Merged Label" } });
     expect(onUpdateMergeData).toHaveBeenCalledWith(
-      expect.objectContaining({ label: "New Merged Label" })
+      expect.objectContaining({ label: "New Merged Label" }),
     );
 
     // Trigger type change
@@ -79,39 +103,41 @@ describe("components/gate/MergeModal", () => {
     const typeTrigger = selectContainer?.querySelector("button");
     if (!typeTrigger) throw new Error("Could not find type trigger button");
     fireEvent.click(typeTrigger);
-    
+
     const conceptOption = screen.getByText("Concept");
     fireEvent.click(conceptOption);
     expect(onUpdateMergeData).toHaveBeenCalledWith(
-      expect.objectContaining({ type: "Concept" })
+      expect.objectContaining({ type: "Concept" }),
     );
 
     // Trigger content change
     const contentTextarea = screen.getByDisplayValue("Synthesized content");
-    fireEvent.change(contentTextarea, { target: { value: "New synthesized details" } });
+    fireEvent.change(contentTextarea, {
+      target: { value: "New synthesized details" },
+    });
     expect(onUpdateMergeData).toHaveBeenCalledWith(
-      expect.objectContaining({ content: "New synthesized details" })
+      expect.objectContaining({ content: "New synthesized details" }),
     );
 
     // Trigger reason change
     const reasonInput = screen.getByDisplayValue("Duplicate concept");
     fireEvent.change(reasonInput, { target: { value: "New reason info" } });
     expect(onUpdateMergeData).toHaveBeenCalledWith(
-      expect.objectContaining({ reason: "New reason info" })
+      expect.objectContaining({ reason: "New reason info" }),
     );
 
     // Trigger tag toggle (select tag-2 to add it)
     const tag2Btn = screen.getByText("project:synapse");
     fireEvent.click(tag2Btn);
     expect(onUpdateMergeData).toHaveBeenCalledWith(
-      expect.objectContaining({ selectedTagIds: ["tag-1", "tag-2"] })
+      expect.objectContaining({ selectedTagIds: ["tag-1", "tag-2"] }),
     );
 
     // Trigger tag toggle (select tag-1 to remove it)
     const tag1Btn = screen.getByText("agent:winston");
     fireEvent.click(tag1Btn);
     expect(onUpdateMergeData).toHaveBeenCalledWith(
-      expect.objectContaining({ selectedTagIds: [] })
+      expect.objectContaining({ selectedTagIds: [] }),
     );
 
     // Click Confirm

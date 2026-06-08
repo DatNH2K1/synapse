@@ -8,6 +8,7 @@ metadata:
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
+
 > [!IMPORTANT]
 > **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
 
@@ -22,6 +23,7 @@ metadata:
 Fast, token-efficient codebase scouting using parallel agents to find files needed for tasks.
 
 ## Arguments
+
 - Default: Scout using built-in Explore subagents in parallel (`./references/internal-scouting.md`)
 - `ext`: Scout using external Gemini/OpenCode CLI tools in parallel (`./references/external-scouting.md`)
 
@@ -43,24 +45,28 @@ Fast, token-efficient codebase scouting using parallel agents to find files need
 ## Configuration
 
 Read from `.ck.json`:
+
 - `gemini.model` - Gemini model (default: `gemini-3-flash-preview`)
 
 ## Workflow
 
 ### 1. Analyze Task
+
 - Parse user prompt for search targets
 - Identify key directories, patterns, file types, lines of code
 - Determine optimal SCALE value of subagents to spawn
 
 ### 2. Divide and Conquer
+
 - Split codebase into logical segments per agent.
 - Assign each agent specific directories or patterns.
 - **Scout Block (Security & Efficiency):** Explicitly exclude sensitive or heavy directories:
-    - `.git`, `node_modules`, `dist`, `build`, `out`, `.next`, `.venv`, `__pycache__`.
-    - Do NOT assign these directories to any agent.
+  - `.git`, `node_modules`, `dist`, `build`, `out`, `.next`, `.venv`, `__pycache__`.
+  - Do NOT assign these directories to any agent.
 - Ensure no overlap, maximize coverage.
 
 ### 3. Register Scout Tasks
+
 - **Skip if:** Agent count ≤ 2 (overhead exceeds benefit)
 - **Skip if:** Task tools unavailable (VSCode extension) — use `TodoWrite` instead
 - `TaskList` first — check for existing scout tasks in session
@@ -68,11 +74,14 @@ Read from `.ck.json`:
 - See `references/task-management-scouting.md` for patterns and examples
 
 ### 4. Spawn Parallel Agents
+
 Load appropriate reference based on decision tree:
+
 - **Internal (Default):** `references/internal-scouting.md` (Explore subagents)
 - **External:** `references/external-scouting.md` (Gemini/OpenCode)
 
 **Notes:**
+
 - `TaskUpdate` each task to `in_progress` before spawning its agent (skip if Task tools unavailable)
 - Prompt detailed instructions for each subagent with exact directories or files it should read
 - Remember that each subagent has less than 200K tokens of context window
@@ -80,6 +89,7 @@ Load appropriate reference based on decision tree:
 - Each subagent must return a detailed summary report to a main agent
 
 ### 5. Collect Results
+
 **IMPORTANT:** Invoke "/ck:project-organization" skill to organize the outputs.
 
 - Timeout: 3 minutes per agent (skip non-responders)
@@ -93,10 +103,12 @@ Load appropriate reference based on decision tree:
 # Scout Report
 
 ## Relevant Files
+
 - `path/to/file.ts` - Brief description
 - ...
 
 ## Unresolved Questions
+
 - Any gaps in findings
 ```
 

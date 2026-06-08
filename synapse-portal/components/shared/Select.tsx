@@ -28,7 +28,8 @@ export default function Select({
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const selectedOption = options.find((opt) => opt.value === value) || options[0];
+  const selectedOption =
+    options.find((opt) => opt.value === value) || options[0];
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -89,7 +90,10 @@ export default function Select({
                 >
                   <span className="truncate">{opt.label}</span>
                   {isActive && (
-                    <Check size={12} className="text-indigo-400 flex-shrink-0" />
+                    <Check
+                      size={12}
+                      className="text-indigo-400 flex-shrink-0"
+                    />
                   )}
                 </button>
               );

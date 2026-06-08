@@ -11,10 +11,7 @@ vi.mock("@/lib/db", () => ({
 
 vi.mock("@/lib/services/knowledge-service", () => ({
   knowledgeService: {
-    getPendingUpdates: async () => [
-      { id: "u-1" },
-      { id: "u-2" },
-    ],
+    getPendingUpdates: async () => [{ id: "u-1" }, { id: "u-2" }],
   },
 }));
 

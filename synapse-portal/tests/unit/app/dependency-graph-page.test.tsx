@@ -29,7 +29,11 @@ describe("app/(dashboard)/dependency-graph/page", () => {
   afterEach(() => {
     cleanup();
     vi.restoreAllMocks();
-    (prisma as unknown as { indexerRepo: typeof originalIndexerRepo | undefined }).indexerRepo = originalIndexerRepo;
+    (
+      prisma as unknown as {
+        indexerRepo: typeof originalIndexerRepo | undefined;
+      }
+    ).indexerRepo = originalIndexerRepo;
   });
 
   it("should fetch repos from DB and render DependencyGraphContent", async () => {
@@ -50,7 +54,11 @@ describe("app/(dashboard)/dependency-graph/page", () => {
   });
 
   it("should handle error when prisma.indexerRepo is undefined", async () => {
-    (prisma as unknown as { indexerRepo: typeof originalIndexerRepo | undefined }).indexerRepo = undefined;
+    (
+      prisma as unknown as {
+        indexerRepo: typeof originalIndexerRepo | undefined;
+      }
+    ).indexerRepo = undefined;
 
     const element = await DependencyGraphPage();
     render(element);
@@ -61,7 +69,9 @@ describe("app/(dashboard)/dependency-graph/page", () => {
 
   it("should handle DB errors gracefully", async () => {
     const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.mocked(prisma.indexerRepo.findMany).mockRejectedValueOnce(new Error("DB Connection Failed"));
+    vi.mocked(prisma.indexerRepo.findMany).mockRejectedValueOnce(
+      new Error("DB Connection Failed"),
+    );
 
     const element = await DependencyGraphPage();
     render(element);
@@ -70,7 +80,7 @@ describe("app/(dashboard)/dependency-graph/page", () => {
     expect(screen.getByText(/Initial Repos:/)).toBeDefined();
     expect(consoleSpy).toHaveBeenCalledWith(
       "Error fetching repositories for dependency graph:",
-      expect.any(Error)
+      expect.any(Error),
     );
   });
 });

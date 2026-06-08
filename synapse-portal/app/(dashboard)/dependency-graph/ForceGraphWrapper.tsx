@@ -2,7 +2,11 @@
 
 import React, { useMemo, useRef, useEffect, useState } from "react";
 import ForceGraph2D from "react-force-graph-2d";
-import type { ForceGraphMethods, LinkObject, NodeObject } from "react-force-graph-2d";
+import type {
+  ForceGraphMethods,
+  LinkObject,
+  NodeObject,
+} from "react-force-graph-2d";
 import { useTheme } from "next-themes";
 
 interface GraphNode {
@@ -27,7 +31,13 @@ export default function ForceGraphWrapper({
   searchQuery,
   activeMatchId,
 }: {
-  nodes: { id: string; label: string; kind: string; size: number; color: string }[];
+  nodes: {
+    id: string;
+    label: string;
+    kind: string;
+    size: number;
+    color: string;
+  }[];
   links: { source: string; target: string }[];
   onNodeClick?: (nodeId: string) => void;
   onRef?: (ref: {
@@ -41,7 +51,10 @@ export default function ForceGraphWrapper({
   const { theme } = useTheme();
   const isLight = theme === "light" || theme === "arctic";
 
-  const fgRef = useRef<ForceGraphMethods<NodeObject<GraphNode>, LinkObject<GraphNode, GraphLink>> | undefined>(undefined);
+  const fgRef = useRef<
+    | ForceGraphMethods<NodeObject<GraphNode>, LinkObject<GraphNode, GraphLink>>
+    | undefined
+  >(undefined);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [hoveredNode, setHoveredNode] = useState<GraphNode | null>(null);
@@ -66,10 +79,14 @@ export default function ForceGraphWrapper({
 
   useEffect(() => {
     if (fgRef.current) {
-      const chargeForce = fgRef.current.d3Force("charge") as { strength: (value: number) => void } | undefined;
+      const chargeForce = fgRef.current.d3Force("charge") as
+        | { strength: (value: number) => void }
+        | undefined;
       chargeForce?.strength(-800);
 
-      const linkForce = fgRef.current.d3Force("link") as { distance: (d: number) => void } | undefined;
+      const linkForce = fgRef.current.d3Force("link") as
+        | { distance: (d: number) => void }
+        | undefined;
       linkForce?.distance(120);
 
       if (onRef) {
@@ -102,7 +119,9 @@ export default function ForceGraphWrapper({
       lastSearchQuery.current = searchQuery;
 
       if (activeMatchId) {
-        const match = (graphData.nodes as NodeObject<GraphNode>[]).find((n) => n.id === activeMatchId);
+        const match = (graphData.nodes as NodeObject<GraphNode>[]).find(
+          (n) => n.id === activeMatchId,
+        );
         if (match && match.x !== undefined && match.y !== undefined) {
           fgRef.current?.centerAt(match.x, match.y, 800);
           fgRef.current?.zoom(2.5, 800);
@@ -146,20 +165,27 @@ export default function ForceGraphWrapper({
           backgroundColor="transparent"
           d3AlphaDecay={0.01}
           d3VelocityDecay={0.3}
-          onNodeClick={(node) => onNodeClick && onNodeClick((node as GraphNode).id)}
+          onNodeClick={(node) =>
+            onNodeClick && onNodeClick((node as GraphNode).id)
+          }
           onNodeHover={(node) => setHoveredNode(node as GraphNode | null)}
           nodeColor={(node) => (node as GraphNode).color}
           linkColor={(link) => {
-            const l = link as { source?: string | { id?: string; label?: string }; target?: string | { id?: string; label?: string } };
+            const l = link as {
+              source?: string | { id?: string; label?: string };
+              target?: string | { id?: string; label?: string };
+            };
             const isSearchActive = !!(searchQuery && searchQuery.trim());
             if (isSearchActive) {
               const lower = searchQuery!.trim().toLowerCase();
-              
-              const getLabel = (idOrObj: string | { id?: string; label?: string } | undefined) => {
+
+              const getLabel = (
+                idOrObj: string | { id?: string; label?: string } | undefined,
+              ) => {
                 if (idOrObj && typeof idOrObj === "object") {
                   return idOrObj.label || "";
                 }
-                const found = nodes.find(n => n.id === idOrObj);
+                const found = nodes.find((n) => n.id === idOrObj);
                 return found ? found.label : "";
               };
 
@@ -170,10 +196,14 @@ export default function ForceGraphWrapper({
               const isTargetMatch = targetLabel.toLowerCase().includes(lower);
 
               if (isSourceMatch || isTargetMatch) {
-                return isLight ? "rgba(245, 158, 11, 0.8)" : "rgba(251, 191, 36, 0.8)";
+                return isLight
+                  ? "rgba(245, 158, 11, 0.8)"
+                  : "rgba(251, 191, 36, 0.8)";
               }
             }
-            return isLight ? "rgba(0, 0, 0, 0.08)" : "rgba(255, 255, 255, 0.08)";
+            return isLight
+              ? "rgba(0, 0, 0, 0.08)"
+              : "rgba(255, 255, 255, 0.08)";
           }}
           linkWidth={1}
           linkDirectionalArrowLength={4}
@@ -187,7 +217,9 @@ export default function ForceGraphWrapper({
             if (n.x === undefined || n.y === undefined) return;
 
             const isSearchActive = !!(searchQuery && searchQuery.trim());
-            const isMatch = isSearchActive && n.label.toLowerCase().includes(searchQuery!.trim().toLowerCase());
+            const isMatch =
+              isSearchActive &&
+              n.label.toLowerCase().includes(searchQuery!.trim().toLowerCase());
             const isActiveMatch = activeMatchId === n.id;
 
             // Save canvas context to restore settings later
@@ -195,8 +227,15 @@ export default function ForceGraphWrapper({
 
             // Draw outer aura glow for hovered/selected/matching nodes
             ctx.beginPath();
-            const glowRadius = isActiveMatch ? 4.5 : (isMatch ? 3.5 : 2.5);
-            const gradient = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, radius * glowRadius);
+            const glowRadius = isActiveMatch ? 4.5 : isMatch ? 3.5 : 2.5;
+            const gradient = ctx.createRadialGradient(
+              n.x,
+              n.y,
+              0,
+              n.x,
+              n.y,
+              radius * glowRadius,
+            );
             if (isActiveMatch) {
               gradient.addColorStop(0, "#f97316cc"); // Intense Orange for active match
               gradient.addColorStop(1, "transparent");
@@ -225,7 +264,9 @@ export default function ForceGraphWrapper({
               ctx.strokeStyle = "#fbbf24";
               ctx.lineWidth = 3.0 / globalScale;
             } else {
-              ctx.strokeStyle = isLight ? "rgba(255, 255, 255, 0.8)" : "rgba(15, 23, 42, 0.8)";
+              ctx.strokeStyle = isLight
+                ? "rgba(255, 255, 255, 0.8)"
+                : "rgba(15, 23, 42, 0.8)";
               ctx.lineWidth = 1.5 / globalScale;
             }
             ctx.stroke();
@@ -233,13 +274,19 @@ export default function ForceGraphWrapper({
             // Draw label always for matched nodes
             if (isMatch) {
               const label = n.label.split("/").pop() || n.label;
-              const fontSize = isActiveMatch ? 13 / globalScale : 11 / globalScale;
+              const fontSize = isActiveMatch
+                ? 13 / globalScale
+                : 11 / globalScale;
               ctx.font = `${isActiveMatch ? "800" : "600"} ${fontSize}px "Outfit", sans-serif`;
               ctx.textAlign = "center";
               ctx.textBaseline = "middle";
-              ctx.fillStyle = isActiveMatch 
-                ? (isLight ? "#c2410c" : "#ffedd5") 
-                : (isLight ? "#0f172a" : "#ffffff");
+              ctx.fillStyle = isActiveMatch
+                ? isLight
+                  ? "#c2410c"
+                  : "#ffedd5"
+                : isLight
+                  ? "#0f172a"
+                  : "#ffffff";
               ctx.fillText(label, n.x, n.y + radius + 4 + fontSize / 2);
             }
 
@@ -260,16 +307,22 @@ export default function ForceGraphWrapper({
 
             const textWidth = ctx.measureText(label).width;
             const bPadding = 3;
-            ctx.fillStyle = isLight ? "rgba(255, 255, 255, 0.95)" : "rgba(2, 6, 23, 0.9)";
+            ctx.fillStyle = isLight
+              ? "rgba(255, 255, 255, 0.95)"
+              : "rgba(2, 6, 23, 0.9)";
             ctx.fillRect(
               n.x - textWidth / 2 - bPadding,
               n.y + radius + 3,
               textWidth + bPadding * 2,
-              fontSize + bPadding * 2
+              fontSize + bPadding * 2,
             );
 
             ctx.fillStyle = isLight ? "#0f172a" : "rgba(255, 255, 255, 1)";
-            ctx.fillText(label, n.x, n.y + radius + 3 + fontSize / 2 + bPadding);
+            ctx.fillText(
+              label,
+              n.x,
+              n.y + radius + 3 + fontSize / 2 + bPadding,
+            );
           }}
         />
       )}

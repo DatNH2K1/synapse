@@ -60,26 +60,34 @@ describe("Forgetting Lifecycle Integration Tests", () => {
   describe("Memory Decay Loop", () => {
     it("should decay a node to COLD tier if all its connections exceed virtual age 90 and score falls below 40", async () => {
       // Configure config mocks
-      (vi.mocked(prisma.systemConfig.findUnique) as object as { mockImplementation: (fn: (params: object) => Promise<object | null>) => void }).mockImplementation(
-        (params: object) => {
-          const uParams = params as object as { where: { key: string } };
-          if (uParams.where.key === "forget_mode_enabled") {
-            return Promise.resolve({
-              key: "forget_mode_enabled",
-              value: "true",
-              updatedAt: new Date(),
-            } as object as Awaited<ReturnType<typeof prisma.systemConfig.findUnique>>);
-          }
-          if (uParams.where.key === "forget_dry_run_enabled") {
-            return Promise.resolve({
-              key: "forget_dry_run_enabled",
-              value: "false",
-              updatedAt: new Date(),
-            } as object as Awaited<ReturnType<typeof prisma.systemConfig.findUnique>>);
-          }
-          return Promise.resolve(null);
-        },
-      );
+      (
+        vi.mocked(prisma.systemConfig.findUnique) as object as {
+          mockImplementation: (
+            fn: (params: object) => Promise<object | null>,
+          ) => void;
+        }
+      ).mockImplementation((params: object) => {
+        const uParams = params as object as { where: { key: string } };
+        if (uParams.where.key === "forget_mode_enabled") {
+          return Promise.resolve({
+            key: "forget_mode_enabled",
+            value: "true",
+            updatedAt: new Date(),
+          } as object as Awaited<
+            ReturnType<typeof prisma.systemConfig.findUnique>
+          >);
+        }
+        if (uParams.where.key === "forget_dry_run_enabled") {
+          return Promise.resolve({
+            key: "forget_dry_run_enabled",
+            value: "false",
+            updatedAt: new Date(),
+          } as object as Awaited<
+            ReturnType<typeof prisma.systemConfig.findUnique>
+          >);
+        }
+        return Promise.resolve(null);
+      });
 
       // Active node with decayed connection:
       // tag virtual_clock = 100, accessed_at_virtual_day = 5. Age = 95 (>90).
@@ -126,26 +134,34 @@ describe("Forgetting Lifecycle Integration Tests", () => {
     });
 
     it("should NOT decay a node if its score is kept high by QA Agent modifier (3.0x)", async () => {
-      (vi.mocked(prisma.systemConfig.findUnique) as object as { mockImplementation: (fn: (params: object) => Promise<object | null>) => void }).mockImplementation(
-        (params: object) => {
-          const uParams = params as object as { where: { key: string } };
-          if (uParams.where.key === "forget_mode_enabled") {
-            return Promise.resolve({
-              key: "forget_mode_enabled",
-              value: "true",
-              updatedAt: new Date(),
-            } as object as Awaited<ReturnType<typeof prisma.systemConfig.findUnique>>);
-          }
-          if (uParams.where.key === "forget_dry_run_enabled") {
-            return Promise.resolve({
-              key: "forget_dry_run_enabled",
-              value: "false",
-              updatedAt: new Date(),
-            } as object as Awaited<ReturnType<typeof prisma.systemConfig.findUnique>>);
-          }
-          return Promise.resolve(null);
-        },
-      );
+      (
+        vi.mocked(prisma.systemConfig.findUnique) as object as {
+          mockImplementation: (
+            fn: (params: object) => Promise<object | null>,
+          ) => void;
+        }
+      ).mockImplementation((params: object) => {
+        const uParams = params as object as { where: { key: string } };
+        if (uParams.where.key === "forget_mode_enabled") {
+          return Promise.resolve({
+            key: "forget_mode_enabled",
+            value: "true",
+            updatedAt: new Date(),
+          } as object as Awaited<
+            ReturnType<typeof prisma.systemConfig.findUnique>
+          >);
+        }
+        if (uParams.where.key === "forget_dry_run_enabled") {
+          return Promise.resolve({
+            key: "forget_dry_run_enabled",
+            value: "false",
+            updatedAt: new Date(),
+          } as object as Awaited<
+            ReturnType<typeof prisma.systemConfig.findUnique>
+          >);
+        }
+        return Promise.resolve(null);
+      });
 
       // QA Agent node:
       // tag virtual_clock = 100, accessed_at_virtual_day = 5. Age = 95 (>90).
@@ -225,10 +241,16 @@ describe("Forgetting Lifecycle Integration Tests", () => {
         },
       ];
 
-      vi.mocked(prisma.node.findMany).mockResolvedValue(mockColdNodes as object as Awaited<ReturnType<typeof prisma.node.findMany>>);
+      vi.mocked(prisma.node.findMany).mockResolvedValue(
+        mockColdNodes as object as Awaited<
+          ReturnType<typeof prisma.node.findMany>
+        >,
+      );
       vi.mocked(vectorService.findSimilarToNode).mockResolvedValue([
         { id: "cold-2", score: 0.88, label: "Cold Rule 2" },
-      ] as object as Awaited<ReturnType<typeof vectorService.findSimilarToNode>>);
+      ] as object as Awaited<
+        ReturnType<typeof vectorService.findSimilarToNode>
+      >);
       vi.mocked(aiService.synthesizeKnowledge).mockResolvedValue({
         label: "React Computed Properties Best Practice",
         content: "Consolidated React guideline regarding redundant state.",

@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     if (!filePath) {
       return NextResponse.json(
         { error: "Missing required query parameter: file" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -73,7 +73,8 @@ export async function GET(request: Request) {
       })),
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Internal Server Error";
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error";
     console.error("[API Indexer Impact] Error:", error);
     return NextResponse.json({ error: message }, { status: 500 });
   }

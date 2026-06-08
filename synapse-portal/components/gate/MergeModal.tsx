@@ -192,7 +192,9 @@ export default function MergeModal({
           <div className="flex items-center gap-2">
             <div className="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20">
               <span className="text-[10px] font-black text-amber-500 uppercase tracking-widest">
-                {t("similarity_score_value", { score: (mergeData.similarityScore * 100).toFixed(1) })}
+                {t("similarity_score_value", {
+                  score: (mergeData.similarityScore * 100).toFixed(1),
+                })}
               </span>
             </div>
           </div>

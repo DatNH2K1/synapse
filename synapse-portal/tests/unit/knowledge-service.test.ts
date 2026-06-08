@@ -10,8 +10,12 @@ interface MockMethod<TReturn> {
   mockResolvedValueOnce: (value: TReturn) => MockMethod<TReturn>;
   mockRejectedValue: (error: Error) => MockMethod<TReturn>;
   mockRejectedValueOnce: (error: Error) => MockMethod<TReturn>;
-  mockImplementation: (fn: (...args: object[]) => TReturn | Promise<TReturn>) => MockMethod<TReturn>;
-  mockImplementationOnce: (fn: (...args: object[]) => TReturn | Promise<TReturn>) => MockMethod<TReturn>;
+  mockImplementation: (
+    fn: (...args: object[]) => TReturn | Promise<TReturn>,
+  ) => MockMethod<TReturn>;
+  mockImplementationOnce: (
+    fn: (...args: object[]) => TReturn | Promise<TReturn>,
+  ) => MockMethod<TReturn>;
 }
 
 function asMock<TReturn>(func: object): MockMethod<TReturn> {
@@ -110,7 +114,9 @@ vi.mock("@/lib/db", () => {
       findMany: vi.fn(),
       deleteMany: vi.fn(),
     },
-    $transaction: vi.fn((cb: (tx: object) => Promise<object>) => cb(mockPrisma)),
+    $transaction: vi.fn((cb: (tx: object) => Promise<object>) =>
+      cb(mockPrisma),
+    ),
     $executeRaw: vi.fn(),
     $queryRawUnsafe: vi.fn(),
   };
@@ -126,6 +132,27 @@ vi.mock("@/lib/services/vector-service", () => {
   };
 });
 
+vi.mock("@/lib/services/manifest-service", () => {
+  return {
+    manifestService: {
+      getAgents: vi.fn(() => [
+        { name: "synapse-agent-analyst" },
+        { name: "synapse-agent-tech-writer" },
+        { name: "synapse-agent-pm" },
+        { name: "synapse-agent-ux-designer" },
+        { name: "synapse-agent-architect" },
+        { name: "synapse-agent-web-dev" },
+        { name: "synapse-agent-cto" },
+        { name: "synapse-agent-user" },
+        { name: "synapse-agent-creative" },
+        { name: "synapse-agent-qa" },
+        { name: "synapse-agent-mobile-dev" },
+        { name: "synapse-agent-game-dev" },
+      ]),
+      getSkills: vi.fn(() => []),
+    },
+  };
+});
 vi.mock("@/lib/services/queue-service", () => {
   return {
     queueService: {
@@ -164,7 +191,9 @@ describe("KnowledgeService", () => {
   });
 
   it("getNodes - should retrieve active nodes", async () => {
-    const mockNodes = [createMockNode({ id: "n1", label: "Node 1", status: "APPROVED" })];
+    const mockNodes = [
+      createMockNode({ id: "n1", label: "Node 1", status: "APPROVED" }),
+    ];
     asMock<Node[]>(prisma.node.findMany).mockResolvedValue(mockNodes);
 
     const result = await knowledgeService.getNodes();
@@ -185,8 +214,20 @@ describe("KnowledgeService", () => {
         success_count: 0,
         embeddingModel: null,
         tags: [
-          { tag: createMockTag({ scope: "custom-scope", name: "coder", color: "blue" }) },
-          { tag: createMockTag({ scope: "technology", name: "js", color: "yellow" }) },
+          {
+            tag: createMockTag({
+              scope: "custom-scope",
+              name: "coder",
+              color: "blue",
+            }),
+          },
+          {
+            tag: createMockTag({
+              scope: "technology",
+              name: "js",
+              color: "yellow",
+            }),
+          },
         ],
       },
       {
@@ -202,7 +243,9 @@ describe("KnowledgeService", () => {
         tags: [],
       },
     ];
-    asMock<NodeWithTagsAndColorRow[]>(prisma.node.findMany).mockResolvedValue(mockNodes);
+    asMock<NodeWithTagsAndColorRow[]>(prisma.node.findMany).mockResolvedValue(
+      mockNodes,
+    );
 
     const result = await knowledgeService.getNodesWithColor();
     expect(result).toHaveLength(2);
@@ -228,7 +271,9 @@ describe("KnowledgeService", () => {
         tags: [{ tag: createMockTag({ name: "t1" }) }],
       },
     ];
-    asMock<NodeWithTagsQueryRow[]>(prisma.node.findMany).mockResolvedValue(mockNodes);
+    asMock<NodeWithTagsQueryRow[]>(prisma.node.findMany).mockResolvedValue(
+      mockNodes,
+    );
     const result = await knowledgeService.getNodesWithTagsByIds(["n1"]);
     expect(result).toHaveLength(1);
     expect(result[0].tags).toEqual([createMockTag({ name: "t1" })]);
@@ -254,7 +299,9 @@ describe("KnowledgeService", () => {
     const mockNodes: NodeWithTagsIds[] = [
       { id: "n1", tags: [{ tagId: "t1" }, { tagId: "t2" }] },
     ];
-    asMock<NodeWithTagsIds[]>(prisma.node.findMany).mockResolvedValue(mockNodes);
+    asMock<NodeWithTagsIds[]>(prisma.node.findMany).mockResolvedValue(
+      mockNodes,
+    );
 
     const result = await knowledgeService.getTagEdges();
     expect(result).toHaveLength(2);
@@ -309,35 +356,48 @@ describe("KnowledgeService", () => {
         tags: [{ tag: createMockTag({ id: "t1", name: "tag1" }) }],
       },
     ];
-    asMock<PendingQueryRow[]>(prisma.node.findMany).mockResolvedValue(mockPending);
+    asMock<PendingQueryRow[]>(prisma.node.findMany).mockResolvedValue(
+      mockPending,
+    );
     interface SimilarityResult {
       id: string;
       label: string;
       score: number;
     }
-    asMock<SimilarityResult[]>(vectorService.findSimilarToNode).mockResolvedValue([
-      { id: "s1", label: "Similar 1", score: 0.85 },
-    ]);
+    asMock<SimilarityResult[]>(
+      vectorService.findSimilarToNode,
+    ).mockResolvedValue([{ id: "s1", label: "Similar 1", score: 0.85 }]);
 
     const result = await knowledgeService.getPendingUpdates();
     expect(result).toHaveLength(1);
-    expect(result[0].matches).toEqual([{ id: "s1", label: "Similar 1", score: 0.85 }]);
+    expect(result[0].matches).toEqual([
+      { id: "s1", label: "Similar 1", score: 0.85 },
+    ]);
   });
 
   describe("approvePendingUpdate", () => {
     it("should throw if node not found", async () => {
       asMock<Node | null>(prisma.node.findUnique).mockResolvedValue(null);
-      await expect(knowledgeService.approvePendingUpdate("non-existent")).rejects.toThrow("Node not found");
+      await expect(
+        knowledgeService.approvePendingUpdate("non-existent"),
+      ).rejects.toThrow("Node not found");
     });
 
     it("should approve standard pending update", async () => {
-      const mockNode = createMockNode({ id: "n1", label: "Node 1", status: "PENDING" });
+      const mockNode = createMockNode({
+        id: "n1",
+        label: "Node 1",
+        status: "PENDING",
+      });
       asMock<Node | null>(prisma.node.findUnique).mockResolvedValue(mockNode);
       asMock<Node>(prisma.node.update).mockResolvedValue(mockNode);
 
       const result = await knowledgeService.approvePendingUpdate("n1");
       expect(result).toEqual(mockNode);
-      expect(queueService.enqueueEmbeddingTask).toHaveBeenCalledWith("n1", "Node 1");
+      expect(queueService.enqueueEmbeddingTask).toHaveBeenCalledWith(
+        "n1",
+        "Node 1",
+      );
     });
 
     it("should approve merge pending update", async () => {
@@ -345,7 +405,10 @@ describe("KnowledgeService", () => {
         id: "n-merge",
         label: "Merged Node",
         status: "PENDING_MERGE",
-        properties: JSON.stringify({ sourceNodeIds: ["src-1", "src-2"], similarityScore: 0.9 }),
+        properties: JSON.stringify({
+          sourceNodeIds: ["src-1", "src-2"],
+          similarityScore: 0.9,
+        }),
       });
       asMock<Node | null>(prisma.node.findUnique).mockResolvedValue(mockNode);
       asMock<Node>(prisma.node.update).mockResolvedValue(mockNode);
@@ -358,7 +421,10 @@ describe("KnowledgeService", () => {
       });
       expect(prisma.$executeRaw).toHaveBeenCalledTimes(2);
       expect(prisma.archive.create).toHaveBeenCalledTimes(2);
-      expect(queueService.enqueueEmbeddingTask).toHaveBeenCalledWith("n-merge", "Merged Node");
+      expect(queueService.enqueueEmbeddingTask).toHaveBeenCalledWith(
+        "n-merge",
+        "Merged Node",
+      );
     });
 
     it("should handle JSON parse failure during merge pending update", async () => {
@@ -371,7 +437,8 @@ describe("KnowledgeService", () => {
       asMock<Node | null>(prisma.node.findUnique).mockResolvedValue(mockNode);
       asMock<Node>(prisma.node.update).mockResolvedValue(mockNode);
 
-      const result = await knowledgeService.approvePendingUpdate("n-merge-fail");
+      const result =
+        await knowledgeService.approvePendingUpdate("n-merge-fail");
       expect(result).toBeDefined();
       expect(prisma.node.updateMany).not.toHaveBeenCalled();
     });
@@ -381,9 +448,15 @@ describe("KnowledgeService", () => {
     it("should create new node and resolve tags (creating new ones if needed)", async () => {
       asMock<Tag | null>(prisma.tag.findFirst)
         .mockResolvedValueOnce(null)
-        .mockResolvedValueOnce(createMockTag({ id: "t-existing", virtual_clock: 5 }));
-      asMock<Tag>(prisma.tag.create).mockResolvedValueOnce(createMockTag({ id: "t-new", virtual_clock: 1 }));
-      asMock<Node>(prisma.node.create).mockResolvedValue(createMockNode({ id: "node-proposed" }));
+        .mockResolvedValueOnce(
+          createMockTag({ id: "t-existing", virtual_clock: 5 }),
+        );
+      asMock<Tag>(prisma.tag.create).mockResolvedValueOnce(
+        createMockTag({ id: "t-new", virtual_clock: 1 }),
+      );
+      asMock<Node>(prisma.node.create).mockResolvedValue(
+        createMockNode({ id: "node-proposed" }),
+      );
 
       const result = await knowledgeService.proposeKnowledge({
         label: "Proposed Node",
@@ -394,16 +467,25 @@ describe("KnowledgeService", () => {
 
       expect(result).toEqual({ success: true, id: "node-proposed" });
       expect(prisma.nodeTag.createMany).toHaveBeenCalled();
-      expect(queueService.enqueueEmbeddingTask).toHaveBeenCalledWith("node-proposed", "Proposed Node");
+      expect(queueService.enqueueEmbeddingTask).toHaveBeenCalledWith(
+        "node-proposed",
+        "Proposed Node",
+      );
     });
 
     it("should handle concurrent tag creation conflict and fall back to findFirst", async () => {
       asMock<Tag | null>(prisma.tag.findFirst)
         .mockResolvedValueOnce(null)
-        .mockResolvedValueOnce(createMockTag({ id: "t-conflict", virtual_clock: 2 }));
-      
-      asMock<Tag>(prisma.tag.create).mockRejectedValueOnce(new Error("Unique constraint violation"));
-      asMock<Node>(prisma.node.create).mockResolvedValue(createMockNode({ id: "node-proposed-conflict" }));
+        .mockResolvedValueOnce(
+          createMockTag({ id: "t-conflict", virtual_clock: 2 }),
+        );
+
+      asMock<Tag>(prisma.tag.create).mockRejectedValueOnce(
+        new Error("Unique constraint violation"),
+      );
+      asMock<Node>(prisma.node.create).mockResolvedValue(
+        createMockNode({ id: "node-proposed-conflict" }),
+      );
 
       const result = await knowledgeService.proposeKnowledge({
         label: "Conflict Node",
@@ -417,7 +499,9 @@ describe("KnowledgeService", () => {
 
     it("should throw if tag resolution fails completely", async () => {
       asMock<Tag | null>(prisma.tag.findFirst).mockResolvedValue(null);
-      asMock<Tag>(prisma.tag.create).mockRejectedValue(new Error("Creation error"));
+      asMock<Tag>(prisma.tag.create).mockRejectedValue(
+        new Error("Creation error"),
+      );
 
       await expect(
         knowledgeService.proposeKnowledge({
@@ -425,20 +509,65 @@ describe("KnowledgeService", () => {
           type: "LESSON",
           content: "Content",
           tags: ["project:fail"],
-        })
+        }),
       ).rejects.toThrow("Failed to resolve tag: project:fail");
     });
 
     it("should log error if enqueueEmbeddingTask rejects during proposal", async () => {
-      asMock<Tag | null>(prisma.tag.findFirst).mockResolvedValue(createMockTag({ id: "t1" }));
-      asMock<Node>(prisma.node.create).mockResolvedValue(createMockNode({ id: "node-fail-queue" }));
-      asMock<void>(queueService.enqueueEmbeddingTask).mockRejectedValueOnce(new Error("Enqueue failed"));
+      asMock<Tag | null>(prisma.tag.findFirst).mockResolvedValue(
+        createMockTag({ id: "t1" }),
+      );
+      asMock<Node>(prisma.node.create).mockResolvedValue(
+        createMockNode({ id: "node-fail-queue" }),
+      );
+      asMock<void>(queueService.enqueueEmbeddingTask).mockRejectedValueOnce(
+        new Error("Enqueue failed"),
+      );
 
       const result = await knowledgeService.proposeKnowledge({
         label: "Queue Fail Node",
         type: "LESSON",
         content: "Content",
         tags: ["project:myproject"],
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should throw if an invalid section tag name is provided", async () => {
+      await expect(
+        knowledgeService.proposeKnowledge({
+          label: "Invalid Section Node",
+          type: "LESSON",
+          content: "Content",
+          tags: ["section:invalid-section-name"],
+        }),
+      ).rejects.toThrow('Invalid section tag: "invalid-section-name"');
+    });
+
+    it("should throw if an invalid agent tag name is provided", async () => {
+      await expect(
+        knowledgeService.proposeKnowledge({
+          label: "Invalid Agent Node",
+          type: "LESSON",
+          content: "Content",
+          tags: ["agent:synapse-agent-hacker"],
+        }),
+      ).rejects.toThrow('Invalid agent tag: "synapse-agent-hacker"');
+    });
+
+    it("should successfully create node when valid section and agent tags are provided", async () => {
+      asMock<Tag | null>(prisma.tag.findFirst).mockResolvedValue(
+        createMockTag({ id: "t1" }),
+      );
+      asMock<Node>(prisma.node.create).mockResolvedValue(
+        createMockNode({ id: "node-valid-tags" }),
+      );
+
+      const result = await knowledgeService.proposeKnowledge({
+        label: "Valid Tags Node",
+        type: "LESSON",
+        content: "Content",
+        tags: ["section:mistakes-to-avoid", "agent:synapse-agent-web-dev"],
       });
       expect(result.success).toBe(true);
     });
@@ -465,7 +594,9 @@ describe("KnowledgeService", () => {
         overlap_count: BigInt(3),
       },
     ];
-    asMock<RelatedNodeQueryRow[]>(prisma.$queryRawUnsafe).mockResolvedValue(mockQueryResults);
+    asMock<RelatedNodeQueryRow[]>(prisma.$queryRawUnsafe).mockResolvedValue(
+      mockQueryResults,
+    );
 
     const result = await knowledgeService.getRelatedNodes("n1");
     expect(result).toHaveLength(1);
@@ -481,7 +612,12 @@ describe("KnowledgeService", () => {
 
     it("should filter nodes, increment clocks and update access times", async () => {
       asMock<Tag[]>(prisma.tag.findMany).mockResolvedValue([
-        createMockTag({ id: "t1", scope: "project", name: "p1", virtual_clock: 10 }),
+        createMockTag({
+          id: "t1",
+          scope: "project",
+          name: "p1",
+          virtual_clock: 10,
+        }),
       ]);
       interface NodeTagGroupRow {
         tagId: string;
@@ -508,7 +644,13 @@ describe("KnowledgeService", () => {
               tagId: "t1",
               accessed_at_virtual_day: 8,
               last_accessed_at: new Date(),
-              tag: createMockTag({ id: "t1", scope: "project", name: "p1", version: "2.0", virtual_clock: 10 }),
+              tag: createMockTag({
+                id: "t1",
+                scope: "project",
+                name: "p1",
+                version: "2.0",
+                virtual_clock: 10,
+              }),
             },
           ],
         },
@@ -526,7 +668,13 @@ describe("KnowledgeService", () => {
               tagId: "t1",
               accessed_at_virtual_day: 5,
               last_accessed_at: new Date(),
-              tag: createMockTag({ id: "t1", scope: "project", name: "p1", version: "2.0", virtual_clock: 10 }),
+              tag: createMockTag({
+                id: "t1",
+                scope: "project",
+                name: "p1",
+                version: "2.0",
+                virtual_clock: 10,
+              }),
             },
           ],
         },
@@ -544,7 +692,13 @@ describe("KnowledgeService", () => {
               tagId: "t1",
               accessed_at_virtual_day: 5,
               last_accessed_at: new Date(),
-              tag: createMockTag({ id: "t1", scope: "project", name: "p1", version: "2.0", virtual_clock: 10 }),
+              tag: createMockTag({
+                id: "t1",
+                scope: "project",
+                name: "p1",
+                version: "2.0",
+                virtual_clock: 10,
+              }),
             },
           ],
         },
@@ -562,14 +716,23 @@ describe("KnowledgeService", () => {
               tagId: "t-global",
               accessed_at_virtual_day: 10,
               last_accessed_at: new Date(),
-              tag: createMockTag({ id: "t-global", scope: "scope", name: "global", virtual_clock: 10 }),
+              tag: createMockTag({
+                id: "t-global",
+                scope: "scope",
+                name: "global",
+                virtual_clock: 10,
+              }),
             },
           ],
         },
       ];
-      asMock<NodeWithTagsByContextRow[]>(prisma.node.findMany).mockResolvedValue(mockNodes);
+      asMock<NodeWithTagsByContextRow[]>(
+        prisma.node.findMany,
+      ).mockResolvedValue(mockNodes);
 
-      const result = await knowledgeService.getNodesByContext({ tags: ["project:p1@2.0", "p1"] });
+      const result = await knowledgeService.getNodesByContext({
+        tags: ["project:p1@2.0", "p1"],
+      });
       expect(result).toHaveLength(4);
       expect(prisma.$executeRaw).toHaveBeenCalled();
       expect(prisma.nodeTag.updateMany).toHaveBeenCalled();
@@ -593,7 +756,9 @@ describe("KnowledgeService", () => {
           distance: 0.1234,
           status: "APPROVED",
           memory_tier: "ACTIVE",
-          tags: [createMockTag({ scope: "section", name: "mistakes-to-avoid" })],
+          tags: [
+            createMockTag({ scope: "section", name: "mistakes-to-avoid" }),
+          ],
         },
         {
           id: "n2",
@@ -609,7 +774,10 @@ describe("KnowledgeService", () => {
           id: "n3",
           label: "Cold Context Node",
           type: "CONTEXT",
-          properties: JSON.stringify({ content: "This context has hibernated for a very long time indeed, and we must ensure that the very first sentence of this content is exceptionally long, exceeding one hundred and twenty characters without any sentence-ending punctuation like periods or exclamation marks." }),
+          properties: JSON.stringify({
+            content:
+              "This context has hibernated for a very long time indeed, and we must ensure that the very first sentence of this content is exceptionally long, exceeding one hundred and twenty characters without any sentence-ending punctuation like periods or exclamation marks.",
+          }),
           distance: 0.99,
           status: "APPROVED",
           memory_tier: "COLD",
@@ -628,13 +796,17 @@ describe("KnowledgeService", () => {
           memory_tier: "ACTIVE",
           tags: [
             createMockTag({ scope: "custom", name: "mock-tag", version: null }),
-            createMockTag({ scope: "custom-with-version", name: "mock-tag", version: "1.0" })
+            createMockTag({
+              scope: "custom-with-version",
+              name: "mock-tag",
+              version: "1.0",
+            }),
           ],
         },
       ];
 
       const markdown = knowledgeService.formatAsMarkdown(
-        nodes as object as (Node & { distance: number })[]
+        nodes as object as (Node & { distance: number })[],
       );
       expect(markdown).toContain("Active Lesson");
       expect(markdown).toContain("Beta Feature");
@@ -648,8 +820,12 @@ describe("KnowledgeService", () => {
   });
 
   it("mergeNodes - should archive source nodes and create new merged node in transaction", async () => {
-    asMock<Node>(prisma.node.create).mockResolvedValue(createMockNode({ id: "merged-node" }));
-    asMock<Tag | null>(prisma.tag.findUnique).mockResolvedValue(createMockTag({ id: "tag-id", virtual_clock: 3 }));
+    asMock<Node>(prisma.node.create).mockResolvedValue(
+      createMockNode({ id: "merged-node" }),
+    );
+    asMock<Tag | null>(prisma.tag.findUnique).mockResolvedValue(
+      createMockTag({ id: "tag-id", virtual_clock: 3 }),
+    );
 
     const result = await knowledgeService.mergeNodes({
       sourceNodeIds: ["s1", "s2"],
@@ -666,16 +842,24 @@ describe("KnowledgeService", () => {
     expect(prisma.node.updateMany).toHaveBeenCalled();
     expect(prisma.$executeRaw).toHaveBeenCalled();
     expect(prisma.archive.create).toHaveBeenCalledTimes(2);
-    expect(queueService.enqueueEmbeddingTask).toHaveBeenCalledWith("merged-node", "New Label");
+    expect(queueService.enqueueEmbeddingTask).toHaveBeenCalledWith(
+      "merged-node",
+      "New Label",
+    );
   });
 
   describe("undoAction", () => {
     it("should handle REJECTED undo action", async () => {
-      asMock<Node>(prisma.node.update).mockResolvedValue(createMockNode({ id: "n1", label: "L1" }));
+      asMock<Node>(prisma.node.update).mockResolvedValue(
+        createMockNode({ id: "n1", label: "L1" }),
+      );
 
       const result = await knowledgeService.undoAction("n1", "REJECTED");
       expect(result).toEqual({ success: true });
-      expect(queueService.enqueueEmbeddingTask).toHaveBeenCalledWith("n1", "L1");
+      expect(queueService.enqueueEmbeddingTask).toHaveBeenCalledWith(
+        "n1",
+        "L1",
+      );
     });
 
     it("should handle ARCHIVE undo action and restore source nodes", async () => {
@@ -688,8 +872,22 @@ describe("KnowledgeService", () => {
         mergedAt: new Date(),
       });
       asMock<Archive[]>(prisma.archive.findMany).mockResolvedValue([
-        { id: "a1", fromNodeId: "src-1", toNodeId: "merged-c", reason: null, similarityScore: null, mergedAt: new Date() },
-        { id: "a2", fromNodeId: "src-2", toNodeId: "merged-c", reason: null, similarityScore: null, mergedAt: new Date() },
+        {
+          id: "a1",
+          fromNodeId: "src-1",
+          toNodeId: "merged-c",
+          reason: null,
+          similarityScore: null,
+          mergedAt: new Date(),
+        },
+        {
+          id: "a2",
+          fromNodeId: "src-2",
+          toNodeId: "merged-c",
+          reason: null,
+          similarityScore: null,
+          mergedAt: new Date(),
+        },
       ]);
       asMock<Node[]>(prisma.node.findMany).mockResolvedValue([
         createMockNode({ id: "src-1", label: "L1" }),
@@ -699,19 +897,32 @@ describe("KnowledgeService", () => {
       const result = await knowledgeService.undoAction("src-1", "ARCHIVE");
       expect(result).toEqual({ success: true });
       expect(prisma.node.updateMany).toHaveBeenCalled();
-      expect(prisma.node.delete).toHaveBeenCalledWith({ where: { id: "merged-c" } });
-      expect(prisma.archive.deleteMany).toHaveBeenCalledWith({ where: { toNodeId: "merged-c" } });
+      expect(prisma.node.delete).toHaveBeenCalledWith({
+        where: { id: "merged-c" },
+      });
+      expect(prisma.archive.deleteMany).toHaveBeenCalledWith({
+        where: { toNodeId: "merged-c" },
+      });
       expect(queueService.enqueueEmbeddingTask).toHaveBeenCalledTimes(2);
     });
 
     it("should return failure if archive history not found", async () => {
       asMock<Archive | null>(prisma.archive.findFirst).mockResolvedValue(null);
-      const result = await knowledgeService.undoAction("non-existent-archive", "ARCHIVE");
-      expect(result).toEqual({ success: false, message: "Merge history not found." });
+      const result = await knowledgeService.undoAction(
+        "non-existent-archive",
+        "ARCHIVE",
+      );
+      expect(result).toEqual({
+        success: false,
+        message: "Merge history not found.",
+      });
     });
 
     it("should return failure for unknown action type", async () => {
-      const result = await knowledgeService.undoAction("n1", "UNKNOWN" as string as "REJECTED");
+      const result = await knowledgeService.undoAction(
+        "n1",
+        "UNKNOWN" as string as "REJECTED",
+      );
       expect(result).toEqual({ success: false, message: "Unknown undo type." });
     });
   });
@@ -719,7 +930,9 @@ describe("KnowledgeService", () => {
   describe("incrementSuccessCount", () => {
     it("should throw if node not found", async () => {
       asMock<Node | null>(prisma.node.findUnique).mockResolvedValue(null);
-      await expect(knowledgeService.incrementSuccessCount("n-none")).rejects.toThrow("Node not found");
+      await expect(
+        knowledgeService.incrementSuccessCount("n-none"),
+      ).rejects.toThrow("Node not found");
     });
 
     it("should increment success count and elevate to GOLD if BETA and count >= 3", async () => {
@@ -737,9 +950,11 @@ describe("KnowledgeService", () => {
         memory_tier: "ACTIVE",
         tags: [],
       };
-      asMock<NodeWithTags | null>(prisma.node.findUnique).mockResolvedValue(mockNode);
+      asMock<NodeWithTags | null>(prisma.node.findUnique).mockResolvedValue(
+        mockNode,
+      );
       asMock<Node>(prisma.node.update).mockResolvedValue(
-        createMockNode({ id: "n-beta", success_count: 3, status: "GOLD" })
+        createMockNode({ id: "n-beta", success_count: 3, status: "GOLD" }),
       );
 
       const result = await knowledgeService.incrementSuccessCount("n-beta");
@@ -763,11 +978,11 @@ describe("KnowledgeService", () => {
         success_count: 0,
         status: "APPROVED",
         memory_tier: "COLD",
-        tags: [
-          { tag: createMockTag({ id: "t1", virtual_clock: 10 }) },
-        ],
+        tags: [{ tag: createMockTag({ id: "t1", virtual_clock: 10 }) }],
       };
-      asMock<NodeWithTags | null>(prisma.node.findUnique).mockResolvedValue(mockNode);
+      asMock<NodeWithTags | null>(prisma.node.findUnique).mockResolvedValue(
+        mockNode,
+      );
       asMock<Node>(prisma.node.update).mockResolvedValue(createMockNode({}));
 
       await knowledgeService.incrementSuccessCount("n-cold");
@@ -782,7 +997,9 @@ describe("KnowledgeService", () => {
   describe("wakeUpNode", () => {
     it("should throw if node not found", async () => {
       asMock<Node | null>(prisma.node.findUnique).mockResolvedValue(null);
-      await expect(knowledgeService.wakeUpNode("n-none")).rejects.toThrow("Node not found");
+      await expect(knowledgeService.wakeUpNode("n-none")).rejects.toThrow(
+        "Node not found",
+      );
     });
 
     it("should restore node and update tag accessed times", async () => {
@@ -798,11 +1015,11 @@ describe("KnowledgeService", () => {
         success_count: 0,
         status: "APPROVED",
         memory_tier: "COLD",
-        tags: [
-          { tag: createMockTag({ id: "t1", virtual_clock: 5 }) },
-        ],
+        tags: [{ tag: createMockTag({ id: "t1", virtual_clock: 5 }) }],
       };
-      asMock<NodeWithTags | null>(prisma.node.findUnique).mockResolvedValue(mockNode);
+      asMock<NodeWithTags | null>(prisma.node.findUnique).mockResolvedValue(
+        mockNode,
+      );
       asMock<Node>(prisma.node.update).mockResolvedValue(createMockNode({}));
 
       await knowledgeService.wakeUpNode("n-wake");

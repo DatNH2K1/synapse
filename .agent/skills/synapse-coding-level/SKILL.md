@@ -8,6 +8,7 @@ metadata:
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
+
 > [!IMPORTANT]
 > **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
 
@@ -22,6 +23,7 @@ metadata:
 This skill allows the AI to automatically adjust explanation depth and coding style based on user expertise.
 
 ## Levels
+
 - **Level 0 (ELI5):** Simple explanations for a 5-year-old.
 - **Level 1 (Beginner):** Detailed explanations of basic concepts.
 - **Level 2 (Intermediate):** Balance between code and explanation.
@@ -30,6 +32,7 @@ This skill allows the AI to automatically adjust explanation depth and coding st
 - **Level 5 (God Mode):** No prose, zero hand-holding, focus on elite code and system risks.
 
 ## Usage
+
 1. User specifies target level or system detects it automatically.
 2. AI loads corresponding markdown file in this directory to apply communication rules.
 3. Priority is always on brevity and precision at higher levels.

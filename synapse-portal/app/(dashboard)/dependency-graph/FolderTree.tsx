@@ -1,5 +1,11 @@
 import React from "react";
-import { Folder, FileCode, ChevronDown, ChevronRight, FolderOpen } from "lucide-react";
+import {
+  Folder,
+  FileCode,
+  ChevronDown,
+  ChevronRight,
+  FolderOpen,
+} from "lucide-react";
 
 export interface TreeNode {
   name: string;
@@ -21,14 +27,14 @@ interface FolderTreeProps {
 }
 
 export const EXT_COLORS: Record<string, string> = {
-  ts: "#818cf8",   // Indigo
-  tsx: "#6366f1",  // Deep Indigo
-  js: "#f59e0b",   // Amber
-  jsx: "#fbbf24",  // Yellow
-  py: "#38bdf8",   // Sky
-  go: "#14b8a6",   // Teal
-  vue: "#34d399",  // Emerald/Vue Green
-  php: "#a855f7",  // Purple
+  ts: "#818cf8", // Indigo
+  tsx: "#6366f1", // Deep Indigo
+  js: "#f59e0b", // Amber
+  jsx: "#fbbf24", // Yellow
+  py: "#38bdf8", // Sky
+  go: "#14b8a6", // Teal
+  vue: "#34d399", // Emerald/Vue Green
+  php: "#a855f7", // Purple
   json: "#f43f5e", // Rose
 };
 
@@ -51,7 +57,11 @@ const FolderTreeNode: React.FC<{
           className="flex w-full items-center gap-1 py-0.5 text-left text-xs font-bold text-slate-400 hover:text-slate-200 transition-all outline-none"
         >
           <span className="text-slate-500 transition-transform duration-200 shrink-0">
-            {isExpanded ? <ChevronDown size={11} /> : <ChevronRight size={11} />}
+            {isExpanded ? (
+              <ChevronDown size={11} />
+            ) : (
+              <ChevronRight size={11} />
+            )}
           </span>
           <Folder size={12} className="text-indigo-400/75 shrink-0" />
           <span className="truncate">{node.name}</span>
@@ -110,9 +120,7 @@ export const FolderTree: React.FC<FolderTreeProps> = ({
           <FolderOpen size={14} className="shrink-0" /> {title}
         </div>
         {subtitle && (
-          <p className="text-[10px] text-slate-500 font-medium">
-            {subtitle}
-          </p>
+          <p className="text-[10px] text-slate-500 font-medium">{subtitle}</p>
         )}
       </div>
       <div className="flex-1 overflow-y-auto space-y-0.5 pr-1 custom-scrollbar">

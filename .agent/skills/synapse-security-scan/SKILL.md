@@ -8,6 +8,7 @@ metadata:
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
+
 > [!IMPORTANT]
 > **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
 
@@ -24,14 +25,17 @@ Perform an automated security audit of the codebase to detect secrets, vulnerabi
 ## Scan Categories
 
 ### 1. Secret Detection
+
 - Scan for API keys, tokens (AWS, GitHub, Stripe), and hardcoded passwords.
 - **Rules:** Never output full secret values; redact to `AKIA...XX`.
 - **Exclusions:** Skip `.env.example`, `node_modules/`, and `dist/`.
 
 ### 2. Dependency Audit
+
 - Run `npm audit` or `pip audit` to find known vulnerabilities in third-party packages.
 
 ### 3. Vulnerability Patterns (OWASP)
+
 - **Injection:** Check for unsanitized string concatenation in SQL or command execution.
 - **XSS:** Check for `innerHTML` or `dangerouslySetInnerHTML` usage.
 - **Insecure Randomness:** Check for `Math.random` in security-sensitive contexts.
@@ -44,5 +48,6 @@ Perform an automated security audit of the codebase to detect secrets, vulnerabi
 4. **Report:** Generate a markdown report summarizing Critical, High, and Medium findings.
 
 ## Commands
+
 - `/synapse-security-scan` - Full project scan.
 - `/synapse-security-scan --secrets-only` - Focused secret detection.

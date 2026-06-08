@@ -7,6 +7,7 @@ description: "Trend Forecasting & Futurism: Weak Signals, STEEP Analysis, Future
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
+
 > [!IMPORTANT]
 > **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
 
@@ -25,17 +26,20 @@ This skill provides methodologies to identify emerging technological shifts, ana
 ## Core Frameworks & Workflows
 
 ### 1. Trend Signals & Weak Signals
+
 Identify and analyze small, early indicators of change that have the potential to become massive mainstream trends.
 
 **Workflow Steps**:
+
 1. **Scout Signals**: Find niche technologies, fringe user behaviors, or emerging startup patterns (e.g., decentralized local AI running on-device).
 2. **Determine Drivers**: What macro forces are accelerating this signal? (e.g., Privacy concerns, local offline needs, chip hardware advances).
 3. **Map Hype Cycle**: Is this signal currently in hype, disappointment, or steady growth?
-4. **Product Synthesis**: Propose how the current project can leverage this weak signal *today* to be ready for the mainstream shift tomorrow.
+4. **Product Synthesis**: Propose how the current project can leverage this weak signal _today_ to be ready for the mainstream shift tomorrow.
 
 ---
 
 ### 2. STEEP Analysis
+
 Contextualize how external megatrends will shape user needs and product opportunities.
 
 - **S - Social**: Changes in lifestyles, demographics, and cultural norms (e.g., Remote-first work culture, digital fatigue).
@@ -47,6 +51,7 @@ Contextualize how external megatrends will shape user needs and product opportun
 ---
 
 ### 3. Futures Cone
+
 Map out potential futures for the product domain over a 1, 3, and 5-year horizon.
 
 - **Probable Future**: What is most likely to happen if current trends continue linearly?
@@ -57,10 +62,12 @@ Map out potential futures for the product domain over a 1, 3, and 5-year horizon
 ---
 
 ### 4. Cross-Industry Analogy
+
 Take a highly successful business model, UX paradigm, or operational model from an unrelated industry and map it onto the current project.
 
 **Workflow Steps**:
-1. **Deconstruct the Analogy**: Look at a benchmark (e.g., *Duolingo's gamified streak mechanics* or *Uber's real-time matching algorithm*).
+
+1. **Deconstruct the Analogy**: Look at a benchmark (e.g., _Duolingo's gamified streak mechanics_ or _Uber's real-time matching algorithm_).
 2. **Identify the Core Value Driver**: Why does it work? (e.g., "Daily habits through psychological loss-aversion" or "Dynamic supply-demand pricing").
 3. **Map to Target Product**: Translate this mechanism into the current codebase or PRD (e.g., "Implement a 'Daily Code-Clean Streak' mechanic for developers inside the Synapse Portal" or "Create dynamic API scheduling based on server load").
 
@@ -69,4 +76,5 @@ Take a highly successful business model, UX paradigm, or operational model from 
 ## Output Templates
 
 Refer to the official template when outputting a technology scout or trend assessment:
+
 - [Trend & Tech Scouting Report Template](./templates/trend-tech-scouting-report.md)

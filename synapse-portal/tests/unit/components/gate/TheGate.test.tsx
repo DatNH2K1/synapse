@@ -1,8 +1,18 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import React from "react";
-import { render, screen, fireEvent, act, cleanup } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  act,
+  cleanup,
+} from "@testing-library/react";
 import TheGate from "@/components/gate/TheGate";
-import { PendingUpdate, NodeWithTags, CachedProposal } from "@/components/gate/types";
+import {
+  PendingUpdate,
+  NodeWithTags,
+  CachedProposal,
+} from "@/components/gate/types";
 
 const mockRefresh = vi.fn();
 const stableRouter = {
@@ -37,14 +47,19 @@ vi.mock("@/components/shared/RealtimeProvider", () => ({
 // Mock IndexedDB
 let hasStore = false;
 const mockDB = {
-  transaction: (_storeNames: string | string[], _mode?: IDBTransactionMode): IDBTransaction => {
+  transaction: (
+    _storeNames: string | string[],
+    _mode?: IDBTransactionMode,
+  ): IDBTransaction => {
     return {
       objectStore: (_name: string): IDBObjectStore => {
         return {
           getAll: (): IDBRequest<CachedProposal[]> => {
             const req = {
               _onsuccess: null as (() => void) | null,
-              get onsuccess() { return this._onsuccess; },
+              get onsuccess() {
+                return this._onsuccess;
+              },
               set onsuccess(val) {
                 this._onsuccess = val;
                 if (val) val();
@@ -59,7 +74,9 @@ const mockDB = {
           getAllKeys: (): IDBRequest<IDBValidKey[]> => {
             const req = {
               _onsuccess: null as (() => void) | null,
-              get onsuccess() { return this._onsuccess; },
+              get onsuccess() {
+                return this._onsuccess;
+              },
               set onsuccess(val) {
                 this._onsuccess = val;
                 if (val) val();
@@ -131,7 +148,15 @@ describe("components/gate/TheGate", () => {
       status: "PENDING",
       last_verified: "2026-06-04T12:00:00Z",
       properties: JSON.stringify({ content: "Description text." }),
-      tags: [{ id: "tag-1", scope: "agent", name: "Sally", version: null, color: "#ff0000" }],
+      tags: [
+        {
+          id: "tag-1",
+          scope: "agent",
+          name: "Sally",
+          version: null,
+          color: "#ff0000",
+        },
+      ],
       matches: [{ id: "node-1", label: "Existing Node A", score: 0.95 }],
     },
   ];
@@ -148,7 +173,16 @@ describe("components/gate/TheGate", () => {
       status: "APPROVED",
       memory_tier: "CORE",
       embeddingModel: "text-embedding-3-small",
-      tags: [{ id: "tag-1", scope: "agent", name: "Sally", version: null, color: "#ff0000", virtual_clock: 0 }],
+      tags: [
+        {
+          id: "tag-1",
+          scope: "agent",
+          name: "Sally",
+          version: null,
+          color: "#ff0000",
+          virtual_clock: 0,
+        },
+      ],
     },
   ];
 
@@ -164,7 +198,9 @@ describe("components/gate/TheGate", () => {
   });
 
   it("should render review gate tab with proposal cards and handle tab switches", async () => {
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
 
     // Fast-forward indexedDB macrotask/timeout
     await act(async () => {
@@ -208,14 +244,19 @@ describe("components/gate/TheGate", () => {
       json: async () => ({ success: true }),
     } as Response);
 
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
 
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
 
     // Click Approve button (the first button in the proposal controls)
-    const approveBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-check") !== null);
+    const approveBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" && el.querySelector(".lucide-check") !== null,
+    );
     await act(async () => {
       fireEvent.click(approveBtn);
     });
@@ -225,7 +266,7 @@ describe("components/gate/TheGate", () => {
       expect.objectContaining({
         method: "POST",
         body: JSON.stringify({ id: "update-123", action: "APPROVE" }),
-      })
+      }),
     );
     expect(mockRefresh).toHaveBeenCalled();
   });
@@ -236,13 +277,19 @@ describe("components/gate/TheGate", () => {
       json: async () => ({ success: true }),
     } as Response);
 
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
 
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
 
-    const rejectBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-trash-2") !== null);
+    const rejectBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" &&
+        el.querySelector(".lucide-trash-2") !== null,
+    );
     await act(async () => {
       fireEvent.click(rejectBtn);
     });
@@ -252,7 +299,7 @@ describe("components/gate/TheGate", () => {
       expect.objectContaining({
         method: "POST",
         body: JSON.stringify({ id: "update-123", action: "REJECT" }),
-      })
+      }),
     );
     expect(mockRefresh).toHaveBeenCalled();
   });
@@ -275,14 +322,20 @@ describe("components/gate/TheGate", () => {
         json: async () => ({ success: true }),
       } as Response);
 
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
 
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
 
     // Start merge flow
-    const mergeBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-git-merge") !== null);
+    const mergeBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" &&
+        el.querySelector(".lucide-git-merge") !== null,
+    );
     await act(async () => {
       fireEvent.click(mergeBtn);
     });
@@ -292,7 +345,7 @@ describe("components/gate/TheGate", () => {
       expect.objectContaining({
         method: "POST",
         body: JSON.stringify({ nodeIds: ["node-1", "update-123"] }),
-      })
+      }),
     );
 
     // Now Synthesis Modal should be open, let's click confirm merge
@@ -306,7 +359,7 @@ describe("components/gate/TheGate", () => {
       expect.objectContaining({
         method: "POST",
         body: expect.stringContaining("MERGE"),
-      })
+      }),
     );
     expect(mockRefresh).toHaveBeenCalled();
   });
@@ -342,7 +395,9 @@ describe("components/gate/TheGate", () => {
         }),
       } as Response);
 
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
 
     await act(async () => {
       vi.advanceTimersByTime(10);
@@ -365,7 +420,7 @@ describe("components/gate/TheGate", () => {
       expect.objectContaining({
         method: "POST",
         body: JSON.stringify({ id: "log-1", action: "UNDO", type: "APPROVED" }),
-      })
+      }),
     );
     expect(mockRefresh).toHaveBeenCalled();
   });
@@ -376,7 +431,13 @@ describe("components/gate/TheGate", () => {
       objectStore: (_name: string): IDBObjectStore => {
         const allReq = {
           onsuccess: null as (() => void) | null,
-          result: [{ label: "Cached Title", content: "Cached Content", reason: "Cached Reason" }],
+          result: [
+            {
+              label: "Cached Title",
+              content: "Cached Content",
+              reason: "Cached Reason",
+            },
+          ],
           addEventListener: vi.fn(),
           dispatchEvent: vi.fn(),
           removeEventListener: vi.fn(),
@@ -403,13 +464,19 @@ describe("components/gate/TheGate", () => {
       removeEventListener: vi.fn(),
     } as object as IDBTransaction);
 
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
 
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
 
-    const mergeBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-git-merge") !== null);
+    const mergeBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" &&
+        el.querySelector(".lucide-git-merge") !== null,
+    );
     await act(async () => {
       fireEvent.click(mergeBtn);
     });
@@ -424,7 +491,9 @@ describe("components/gate/TheGate", () => {
   });
 
   it("should open comparison modal when clicking compare on proposal card", async () => {
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
     const compareBtn = screen.getByText("compare");
     await act(async () => {
       fireEvent.click(compareBtn);
@@ -475,22 +544,33 @@ describe("components/gate/TheGate", () => {
     });
     vi.stubGlobal("fetch", mockFetch);
 
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
 
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
 
-    const mergeBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-git-merge") !== null);
+    const mergeBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" &&
+        el.querySelector(".lucide-git-merge") !== null,
+    );
     await act(async () => {
       fireEvent.click(mergeBtn);
     });
 
-    expect(mockFetch).toHaveBeenCalledWith("/api/gate/synthesize", expect.any(Object));
+    expect(mockFetch).toHaveBeenCalledWith(
+      "/api/gate/synthesize",
+      expect.any(Object),
+    );
   });
 
   it("should handle tab switches back and forth", async () => {
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
@@ -515,26 +595,42 @@ describe("components/gate/TheGate", () => {
   });
 
   it("should log error when synthesis fails", async () => {
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.stubGlobal("fetch", vi.fn().mockRejectedValueOnce(new Error("Synthesis Error")));
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockRejectedValueOnce(new Error("Synthesis Error")),
+    );
 
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
 
-    const mergeBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-git-merge") !== null);
+    const mergeBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" &&
+        el.querySelector(".lucide-git-merge") !== null,
+    );
     await act(async () => {
       fireEvent.click(mergeBtn);
     });
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith("Synthesis failed", expect.any(Error));
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Synthesis failed",
+      expect.any(Error),
+    );
     consoleErrorSpy.mockRestore();
   });
 
   it("should log error when merge fails", async () => {
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-    
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
     // First fetch: get cached, or mock synthesize
     vi.mocked(fetch)
       .mockResolvedValueOnce({
@@ -549,12 +645,18 @@ describe("components/gate/TheGate", () => {
       // Second fetch: confirm merge fails
       .mockRejectedValueOnce(new Error("Merge API Error"));
 
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
 
-    const mergeBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-git-merge") !== null);
+    const mergeBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" &&
+        el.querySelector(".lucide-git-merge") !== null,
+    );
     await act(async () => {
       fireEvent.click(mergeBtn);
     });
@@ -564,12 +666,17 @@ describe("components/gate/TheGate", () => {
       fireEvent.click(confirmBtn);
     });
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith("Merge failed", expect.any(Error));
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Merge failed",
+      expect.any(Error),
+    );
     consoleErrorSpy.mockRestore();
   });
 
   it("should trigger ComparisonModal callbacks: onClose, onAction, onStartMerge", async () => {
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
@@ -592,7 +699,9 @@ describe("components/gate/TheGate", () => {
   });
 
   it("should trigger ComparisonModal onAction and onStartMerge from within TheGate context", async () => {
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
@@ -647,12 +756,18 @@ describe("components/gate/TheGate", () => {
       }),
     } as unknown as Response);
 
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
 
-    const mergeBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-git-merge") !== null);
+    const mergeBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" &&
+        el.querySelector(".lucide-git-merge") !== null,
+    );
     await act(async () => {
       fireEvent.click(mergeBtn);
     });
@@ -669,10 +784,14 @@ describe("components/gate/TheGate", () => {
   });
 
   it("should log error when fetchLogs fails during tab loading", async () => {
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
     vi.mocked(fetch).mockRejectedValueOnce(new Error("Logs Fetch Error"));
 
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
@@ -682,30 +801,45 @@ describe("components/gate/TheGate", () => {
       fireEvent.click(historyBtn);
     });
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith("Failed to fetch audit logs", expect.any(Error));
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Failed to fetch audit logs",
+      expect.any(Error),
+    );
     consoleErrorSpy.mockRestore();
   });
 
   it("should log error when handleAction fails", async () => {
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
     vi.mocked(fetch).mockRejectedValueOnce(new Error("Action Fetch Error"));
 
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
 
-    const approveBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-check") !== null);
+    const approveBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" && el.querySelector(".lucide-check") !== null,
+    );
     await act(async () => {
       fireEvent.click(approveBtn);
     });
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith("Action failed", expect.any(Error));
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Action failed",
+      expect.any(Error),
+    );
     consoleErrorSpy.mockRestore();
   });
 
   it("should handle undo failure and log error", async () => {
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
     const alertSpy = vi.spyOn(window, "alert").mockImplementation(() => {});
 
     // 1. Initial tab switch fetch success
@@ -731,7 +865,9 @@ describe("components/gate/TheGate", () => {
         json: async () => ({ success: false, message: "Undo not allowed" }),
       } as Response);
 
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
@@ -756,14 +892,19 @@ describe("components/gate/TheGate", () => {
       fireEvent.click(screen.getByText("undo"));
     });
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith("Undo action failed", expect.any(Error));
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Undo action failed",
+      expect.any(Error),
+    );
 
     consoleErrorSpy.mockRestore();
     alertSpy.mockRestore();
   });
 
   it("should log error when fetchLogs fails during successful undo", async () => {
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
 
     vi.mocked(fetch)
       .mockResolvedValueOnce({
@@ -787,7 +928,9 @@ describe("components/gate/TheGate", () => {
       } as Response)
       .mockRejectedValueOnce(new Error("Fetch logs failure"));
 
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
@@ -802,7 +945,10 @@ describe("components/gate/TheGate", () => {
       fireEvent.click(screen.getByText("undo"));
     });
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith("Failed to fetch audit logs", expect.any(Error));
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Failed to fetch audit logs",
+      expect.any(Error),
+    );
     consoleErrorSpy.mockRestore();
   });
 
@@ -830,7 +976,9 @@ describe("components/gate/TheGate", () => {
         json: async () => ({ success: false }),
       } as Response);
 
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
@@ -852,12 +1000,17 @@ describe("components/gate/TheGate", () => {
       ok: false,
     } as Response);
 
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
 
-    const approveBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-check") !== null);
+    const approveBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" && el.querySelector(".lucide-check") !== null,
+    );
     const initialCalls = mockRefresh.mock.calls.length;
     await act(async () => {
       fireEvent.click(approveBtn);
@@ -882,12 +1035,18 @@ describe("components/gate/TheGate", () => {
         ok: false,
       } as Response);
 
-    render(<TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />);
+    render(
+      <TheGate pendingUpdates={pendingUpdates} existingNodes={existingNodes} />,
+    );
     await act(async () => {
       vi.advanceTimersByTime(10);
     });
 
-    const mergeBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-git-merge") !== null);
+    const mergeBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" &&
+        el.querySelector(".lucide-git-merge") !== null,
+    );
     await act(async () => {
       fireEvent.click(mergeBtn);
     });

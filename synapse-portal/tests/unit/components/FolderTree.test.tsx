@@ -1,7 +1,10 @@
 import { describe, it, expect, vi } from "vitest";
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { FolderTree, TreeNode } from "@/app/(dashboard)/dependency-graph/FolderTree";
+import {
+  FolderTree,
+  TreeNode,
+} from "@/app/(dashboard)/dependency-graph/FolderTree";
 
 describe("FolderTree Component", () => {
   const fileTree: TreeNode[] = [
@@ -41,7 +44,7 @@ describe("FolderTree Component", () => {
         title="Files"
         subtitle="Hierarchy"
         noFilesText="Empty"
-      />
+      />,
     );
 
     expect(screen.getByText("Files")).toBeDefined();
@@ -64,7 +67,7 @@ describe("FolderTree Component", () => {
         togglePath={togglePathMock}
         title="Files"
         noFilesText="Empty"
-      />
+      />,
     );
 
     expect(screen.getByText("index.ts")).toBeDefined();
@@ -84,7 +87,7 @@ describe("FolderTree Component", () => {
         togglePath={vi.fn()}
         title="Files"
         noFilesText="No Files Found"
-      />
+      />,
     );
 
     expect(screen.getByText("No Files Found")).toBeDefined();

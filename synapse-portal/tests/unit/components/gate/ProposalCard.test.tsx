@@ -31,7 +31,15 @@ describe("components/gate/ProposalCard", () => {
     status: "PENDING",
     last_verified: "2026-06-04T12:00:00Z",
     properties: JSON.stringify({ content: "Description of proposed item." }),
-    tags: [{ id: "tag-1", scope: "agent", name: "winston", version: null, color: "#ff0000" }],
+    tags: [
+      {
+        id: "tag-1",
+        scope: "agent",
+        name: "winston",
+        version: null,
+        color: "#ff0000",
+      },
+    ],
     matches: [{ id: "node-1", label: "Existing Item", score: 0.9 }],
   };
 
@@ -72,7 +80,7 @@ describe("components/gate/ProposalCard", () => {
         onAction={onAction}
         onStartMerge={onStartMerge}
         onCompare={onCompare}
-      />
+      />,
     );
 
     expect(screen.getByText("Proposed Item")).toBeDefined();
@@ -81,17 +89,28 @@ describe("components/gate/ProposalCard", () => {
     expect(screen.getByText("similar_to_Existing Item")).toBeDefined();
 
     // Click Approve
-    const approveBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-check") !== null);
+    const approveBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" && el.querySelector(".lucide-check") !== null,
+    );
     fireEvent.click(approveBtn);
     expect(onAction).toHaveBeenCalledWith("update-1", "APPROVE");
 
     // Click Reject
-    const rejectBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-trash-2") !== null);
+    const rejectBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" &&
+        el.querySelector(".lucide-trash-2") !== null,
+    );
     fireEvent.click(rejectBtn);
     expect(onAction).toHaveBeenCalledWith("update-1", "REJECT");
 
     // Click Merge
-    const mergeBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-git-merge") !== null);
+    const mergeBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" &&
+        el.querySelector(".lucide-git-merge") !== null,
+    );
     fireEvent.click(mergeBtn);
     expect(onStartMerge).toHaveBeenCalledWith(mockUpdate, mockExistingNodes);
 
@@ -106,7 +125,9 @@ describe("components/gate/ProposalCard", () => {
       ...mockUpdate,
       properties: "",
       tags: [],
-      matches: [{ id: "node-nonexistent", label: "Non-existent Item", score: 0.7 }],
+      matches: [
+        { id: "node-nonexistent", label: "Non-existent Item", score: 0.7 },
+      ],
     };
     render(
       <ProposalCard
@@ -117,7 +138,7 @@ describe("components/gate/ProposalCard", () => {
         onAction={onAction}
         onStartMerge={onStartMerge}
         onCompare={onCompare}
-      />
+      />,
     );
     expect(screen.getByText("No description provided.")).toBeDefined();
     expect(screen.getByText("duplicate_detected_70")).toBeDefined();

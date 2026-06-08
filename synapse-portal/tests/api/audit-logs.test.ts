@@ -1,4 +1,3 @@
-
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { GET as getAuditLogs } from "@/app/api/audit-logs/route";
 import { prisma } from "@/lib/db";
@@ -56,8 +55,14 @@ describe("GET /api/audit-logs", () => {
       },
     ];
 
-    vi.mocked(prisma.node.findMany).mockResolvedValue(mockNodes as object as Awaited<ReturnType<typeof prisma.node.findMany>>);
-    vi.mocked(prisma.archive.findMany).mockResolvedValue(mockArchives as object as Awaited<ReturnType<typeof prisma.archive.findMany>>);
+    vi.mocked(prisma.node.findMany).mockResolvedValue(
+      mockNodes as object as Awaited<ReturnType<typeof prisma.node.findMany>>,
+    );
+    vi.mocked(prisma.archive.findMany).mockResolvedValue(
+      mockArchives as object as Awaited<
+        ReturnType<typeof prisma.archive.findMany>
+      >,
+    );
 
     const response = await getAuditLogs();
     expect(response.status).toBe(200);
@@ -80,7 +85,9 @@ describe("GET /api/audit-logs", () => {
   });
 
   it("should return 500 when database query throws an error", async () => {
-    vi.mocked(prisma.node.findMany).mockRejectedValue(new Error("Database connection failed"));
+    vi.mocked(prisma.node.findMany).mockRejectedValue(
+      new Error("Database connection failed"),
+    );
 
     const response = await getAuditLogs();
     expect(response.status).toBe(500);

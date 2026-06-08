@@ -32,11 +32,15 @@ vi.mock("@/components/shared/ThemeSwitcher", () => ({
 }));
 
 vi.mock("@/components/shared/Avatar", () => ({
-  default: ({ seed }: { seed: string }) => <div data-testid="avatar">Avatar {seed}</div>,
+  default: ({ seed }: { seed: string }) => (
+    <div data-testid="avatar">Avatar {seed}</div>
+  ),
 }));
 
 vi.mock("next/link", () => ({
-  default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  default: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
 }));
 
 describe("components/dashboard/Sidebar", () => {
@@ -60,7 +64,7 @@ describe("components/dashboard/Sidebar", () => {
       <div>
         <div data-testid="outside">Outside</div>
         <Sidebar userName="Alice" />
-      </div>
+      </div>,
     );
 
     const btn = screen.getByText("more_button");

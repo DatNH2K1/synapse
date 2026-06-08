@@ -19,7 +19,10 @@ vi.mock("@/components/shared/KnowledgeExplorer", () => ({
     onToggleTag: (tagId: string) => void;
   }) => (
     <div data-testid="mock-explorer">
-      <button onClick={() => onToggleOrphans(false)} data-testid="btn-toggle-orphans">
+      <button
+        onClick={() => onToggleOrphans(false)}
+        data-testid="btn-toggle-orphans"
+      >
         Toggle Orphans
       </button>
       <button onClick={() => onToggleTag("tag-1")} data-testid="btn-toggle-tag">
@@ -47,7 +50,11 @@ vi.mock("next/dynamic", () => ({
 
 describe("components/dashboard/KnowledgeAtlas", () => {
   const mockNodes: Node[] = [
-    { id: "node-1", type: "TAG", properties: JSON.stringify({ scope: "scope1" }) } as Node,
+    {
+      id: "node-1",
+      type: "TAG",
+      properties: JSON.stringify({ scope: "scope1" }),
+    } as Node,
     { id: "root-scope1", type: "ROOT_SCOPE" } as Node,
   ];
   const mockEdges: Edge[] = [
@@ -62,7 +69,9 @@ describe("components/dashboard/KnowledgeAtlas", () => {
   });
 
   it("should render graph and overlays, toggle fullscreen, and toggle explorer", () => {
-    render(<KnowledgeAtlas nodes={mockNodes} edges={mockEdges} tags={mockTags} />);
+    render(
+      <KnowledgeAtlas nodes={mockNodes} edges={mockEdges} tags={mockTags} />,
+    );
 
     expect(screen.getByTestId("mock-graph")).toBeDefined();
     expect(screen.getByText("knowledge_graph")).toBeDefined();
@@ -71,36 +80,66 @@ describe("components/dashboard/KnowledgeAtlas", () => {
     expect(screen.queryByTestId("mock-explorer")).toBeNull();
 
     // Click brain button to show explorer
-    const brainBtn = screen.getByText((_, element) => element?.tagName === "BUTTON" && element.querySelector(".lucide-brain") !== null);
+    const brainBtn = screen.getByText(
+      (_, element) =>
+        element?.tagName === "BUTTON" &&
+        element.querySelector(".lucide-brain") !== null,
+    );
     fireEvent.click(brainBtn);
     expect(screen.getByTestId("mock-explorer")).toBeDefined();
 
     // Toggle fullscreen button click
-    const fsBtn = screen.getByText((_, element) => element?.tagName === "BUTTON" && element.querySelector(".lucide-maximize2") !== null);
+    const fsBtn = screen.getByText(
+      (_, element) =>
+        element?.tagName === "BUTTON" &&
+        element.querySelector(".lucide-maximize2") !== null,
+    );
     fireEvent.click(fsBtn);
     expect(screen.getByText("fullscreen_analysis")).toBeDefined();
 
     // Toggle back
-    const fsMinimizeBtn = screen.getByText((_, element) => element?.tagName === "BUTTON" && element.querySelector(".lucide-minimize2") !== null);
+    const fsMinimizeBtn = screen.getByText(
+      (_, element) =>
+        element?.tagName === "BUTTON" &&
+        element.querySelector(".lucide-minimize2") !== null,
+    );
     fireEvent.click(fsMinimizeBtn);
     expect(screen.queryByText("fullscreen_analysis")).toBeNull();
   });
 
   it("should respond to zoom and explorer controls", () => {
-    render(<KnowledgeAtlas nodes={mockNodes} edges={mockEdges} tags={mockTags} />);
+    render(
+      <KnowledgeAtlas nodes={mockNodes} edges={mockEdges} tags={mockTags} />,
+    );
 
     // Click brain button to show explorer
-    const brainBtn = screen.getByText((_, element) => element?.tagName === "BUTTON" && element.querySelector(".lucide-brain") !== null);
+    const brainBtn = screen.getByText(
+      (_, element) =>
+        element?.tagName === "BUTTON" &&
+        element.querySelector(".lucide-brain") !== null,
+    );
     fireEvent.click(brainBtn);
 
     // Zoom buttons clicks
-    const plusBtn = screen.getByText((_, element) => element?.tagName === "BUTTON" && element.querySelector(".lucide-plus") !== null);
+    const plusBtn = screen.getByText(
+      (_, element) =>
+        element?.tagName === "BUTTON" &&
+        element.querySelector(".lucide-plus") !== null,
+    );
     fireEvent.click(plusBtn);
 
-    const minusBtn = screen.getByText((_, element) => element?.tagName === "BUTTON" && element.querySelector(".lucide-minus") !== null);
+    const minusBtn = screen.getByText(
+      (_, element) =>
+        element?.tagName === "BUTTON" &&
+        element.querySelector(".lucide-minus") !== null,
+    );
     fireEvent.click(minusBtn);
 
-    const resetBtn = screen.getByText((_, element) => element?.tagName === "BUTTON" && element.querySelector(".lucide-rotate-ccw") !== null);
+    const resetBtn = screen.getByText(
+      (_, element) =>
+        element?.tagName === "BUTTON" &&
+        element.querySelector(".lucide-rotate-ccw") !== null,
+    );
     fireEvent.click(resetBtn);
 
     // Explorer button interactions

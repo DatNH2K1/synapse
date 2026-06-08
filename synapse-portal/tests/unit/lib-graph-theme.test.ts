@@ -1,6 +1,10 @@
-
 import { describe, it, expect } from "vitest";
-import { getNodeColor, getNodeCategoryLabel, groupTagsByScope, getConnectedTagIds } from "@/lib/graph-theme";
+import {
+  getNodeColor,
+  getNodeCategoryLabel,
+  groupTagsByScope,
+  getConnectedTagIds,
+} from "@/lib/graph-theme";
 import { Node, Tag, Edge } from "@/lib/db";
 
 describe("lib/graph-theme", () => {
@@ -11,17 +15,31 @@ describe("lib/graph-theme", () => {
     });
 
     it("should return nodes custom color if specified", () => {
-      const node = { id: "node-1", type: "LESSON", label: "My Lesson", color: "#ff0000" } as object as Node;
+      const node = {
+        id: "node-1",
+        type: "LESSON",
+        label: "My Lesson",
+        color: "#ff0000",
+      } as object as Node;
       expect(getNodeColor(node)).toBe("#ff0000");
     });
 
     it("should return tag standard color if node is a tag and has no color", () => {
-      const node = { id: "node-1", type: "TAG", label: "My Tag" } as object as Node;
+      const node = {
+        id: "node-1",
+        type: "TAG",
+        label: "My Tag",
+      } as object as Node;
       expect(getNodeColor(node)).toBe("#818cf8");
     });
 
     it("should return tag custom color if node is a tag and has color", () => {
-      const node = { id: "node-1", type: "TAG", label: "My Tag", color: "#00ff00" } as object as Node;
+      const node = {
+        id: "node-1",
+        type: "TAG",
+        label: "My Tag",
+        color: "#00ff00",
+      } as object as Node;
       expect(getNodeColor(node)).toBe("#00ff00");
     });
   });

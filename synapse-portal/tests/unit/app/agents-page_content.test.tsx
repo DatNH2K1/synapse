@@ -15,11 +15,19 @@ vi.mock("@/lib/i18n", () => ({
 }));
 
 vi.mock("@/components/shared/Avatar", () => ({
-  default: ({ seed }: { seed: string }) => <div data-testid="avatar">{seed}</div>,
+  default: ({ seed }: { seed: string }) => (
+    <div data-testid="avatar">{seed}</div>
+  ),
 }));
 
 vi.mock("@/components/landing/TiltCard", () => ({
-  default: ({ children, onClick }: { children: React.ReactNode; onClick?: () => void }) => (
+  default: ({
+    children,
+    onClick,
+  }: {
+    children: React.ReactNode;
+    onClick?: () => void;
+  }) => (
     <div data-testid="tilt-card" onClick={onClick}>
       {children}
     </div>
@@ -43,8 +51,16 @@ describe("app/(dashboard)/agents/page_content", () => {
       path: "skills/web-dev/SKILL.md",
       complianceChecklist: ["Verify tests pass", "Run lint checks"],
       capabilitiesList: [
-        { code: "CAP-01", description: "Write frontend UI components", skill: "React" },
-        { code: "CAP-02", description: "Setup REST API endpoints", skill: "Express" },
+        {
+          code: "CAP-01",
+          description: "Write frontend UI components",
+          skill: "React",
+        },
+        {
+          code: "CAP-02",
+          description: "Setup REST API endpoints",
+          skill: "Express",
+        },
       ],
       protocols: {
         contextLoad: "Load standard developer context files.",
@@ -90,7 +106,7 @@ describe("app/(dashboard)/agents/page_content", () => {
     // Verify capabilities count badge logic
     // Amelia has 6 capabilities, so only first 4 are shown + 'more' badge
     expect(screen.getByText("React")).toBeDefined();
-    expect(screen.getByText("more_{\"count\":2}")).toBeDefined();
+    expect(screen.getByText('more_{"count":2}')).toBeDefined();
 
     // Winston has 2 capabilities, no 'more' badge
     expect(screen.getByText("Architecture")).toBeDefined();
@@ -100,23 +116,33 @@ describe("app/(dashboard)/agents/page_content", () => {
     render(<AgentsPageContent agents={agents} skills={skills} />);
 
     // Click Amelia's card
-    const ameliaCard = screen.getByText("Amelia", { selector: "h4" }).closest("[data-testid='tilt-card']")!;
+    const ameliaCard = screen
+      .getByText("Amelia", { selector: "h4" })
+      .closest("[data-testid='tilt-card']")!;
     fireEvent.click(ameliaCard);
 
     // Modal is opened, check content
     expect(screen.getAllByText("Amelia").length).toBeGreaterThan(1); // Title + Header
-    expect(screen.getByText("Amelia's Identity Profile Description")).toBeDefined();
+    expect(
+      screen.getByText("Amelia's Identity Profile Description"),
+    ).toBeDefined();
     expect(screen.getByText("Clean Code")).toBeDefined();
 
     // Switch to Protocols tab
-    const protocolsTabButton = screen.getByRole("button", { name: /system_protocols/i });
+    const protocolsTabButton = screen.getByRole("button", {
+      name: /system_protocols/i,
+    });
     fireEvent.click(protocolsTabButton);
 
     expect(screen.getByText("Verify tests pass")).toBeDefined();
-    expect(screen.getByText("Load standard developer context files.")).toBeDefined();
+    expect(
+      screen.getByText("Load standard developer context files."),
+    ).toBeDefined();
 
     // Switch to Capabilities tab
-    const capabilitiesTabButton = screen.getByRole("button", { name: /capabilities_tools/i });
+    const capabilitiesTabButton = screen.getByRole("button", {
+      name: /capabilities_tools/i,
+    });
     fireEvent.click(capabilitiesTabButton);
 
     expect(screen.getByText("CAP-01")).toBeDefined();
@@ -127,14 +153,18 @@ describe("app/(dashboard)/agents/page_content", () => {
     fireEvent.click(closeButton);
 
     // Modal should be closed
-    expect(screen.queryByText("Amelia's Identity Profile Description")).toBeNull();
+    expect(
+      screen.queryByText("Amelia's Identity Profile Description"),
+    ).toBeNull();
   });
 
   it("should handle agent with fallback principles string in modal", () => {
     render(<AgentsPageContent agents={agents} skills={skills} />);
 
     // Click Winston's card
-    const winstonCard = screen.getByText("Winston", { selector: "h4" }).closest("[data-testid='tilt-card']")!;
+    const winstonCard = screen
+      .getByText("Winston", { selector: "h4" })
+      .closest("[data-testid='tilt-card']")!;
     fireEvent.click(winstonCard);
 
     // Modal is opened

@@ -12,19 +12,36 @@
       "requestBody": {
         "type": "object",
         "properties": {
-          "label": { "type": "string", "description": "Short, descriptive name for the knowledge node." },
-          "content": { "type": "string", "description": "The main body of knowledge (will be stored in node properties)." },
-          "type": { 
-            "type": "string", 
-            "enum": ["Lesson", "Rule", "Snippet", "Pattern", "AntiPattern", "Fact", "ArchitectureDecision"],
+          "label": {
+            "type": "string",
+            "description": "Short, descriptive name for the knowledge node."
+          },
+          "content": {
+            "type": "string",
+            "description": "The main body of knowledge (will be stored in node properties)."
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Lesson",
+              "Rule",
+              "Snippet",
+              "Pattern",
+              "AntiPattern",
+              "Fact",
+              "ArchitectureDecision"
+            ],
             "description": "The category/class of the knowledge node."
           },
-          "tags": { 
-            "type": "array", 
+          "tags": {
+            "type": "array",
             "items": { "type": "string" },
             "description": "Contextual tags (e.g., 'project:synapse', 'agent:winston', 'tech:nextjs@14'). Use '@' to specify version."
           },
-          "metadata": { "type": "object", "description": "Additional unstructured data." }
+          "metadata": {
+            "type": "object",
+            "description": "Additional unstructured data."
+          }
         },
         "required": ["label", "content", "type"]
       }
@@ -37,12 +54,16 @@
       "requestBody": {
         "type": "object",
         "properties": {
-          "tags": { 
-            "type": "array", 
+          "tags": {
+            "type": "array",
             "items": { "type": "string" },
-            "description": "List of tags to match (OR condition). Format: 'scope:name' or just 'name'." 
+            "description": "List of tags to match (OR condition). Format: 'scope:name' or just 'name'."
           },
-          "format": { "type": "string", "enum": ["json", "md"], "default": "json" }
+          "format": {
+            "type": "string",
+            "enum": ["json", "md"],
+            "default": "json"
+          }
         }
       }
     },
@@ -54,7 +75,11 @@
       "requestBody": {
         "type": "object",
         "properties": {
-          "nodeId": { "type": "string", "format": "uuid", "description": "The UUID of the knowledge node that was applied successfully." }
+          "nodeId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The UUID of the knowledge node that was applied successfully."
+          }
         },
         "required": ["nodeId"]
       }

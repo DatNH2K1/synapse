@@ -55,7 +55,7 @@ describe("components/gate/ComparisonModal", () => {
         onClose={onClose}
         onAction={onAction}
         onStartMerge={onStartMerge}
-      />
+      />,
     );
 
     expect(screen.getByText("Current Name")).toBeDefined();
@@ -89,7 +89,7 @@ describe("components/gate/ComparisonModal", () => {
         onClose={onClose}
         onAction={onAction}
         onStartMerge={onStartMerge}
-      />
+      />,
     );
 
     expect(screen.getByText("new_entry")).toBeDefined();
@@ -108,13 +108,16 @@ describe("components/gate/ComparisonModal", () => {
     };
     render(
       <ComparisonModal
-        comparingUpdate={{ update: updateWithEmptyProps, match: matchWithEmptyProps }}
+        comparingUpdate={{
+          update: updateWithEmptyProps,
+          match: matchWithEmptyProps,
+        }}
         processingId="update-1"
         isSynthesizing={true}
         onClose={onClose}
         onAction={onAction}
         onStartMerge={onStartMerge}
-      />
+      />,
     );
     expect(screen.getAllByText("No content.").length).toBeGreaterThan(0);
   });

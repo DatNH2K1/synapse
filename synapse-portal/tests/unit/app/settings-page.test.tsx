@@ -38,7 +38,12 @@ interface SettingsPageContentProps {
 }
 
 vi.mock("@/app/(dashboard)/settings/page_content", () => ({
-  default: ({ config, aiConfig, tags, systemConfig }: SettingsPageContentProps) => (
+  default: ({
+    config,
+    aiConfig,
+    tags,
+    systemConfig,
+  }: SettingsPageContentProps) => (
     <div data-testid="settings-content">
       <span>User: {config.user_name}</span>
       <span>AI Provider: {aiConfig.provider}</span>

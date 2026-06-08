@@ -23,12 +23,14 @@ describe("components/shared/Select", () => {
         options={options}
         className="custom-select"
         icon={<span data-testid="mock-icon">★</span>}
-      />
+      />,
     );
 
     expect(screen.getByText("Option 1")).toBeDefined();
     expect(screen.getByTestId("mock-icon")).toBeDefined();
-    expect((container.firstChild as HTMLElement).className).toContain("custom-select");
+    expect((container.firstChild as HTMLElement).className).toContain(
+      "custom-select",
+    );
 
     // Dropdown should be hidden initially
     expect(screen.queryByText("Option 2")).toBeNull();
@@ -64,7 +66,7 @@ describe("components/shared/Select", () => {
       <div>
         <div data-testid="outside-element">Outside</div>
         <Select value="val-1" onChange={onChange} options={options} />
-      </div>
+      </div>,
     );
 
     // Open dropdown
@@ -78,7 +80,7 @@ describe("components/shared/Select", () => {
 
   it("should not close dropdown when clicked inside the select container", () => {
     const { container } = render(
-      <Select value="val-1" onChange={onChange} options={options} />
+      <Select value="val-1" onChange={onChange} options={options} />,
     );
 
     // Open dropdown
@@ -91,7 +93,9 @@ describe("components/shared/Select", () => {
   });
 
   it("should fallback to options[0] if value matches no option", () => {
-    render(<Select value="nonexistent" onChange={onChange} options={options} />);
+    render(
+      <Select value="nonexistent" onChange={onChange} options={options} />,
+    );
     expect(screen.getByText("Option 1")).toBeDefined();
   });
 });

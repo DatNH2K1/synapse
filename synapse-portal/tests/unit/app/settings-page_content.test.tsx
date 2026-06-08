@@ -23,7 +23,9 @@ vi.mock("next/navigation", () => ({
 }));
 
 vi.mock("@/components/shared/Avatar", () => ({
-  default: ({ seed }: { seed: string }) => <div data-testid="avatar">{seed}</div>,
+  default: ({ seed }: { seed: string }) => (
+    <div data-testid="avatar">{seed}</div>
+  ),
 }));
 
 vi.mock("@/components/landing/TiltCard", () => ({
@@ -35,11 +37,29 @@ vi.mock("@/components/landing/TiltCard", () => ({
 describe("app/(dashboard)/settings/page_content", () => {
   const config = { user_name: "test-user" };
   const tags: Tag[] = [
-    { id: "tag-1", scope: "agent", name: "am Amelia", version: "1.0", color: "#ff0000", virtual_clock: 0 },
-    { id: "tag-2", scope: "agent", name: "wn Winston", version: "1.0", color: "#00ff00", virtual_clock: 0 },
+    {
+      id: "tag-1",
+      scope: "agent",
+      name: "am Amelia",
+      version: "1.0",
+      color: "#ff0000",
+      virtual_clock: 0,
+    },
+    {
+      id: "tag-2",
+      scope: "agent",
+      name: "wn Winston",
+      version: "1.0",
+      color: "#00ff00",
+      virtual_clock: 0,
+    },
   ];
   const aiConfig = {
-    gemini: { model: "gemini-pro", embedding_model: "text-embedding", is_active: true },
+    gemini: {
+      model: "gemini-pro",
+      embedding_model: "text-embedding",
+      is_active: true,
+    },
     stitch: { is_set: true },
     context7: { is_set: false },
   };
@@ -79,7 +99,7 @@ describe("app/(dashboard)/settings/page_content", () => {
         tags={tags}
         aiConfig={aiConfig}
         systemConfig={systemConfig}
-      />
+      />,
     );
 
     expect(screen.getAllByText("test-user")).toBeDefined();
@@ -96,7 +116,7 @@ describe("app/(dashboard)/settings/page_content", () => {
         tags={tags}
         aiConfig={aiConfig}
         systemConfig={systemConfig}
-      />
+      />,
     );
 
     // Switch to AI tab
@@ -123,7 +143,7 @@ describe("app/(dashboard)/settings/page_content", () => {
         tags={tags}
         aiConfig={aiConfig}
         systemConfig={systemConfig}
-      />
+      />,
     );
 
     // Switch to AI tab
@@ -164,7 +184,7 @@ describe("app/(dashboard)/settings/page_content", () => {
         tags={tags}
         aiConfig={aiConfig}
         systemConfig={altSystemConfig}
-      />
+      />,
     );
 
     // Switch to AI tab
@@ -195,7 +215,7 @@ describe("app/(dashboard)/settings/page_content", () => {
         tags={tags}
         aiConfig={aiConfig}
         systemConfig={systemConfig}
-      />
+      />,
     );
 
     // Switch to AI tab
@@ -222,7 +242,7 @@ describe("app/(dashboard)/settings/page_content", () => {
         tags={tags}
         aiConfig={aiConfig}
         systemConfig={systemConfig}
-      />
+      />,
     );
 
     // Switch to AI tab
@@ -251,7 +271,7 @@ describe("app/(dashboard)/settings/page_content", () => {
         tags={tags}
         aiConfig={aiConfig}
         systemConfig={systemConfig}
-      />
+      />,
     );
 
     // Switch to Tags tab
@@ -261,11 +281,15 @@ describe("app/(dashboard)/settings/page_content", () => {
     expect(screen.getByText("am Amelia")).toBeDefined();
 
     // Trigger visual circle click
-    const colorCircle = document.querySelector('div[style*="background-color: rgb(255, 0, 0)"]') as HTMLDivElement;
+    const colorCircle = document.querySelector(
+      'div[style*="background-color: rgb(255, 0, 0)"]',
+    ) as HTMLDivElement;
     expect(colorCircle).not.toBeNull();
 
     // Mock target input click
-    const colorInput = document.querySelector('input[type="color"]') as HTMLInputElement;
+    const colorInput = document.querySelector(
+      'input[type="color"]',
+    ) as HTMLInputElement;
     const clickSpy = vi.spyOn(colorInput, "click");
 
     fireEvent.click(colorCircle);
@@ -297,14 +321,16 @@ describe("app/(dashboard)/settings/page_content", () => {
         tags={tags}
         aiConfig={aiConfig}
         systemConfig={systemConfig}
-      />
+      />,
     );
 
     // Switch to Tags tab
     const tagsTabButton = getTabButton("tag_appearance");
     fireEvent.click(tagsTabButton);
 
-    const colorInput = document.querySelector('input[type="color"]') as HTMLInputElement;
+    const colorInput = document.querySelector(
+      'input[type="color"]',
+    ) as HTMLInputElement;
     fireEvent.change(colorInput, { target: { value: "#000000" } });
 
     await waitFor(() => {
@@ -323,14 +349,16 @@ describe("app/(dashboard)/settings/page_content", () => {
         tags={tags}
         aiConfig={aiConfig}
         systemConfig={systemConfig}
-      />
+      />,
     );
 
     // Switch to Tags tab
     const tagsTabButton = getTabButton("tag_appearance");
     fireEvent.click(tagsTabButton);
 
-    const colorInput = document.querySelector('input[type="color"]') as HTMLInputElement;
+    const colorInput = document.querySelector(
+      'input[type="color"]',
+    ) as HTMLInputElement;
     fireEvent.change(colorInput, { target: { value: "#000000" } });
 
     await waitFor(() => {
@@ -351,7 +379,7 @@ describe("app/(dashboard)/settings/page_content", () => {
         tags={tags}
         aiConfig={aiConfig}
         systemConfig={systemConfig}
-      />
+      />,
     );
 
     // Switch to AI tab
@@ -398,7 +426,7 @@ describe("app/(dashboard)/settings/page_content", () => {
         tags={tags}
         aiConfig={aiConfig}
         systemConfig={systemConfig}
-      />
+      />,
     );
 
     // Switch to AI tab

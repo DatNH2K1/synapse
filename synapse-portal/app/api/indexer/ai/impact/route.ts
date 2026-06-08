@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     if (!filePath) {
       return NextResponse.json(
         { error: "Missing required query parameter: file" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -32,7 +32,7 @@ export async function GET(request: Request) {
     if (!fileNode) {
       return NextResponse.json(
         { error: `File not found: ${filePath} in repository ${repo}` },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -86,7 +86,8 @@ export async function GET(request: Request) {
       indirectlyAffected,
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Internal Server Error";
+    const message =
+      error instanceof Error ? error.message : "Internal Server Error";
     console.error("[API Indexer AI Impact] Error:", error);
     return NextResponse.json({ error: message }, { status: 500 });
   }

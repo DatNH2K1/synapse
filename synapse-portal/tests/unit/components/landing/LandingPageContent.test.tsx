@@ -1,7 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import React from "react";
 import { render, screen, cleanup } from "@testing-library/react";
-import LandingPageContent, { Agent } from "@/components/landing/LandingPageContent";
+import LandingPageContent, {
+  Agent,
+} from "@/components/landing/LandingPageContent";
 
 vi.mock("@/lib/i18n", () => ({
   useI18n: () => ({
@@ -15,11 +17,19 @@ vi.mock("@/lib/i18n", () => ({
 }));
 
 vi.mock("@/components/shared/Avatar", () => ({
-  default: ({ seed }: { seed: string }) => <div data-testid={`avatar-${seed}`}>Avatar {seed}</div>,
+  default: ({ seed }: { seed: string }) => (
+    <div data-testid={`avatar-${seed}`}>Avatar {seed}</div>
+  ),
 }));
 
 vi.mock("next/link", () => ({
-  default: ({ children, href }: { children: React.ReactNode; href: string }) => (
+  default: ({
+    children,
+    href,
+  }: {
+    children: React.ReactNode;
+    href: string;
+  }) => (
     <a href={href} data-testid="link-element">
       {children}
     </a>
@@ -28,8 +38,20 @@ vi.mock("next/link", () => ({
 
 describe("components/landing/LandingPageContent", () => {
   const mockAgents: Agent[] = [
-    { name: "Winston", seed: "winston", title: "Architect", icon: "📐", desc: "System architect" },
-    { name: "Sally", seed: "sally", title: "UX Designer", icon: "🎨", desc: "UX designer" },
+    {
+      name: "Winston",
+      seed: "winston",
+      title: "Architect",
+      icon: "📐",
+      desc: "System architect",
+    },
+    {
+      name: "Sally",
+      seed: "sally",
+      title: "UX Designer",
+      icon: "🎨",
+      desc: "UX designer",
+    },
   ];
 
   beforeEach(() => {
@@ -50,7 +72,7 @@ describe("components/landing/LandingPageContent", () => {
         pendingCount={2}
         tagsCount={7}
         agents={mockAgents}
-      />
+      />,
     );
 
     expect(screen.getByText("welcome_back_TestUser")).toBeDefined();

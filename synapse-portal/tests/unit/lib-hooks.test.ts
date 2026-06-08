@@ -12,7 +12,7 @@ vi.mock("react", () => ({
 describe("lib/hooks - useIsMounted", () => {
   it("should invoke useSyncExternalStore with correct snapshot functions", () => {
     const isMounted = useIsMounted();
-    
+
     expect(useSyncExternalStore).toHaveBeenCalled();
     expect(isMounted).toBe(true);
 

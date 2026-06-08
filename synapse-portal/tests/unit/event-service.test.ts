@@ -8,7 +8,8 @@ describe("event-service Tests", () => {
   });
 
   it("should broadcast proposal:created event with correct payload", async () => {
-    const { eventBus, EVENTS, broadcastProposalCreated } = await import("@/lib/services/event-service");
+    const { eventBus, EVENTS, broadcastProposalCreated } =
+      await import("@/lib/services/event-service");
     const mockProposal = {
       id: "prop-123",
       label: "Test Proposal",
@@ -25,7 +26,8 @@ describe("event-service Tests", () => {
   });
 
   it("should broadcast proposal:updated event with correct payload", async () => {
-    const { eventBus, EVENTS, broadcastProposalUpdated } = await import("@/lib/services/event-service");
+    const { eventBus, EVENTS, broadcastProposalUpdated } =
+      await import("@/lib/services/event-service");
     const listener = vi.fn();
     eventBus.on(EVENTS.PROPOSAL_UPDATED, listener);
 

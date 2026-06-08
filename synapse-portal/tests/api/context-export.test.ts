@@ -1,4 +1,3 @@
-
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { POST as postContextExport } from "@/app/api/context/export/route";
 import { knowledgeService } from "@/lib/services/knowledge-service";
@@ -46,11 +45,15 @@ describe("POST /api/context/export", () => {
   });
 
   it("should export as markdown when format is md", async () => {
-    const mockNodes = [
-      { id: "node-1", label: "Node 1", content: "Content 1" },
-    ];
-    vi.mocked(knowledgeService.getNodesByContext).mockResolvedValue(mockNodes as object as Awaited<ReturnType<typeof knowledgeService.getNodesByContext>>);
-    vi.mocked(knowledgeService.formatAsMarkdown).mockReturnValue("# Node 1\nContent 1");
+    const mockNodes = [{ id: "node-1", label: "Node 1", content: "Content 1" }];
+    vi.mocked(knowledgeService.getNodesByContext).mockResolvedValue(
+      mockNodes as object as Awaited<
+        ReturnType<typeof knowledgeService.getNodesByContext>
+      >,
+    );
+    vi.mocked(knowledgeService.formatAsMarkdown).mockReturnValue(
+      "# Node 1\nContent 1",
+    );
 
     const req = new Request("http://localhost/api/context/export", {
       method: "POST",
@@ -86,8 +89,16 @@ describe("POST /api/context/export", () => {
       },
     ];
 
-    vi.mocked(knowledgeService.getNodesByContext).mockResolvedValue(mockNodes as object as Awaited<ReturnType<typeof knowledgeService.getNodesByContext>>);
-    vi.mocked(knowledgeService.getNodesWithTagsByIds).mockResolvedValue(mockNodesWithTags as object as Awaited<ReturnType<typeof knowledgeService.getNodesWithTagsByIds>>);
+    vi.mocked(knowledgeService.getNodesByContext).mockResolvedValue(
+      mockNodes as object as Awaited<
+        ReturnType<typeof knowledgeService.getNodesByContext>
+      >,
+    );
+    vi.mocked(knowledgeService.getNodesWithTagsByIds).mockResolvedValue(
+      mockNodesWithTags as object as Awaited<
+        ReturnType<typeof knowledgeService.getNodesWithTagsByIds>
+      >,
+    );
 
     const req = new Request("http://localhost/api/context/export", {
       method: "POST",
@@ -97,7 +108,7 @@ describe("POST /api/context/export", () => {
     const response = await postContextExport(req);
     expect(response.status).toBe(200);
     const data = await response.json();
-    
+
     expect(data).toHaveLength(1);
     expect(data[0].id).toBe("node-1");
     expect(data[0].label).toBe("Node 1");
@@ -119,8 +130,16 @@ describe("POST /api/context/export", () => {
         properties: "not-a-json-string",
       },
     ];
-    vi.mocked(knowledgeService.getNodesByContext).mockResolvedValue(mockNodes as object as Awaited<ReturnType<typeof knowledgeService.getNodesByContext>>);
-    vi.mocked(knowledgeService.getNodesWithTagsByIds).mockResolvedValue([] as object as Awaited<ReturnType<typeof knowledgeService.getNodesWithTagsByIds>>);
+    vi.mocked(knowledgeService.getNodesByContext).mockResolvedValue(
+      mockNodes as object as Awaited<
+        ReturnType<typeof knowledgeService.getNodesByContext>
+      >,
+    );
+    vi.mocked(knowledgeService.getNodesWithTagsByIds).mockResolvedValue(
+      [] as object as Awaited<
+        ReturnType<typeof knowledgeService.getNodesWithTagsByIds>
+      >,
+    );
 
     const req = new Request("http://localhost/api/context/export", {
       method: "POST",
@@ -134,7 +153,9 @@ describe("POST /api/context/export", () => {
   });
 
   it("should return 500 when knowledgeService throws an error", async () => {
-    vi.mocked(knowledgeService.getNodesByContext).mockRejectedValue(new Error("Database failure"));
+    vi.mocked(knowledgeService.getNodesByContext).mockRejectedValue(
+      new Error("Database failure"),
+    );
 
     const req = new Request("http://localhost/api/context/export", {
       method: "POST",

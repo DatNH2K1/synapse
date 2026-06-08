@@ -1,6 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import React from "react";
-import { render, screen, fireEvent, act, cleanup } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  act,
+  cleanup,
+} from "@testing-library/react";
 import DependencyGraphContent from "@/app/(dashboard)/dependency-graph/page_content";
 
 vi.mock("@/lib/i18n", () => ({
@@ -54,7 +60,13 @@ interface CapturedRefType {
 let capturedOnRef: CapturedRefType | null = null;
 vi.mock("next/dynamic", () => ({
   default: () => {
-    return function MockedForceGraph({ nodes, links, onNodeClick, onRef, searchQuery }: ForceGraphMockProps) {
+    return function MockedForceGraph({
+      nodes,
+      links,
+      onNodeClick,
+      onRef,
+      searchQuery,
+    }: ForceGraphMockProps) {
       React.useEffect(() => {
         capturedOnRef = {
           zoomIn: vi.fn(),
@@ -103,7 +115,9 @@ describe("app/(dashboard)/dependency-graph/page_content", () => {
           id: "node-1",
           path: "src/index.ts",
           hash: "md5-hash-1",
-          symbols: [{ id: "sym-1", name: "hello", kind: "function", range: "1:0" }],
+          symbols: [
+            { id: "sym-1", name: "hello", kind: "function", range: "1:0" },
+          ],
         },
         {
           id: "node-2",
@@ -152,9 +166,12 @@ describe("app/(dashboard)/dependency-graph/page_content", () => {
   });
 
   it("should default to synapse repo if initialRepos is empty", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
-      json: async () => ({ success: true, files: [], dependencies: [] }),
-    }));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        json: async () => ({ success: true, files: [], dependencies: [] }),
+      }),
+    );
 
     await act(async () => {
       render(<DependencyGraphContent initialRepos={[]} />);
@@ -164,9 +181,12 @@ describe("app/(dashboard)/dependency-graph/page_content", () => {
   });
 
   it("should handle unsuccessful graph API response payload", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
-      json: async () => ({ success: false, error: "Failed" }),
-    }));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        json: async () => ({ success: false, error: "Failed" }),
+      }),
+    );
 
     await act(async () => {
       render(<DependencyGraphContent initialRepos={initialRepos} />);
@@ -179,11 +199,14 @@ describe("app/(dashboard)/dependency-graph/page_content", () => {
   it("should handle unsuccessful impact API response payload and nonexistent node click", async () => {
     const mockGraphResponse = {
       success: true,
-      files: [{ id: "node-1", path: "src/index.ts", hash: "hash-1", symbols: [] }],
+      files: [
+        { id: "node-1", path: "src/index.ts", hash: "hash-1", symbols: [] },
+      ],
       dependencies: [],
     };
 
-    const mockFetch = vi.fn()
+    const mockFetch = vi
+      .fn()
       .mockResolvedValueOnce({
         json: async () => mockGraphResponse,
       })
@@ -219,7 +242,9 @@ describe("app/(dashboard)/dependency-graph/page_content", () => {
           id: "node-1",
           path: "src/index.ts",
           hash: "md5-hash-1",
-          symbols: [{ id: "sym-1", name: "hello", kind: "function", range: "1:0" }],
+          symbols: [
+            { id: "sym-1", name: "hello", kind: "function", range: "1:0" },
+          ],
         },
       ],
       dependencies: [],
@@ -229,12 +254,11 @@ describe("app/(dashboard)/dependency-graph/page_content", () => {
       success: true,
       file: "src/index.ts",
       exists: true,
-      impactedFiles: [
-        { path: "src/app.ts", depth: 1 },
-      ],
+      impactedFiles: [{ path: "src/app.ts", depth: 1 }],
     };
 
-    const mockFetch = vi.fn()
+    const mockFetch = vi
+      .fn()
       .mockResolvedValueOnce({
         json: async () => mockGraphResponse,
       })
@@ -254,11 +278,13 @@ describe("app/(dashboard)/dependency-graph/page_content", () => {
     });
 
     expect(mockFetch).toHaveBeenLastCalledWith(
-      "/api/indexer/impact?file=src%2Findex.ts&repo=synapse"
+      "/api/indexer/impact?file=src%2Findex.ts&repo=synapse",
     );
 
     // Node details should be displayed
-    expect(screen.getByRole("heading", { name: "index.ts", level: 3 })).toBeDefined();
+    expect(
+      screen.getByRole("heading", { name: "index.ts", level: 3 }),
+    ).toBeDefined();
     expect(screen.getByText("md5-hash-1")).toBeDefined();
     expect(screen.getByText("hello")).toBeDefined();
     expect(screen.getByText("depth_label", { exact: false })).toBeDefined();
@@ -275,9 +301,12 @@ describe("app/(dashboard)/dependency-graph/page_content", () => {
       dependencies: [],
     };
 
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
-      json: async () => mockGraphResponse,
-    }));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        json: async () => mockGraphResponse,
+      }),
+    );
 
     await act(async () => {
       render(<DependencyGraphContent initialRepos={initialRepos} />);
@@ -296,46 +325,73 @@ describe("app/(dashboard)/dependency-graph/page_content", () => {
   });
 
   it("should toggle fullscreen and handle zoom buttons", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
-      json: async () => ({ success: true, files: [], dependencies: [] }),
-    }));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        json: async () => ({ success: true, files: [], dependencies: [] }),
+      }),
+    );
 
     await act(async () => {
       render(<DependencyGraphContent initialRepos={initialRepos} />);
     });
 
     // Toggle fullscreen
-    const fsBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-maximize2") !== null);
+    const fsBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" &&
+        el.querySelector(".lucide-maximize2") !== null,
+    );
     await act(async () => {
       fireEvent.click(fsBtn);
     });
 
-    const minimizeBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-minimize2") !== null);
+    const minimizeBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" &&
+        el.querySelector(".lucide-minimize2") !== null,
+    );
     expect(minimizeBtn).toBeDefined();
 
     // Call zoom buttons
-    const plusBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-plus") !== null);
+    const plusBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" && el.querySelector(".lucide-plus") !== null,
+    );
     fireEvent.click(plusBtn);
     expect(capturedOnRef?.zoomIn).toHaveBeenCalled();
 
-    const minusBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-minus") !== null);
+    const minusBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" && el.querySelector(".lucide-minus") !== null,
+    );
     fireEvent.click(minusBtn);
     expect(capturedOnRef?.zoomOut).toHaveBeenCalled();
 
-    const resetBtn = screen.getByText((_, el) => el?.tagName === "BUTTON" && el.querySelector(".lucide-rotate-ccw") !== null);
+    const resetBtn = screen.getByText(
+      (_, el) =>
+        el?.tagName === "BUTTON" &&
+        el.querySelector(".lucide-rotate-ccw") !== null,
+    );
     fireEvent.click(resetBtn);
     expect(capturedOnRef?.zoomToFit).toHaveBeenCalled();
   });
 
   it("should handle error when fetch graph data fails", async () => {
     const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("Graph API failure")));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockRejectedValue(new Error("Graph API failure")),
+    );
 
     await act(async () => {
       render(<DependencyGraphContent initialRepos={initialRepos} />);
     });
 
-    expect(consoleSpy).toHaveBeenCalledWith("Failed to load graph:", expect.any(Error));
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "Failed to load graph:",
+      expect.any(Error),
+    );
     consoleSpy.mockRestore();
   });
 
@@ -343,15 +399,20 @@ describe("app/(dashboard)/dependency-graph/page_content", () => {
     const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     const mockGraphResponse = {
       success: true,
-      files: [{ id: "node-1", path: "src/index.ts", hash: "hash-1", symbols: [] }],
+      files: [
+        { id: "node-1", path: "src/index.ts", hash: "hash-1", symbols: [] },
+      ],
       dependencies: [],
     };
 
-    vi.stubGlobal("fetch", vi.fn()
-      .mockResolvedValueOnce({
-        json: async () => mockGraphResponse,
-      })
-      .mockRejectedValueOnce(new Error("Impact API failure"))
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValueOnce({
+          json: async () => mockGraphResponse,
+        })
+        .mockRejectedValueOnce(new Error("Impact API failure")),
     );
 
     await act(async () => {
@@ -363,7 +424,10 @@ describe("app/(dashboard)/dependency-graph/page_content", () => {
       fireEvent.click(nodeClickBtn);
     });
 
-    expect(consoleSpy).toHaveBeenCalledWith("Failed to load impact analysis:", expect.any(Error));
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "Failed to load impact analysis:",
+      expect.any(Error),
+    );
     consoleSpy.mockRestore();
   });
 
@@ -377,9 +441,12 @@ describe("app/(dashboard)/dependency-graph/page_content", () => {
       dependencies: [],
     };
 
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
-      json: async () => mockGraphResponse,
-    }));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        json: async () => mockGraphResponse,
+      }),
+    );
 
     await act(async () => {
       render(<DependencyGraphContent initialRepos={initialRepos} />);

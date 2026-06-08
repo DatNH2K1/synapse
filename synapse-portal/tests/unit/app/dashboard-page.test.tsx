@@ -49,7 +49,15 @@ interface OverviewPageContentProps {
 }
 
 vi.mock("@/app/(dashboard)/dashboard/page_content", () => ({
-  default: ({ nodes, edges, tags, tagEdges, pendingCount, userName, dashboardMetrics }: OverviewPageContentProps) => (
+  default: ({
+    nodes,
+    edges,
+    tags,
+    tagEdges,
+    pendingCount,
+    userName,
+    dashboardMetrics,
+  }: OverviewPageContentProps) => (
     <div data-testid="overview-content">
       <span>User: {userName}</span>
       <span>Nodes Count: {nodes.length}</span>

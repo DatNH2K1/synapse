@@ -1,4 +1,3 @@
-
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { GET as getStats } from "@/app/api/stats/route";
 import { knowledgeService } from "@/lib/services/knowledge-service";
@@ -16,7 +15,11 @@ describe("GET /api/stats", () => {
 
   it("should return stats on success", async () => {
     const mockStats = { totalNodes: 10, totalEdges: 5 };
-    vi.mocked(knowledgeService.getStats).mockResolvedValue(mockStats as object as Awaited<ReturnType<typeof knowledgeService.getStats>>);
+    vi.mocked(knowledgeService.getStats).mockResolvedValue(
+      mockStats as object as Awaited<
+        ReturnType<typeof knowledgeService.getStats>
+      >,
+    );
 
     const response = await getStats();
     expect(response.status).toBe(200);

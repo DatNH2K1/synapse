@@ -34,7 +34,9 @@ vi.mock("@/components/shared/RealtimeProvider", () => ({
 vi.mock("@/components/shared/StatCard", () => ({
   default: ({ label, value }: { label: string; value: number }) => (
     <div data-testid="stat-card">
-      <span>{label}: {value}</span>
+      <span>
+        {label}: {value}
+      </span>
     </div>
   ),
 }));
@@ -61,11 +63,46 @@ describe("app/(dashboard)/dashboard/page_content", () => {
       embeddingModel: "model-1",
       memory_tier: "short_term",
       tags: [
-        { id: "tag-1", scope: "agent", name: "synapse-agent-amelia", version: "1.0", color: "#ff0000", virtual_clock: 0 },
-        { id: "tag-2", scope: "agent", name: "winston", version: "1.0", color: "#00ff00", virtual_clock: 0 },
-        { id: "tag-3", scope: "technology", name: "react", version: "18.0", color: "#0000ff", virtual_clock: 0 },
-        { id: "tag-4", scope: "global", name: "common", version: "1.0", color: "#ffffff", virtual_clock: 0 },
-        { id: "tag-5", scope: "other_scope", name: "custom", version: "1.0", color: "#888888", virtual_clock: 0 },
+        {
+          id: "tag-1",
+          scope: "agent",
+          name: "synapse-agent-amelia",
+          version: "1.0",
+          color: "#ff0000",
+          virtual_clock: 0,
+        },
+        {
+          id: "tag-2",
+          scope: "agent",
+          name: "winston",
+          version: "1.0",
+          color: "#00ff00",
+          virtual_clock: 0,
+        },
+        {
+          id: "tag-3",
+          scope: "technology",
+          name: "react",
+          version: "18.0",
+          color: "#0000ff",
+          virtual_clock: 0,
+        },
+        {
+          id: "tag-4",
+          scope: "global",
+          name: "common",
+          version: "1.0",
+          color: "#ffffff",
+          virtual_clock: 0,
+        },
+        {
+          id: "tag-5",
+          scope: "other_scope",
+          name: "custom",
+          version: "1.0",
+          color: "#888888",
+          virtual_clock: 0,
+        },
       ],
     },
     {
@@ -94,23 +131,62 @@ describe("app/(dashboard)/dashboard/page_content", () => {
       memory_tier: "short_term",
       color: "#ff00ff",
       tags: [
-        { id: "tag-2", scope: "agent", name: "winston", version: "1.0", color: "#00ff00", virtual_clock: 0 },
+        {
+          id: "tag-2",
+          scope: "agent",
+          name: "winston",
+          version: "1.0",
+          color: "#00ff00",
+          virtual_clock: 0,
+        },
       ],
     },
   ];
 
   const edges: Edge[] = [
-    { id: 1, from_id: "node-1", to_id: "node-2", relation_type: "RELATES", properties: "{}" },
+    {
+      id: 1,
+      from_id: "node-1",
+      to_id: "node-2",
+      relation_type: "RELATES",
+      properties: "{}",
+    },
   ];
 
   const tags: Tag[] = [
-    { id: "tag-1", scope: "agent", name: "am Amelia", version: "1.0", color: "#ff0000", virtual_clock: 0 },
-    { id: "tag-4", scope: "global", name: "common", version: "1.0", color: "#ffffff", virtual_clock: 0 },
+    {
+      id: "tag-1",
+      scope: "agent",
+      name: "am Amelia",
+      version: "1.0",
+      color: "#ff0000",
+      virtual_clock: 0,
+    },
+    {
+      id: "tag-4",
+      scope: "global",
+      name: "common",
+      version: "1.0",
+      color: "#ffffff",
+      virtual_clock: 0,
+    },
   ];
 
   const tagEdges: Edge[] = [
-    { id: 2, from_id: "node-1", to_id: "tag-1", relation_type: "TAGGED", properties: "{}" },
-    { id: 3, from_id: "invalid-node", to_id: "tag-1", relation_type: "TAGGED", properties: "{}" }, // invalid edge
+    {
+      id: 2,
+      from_id: "node-1",
+      to_id: "tag-1",
+      relation_type: "TAGGED",
+      properties: "{}",
+    },
+    {
+      id: 3,
+      from_id: "invalid-node",
+      to_id: "tag-1",
+      relation_type: "TAGGED",
+      properties: "{}",
+    }, // invalid edge
   ];
 
   const dashboardMetrics = {
@@ -135,7 +211,7 @@ describe("app/(dashboard)/dashboard/page_content", () => {
         pendingCount={3}
         userName="John Doe"
         dashboardMetrics={dashboardMetrics}
-      />
+      />,
     );
 
     expect(screen.getByText("hello,")).toBeDefined();
@@ -152,7 +228,7 @@ describe("app/(dashboard)/dashboard/page_content", () => {
 
   it("should handle missing statusCounts in dashboardMetrics gracefully", () => {
     const incompleteMetrics = {
-      statusCounts: (undefined as unknown as { status: string; count: number }[]),
+      statusCounts: undefined as unknown as { status: string; count: number }[],
       archiveCount: 0,
     };
 
@@ -165,7 +241,7 @@ describe("app/(dashboard)/dashboard/page_content", () => {
         pendingCount={1}
         userName="Jane Doe"
         dashboardMetrics={incompleteMetrics}
-      />
+      />,
     );
 
     expect(screen.getByText("Jane Doe")).toBeDefined();

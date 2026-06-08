@@ -52,101 +52,155 @@ interface NodeCanvasObjectProps {
 
 interface ForceGraphProps {
   onNodeHover: (node: object | null) => void;
-  nodeCanvasObject: (node: NodeCanvasObjectProps, ctx: CanvasRenderingContext2D, globalScale: number) => void;
-  onRenderFramePost: (ctx: CanvasRenderingContext2D, globalScale: number) => void;
+  nodeCanvasObject: (
+    node: NodeCanvasObjectProps,
+    ctx: CanvasRenderingContext2D,
+    globalScale: number,
+  ) => void;
+  onRenderFramePost: (
+    ctx: CanvasRenderingContext2D,
+    globalScale: number,
+  ) => void;
   linkColor?: (link: object) => string;
   nodeColor?: (node: object) => string;
 }
 
 vi.mock("react-force-graph-2d", () => {
-  const ForceGraph = React.forwardRef((props: ForceGraphProps, ref: React.Ref<object>) => {
-    React.useImperativeHandle(ref, () => ({
-      d3Force: mockD3Force,
-      zoom: mockZoom,
-      zoomToFit: mockZoomToFit,
-    }));
-    if (props.linkColor) {
-      props.linkColor({ source: "node-1", target: "node-2" });
-    }
-    if (props.nodeColor) {
-      props.nodeColor({ id: "node-1", color: "#ff0000" });
-    }
-    return (
-      <div data-testid="force-graph">
-        <button
-          onClick={() => props.onNodeHover({ id: "node-1", val: 5, x: 10, y: 10, label: "TestNode" })}
-          data-testid="hover-node"
-        >
-          Hover
-        </button>
-        <button
-          onClick={() => props.onNodeHover(null)}
-          data-testid="hover-null"
-        >
-          Hover Null
-        </button>
-        <button
-          onClick={() => {
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d");
-            if (ctx) {
-              // ROOT_SCOPE
-              props.nodeCanvasObject(
-                { id: "node-1", type: "ROOT_SCOPE", val: 5, x: 10, y: 10, color: "#ff0000" },
-                ctx,
-                1
-              );
-              // TAG
-              props.nodeCanvasObject(
-                { id: "node-2", type: "TAG", val: 5, x: 10, y: 10, color: "#00ff00" },
-                ctx,
-                1
-              );
-              // CORE
-              props.nodeCanvasObject(
-                { id: "node-3", type: "Feature", val: 5, x: 10, y: 10, memory_tier: "CORE", color: "#0000ff" },
-                ctx,
-                1
-              );
-              // COLD
-              props.nodeCanvasObject(
-                { id: "node-4", type: "Feature", val: 5, x: 10, y: 10, memory_tier: "COLD", color: "#ffffff" },
-                ctx,
-                1
-              );
-              // Default/Other
-              props.nodeCanvasObject(
-                { id: "node-5", type: "Feature", val: 5, x: 10, y: 10, color: "#bbbbbb" },
-                ctx,
-                1
-              );
-              // Undefined coordinates
-              props.nodeCanvasObject(
-                { id: "node-6", type: "Feature", val: 5 },
-                ctx,
-                1
-              );
+  const ForceGraph = React.forwardRef(
+    (props: ForceGraphProps, ref: React.Ref<object>) => {
+      React.useImperativeHandle(ref, () => ({
+        d3Force: mockD3Force,
+        zoom: mockZoom,
+        zoomToFit: mockZoomToFit,
+      }));
+      if (props.linkColor) {
+        props.linkColor({ source: "node-1", target: "node-2" });
+      }
+      if (props.nodeColor) {
+        props.nodeColor({ id: "node-1", color: "#ff0000" });
+      }
+      return (
+        <div data-testid="force-graph">
+          <button
+            onClick={() =>
+              props.onNodeHover({
+                id: "node-1",
+                val: 5,
+                x: 10,
+                y: 10,
+                label: "TestNode",
+              })
             }
-          }}
-          data-testid="draw"
-        >
-          Draw
-        </button>
-        <button
-          onClick={() => {
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d");
-            if (ctx) {
-              props.onRenderFramePost(ctx, 1);
-            }
-          }}
-          data-testid="post-draw"
-        >
-          Post Draw
-        </button>
-      </div>
-    );
-  });
+            data-testid="hover-node"
+          >
+            Hover
+          </button>
+          <button
+            onClick={() => props.onNodeHover(null)}
+            data-testid="hover-null"
+          >
+            Hover Null
+          </button>
+          <button
+            onClick={() => {
+              const canvas = document.createElement("canvas");
+              const ctx = canvas.getContext("2d");
+              if (ctx) {
+                // ROOT_SCOPE
+                props.nodeCanvasObject(
+                  {
+                    id: "node-1",
+                    type: "ROOT_SCOPE",
+                    val: 5,
+                    x: 10,
+                    y: 10,
+                    color: "#ff0000",
+                  },
+                  ctx,
+                  1,
+                );
+                // TAG
+                props.nodeCanvasObject(
+                  {
+                    id: "node-2",
+                    type: "TAG",
+                    val: 5,
+                    x: 10,
+                    y: 10,
+                    color: "#00ff00",
+                  },
+                  ctx,
+                  1,
+                );
+                // CORE
+                props.nodeCanvasObject(
+                  {
+                    id: "node-3",
+                    type: "Feature",
+                    val: 5,
+                    x: 10,
+                    y: 10,
+                    memory_tier: "CORE",
+                    color: "#0000ff",
+                  },
+                  ctx,
+                  1,
+                );
+                // COLD
+                props.nodeCanvasObject(
+                  {
+                    id: "node-4",
+                    type: "Feature",
+                    val: 5,
+                    x: 10,
+                    y: 10,
+                    memory_tier: "COLD",
+                    color: "#ffffff",
+                  },
+                  ctx,
+                  1,
+                );
+                // Default/Other
+                props.nodeCanvasObject(
+                  {
+                    id: "node-5",
+                    type: "Feature",
+                    val: 5,
+                    x: 10,
+                    y: 10,
+                    color: "#bbbbbb",
+                  },
+                  ctx,
+                  1,
+                );
+                // Undefined coordinates
+                props.nodeCanvasObject(
+                  { id: "node-6", type: "Feature", val: 5 },
+                  ctx,
+                  1,
+                );
+              }
+            }}
+            data-testid="draw"
+          >
+            Draw
+          </button>
+          <button
+            onClick={() => {
+              const canvas = document.createElement("canvas");
+              const ctx = canvas.getContext("2d");
+              if (ctx) {
+                props.onRenderFramePost(ctx, 1);
+              }
+            }}
+            data-testid="post-draw"
+          >
+            Post Draw
+          </button>
+        </div>
+      );
+    },
+  );
   ForceGraph.displayName = "ForceGraph";
   return {
     default: ForceGraph,
@@ -157,12 +211,26 @@ describe("components/KnowledgeGraph", () => {
   const nodes = [
     { id: "node-1", label: "Root Scope", type: "ROOT_SCOPE" } as DbNode,
     { id: "node-2", label: "Tag A", type: "TAG" } as DbNode,
-    { id: "node-3", label: "Cold Item", type: "Feature", memory_tier: "COLD" } as DbNode,
-    { id: "node-4", label: "Core Item", type: "Feature", memory_tier: "CORE" } as DbNode,
+    {
+      id: "node-3",
+      label: "Cold Item",
+      type: "Feature",
+      memory_tier: "COLD",
+    } as DbNode,
+    {
+      id: "node-4",
+      label: "Core Item",
+      type: "Feature",
+      memory_tier: "CORE",
+    } as DbNode,
   ];
 
   const edges = [
-    { from_id: "node-1", to_id: "node-2", relation_type: "ROOT_LINK" } as DbEdge,
+    {
+      from_id: "node-1",
+      to_id: "node-2",
+      relation_type: "ROOT_LINK",
+    } as DbEdge,
   ];
 
   const onRef = vi.fn();
@@ -175,7 +243,10 @@ describe("components/KnowledgeGraph", () => {
   });
 
   it("should render component and register ref callbacks", () => {
-    vi.spyOn(window.HTMLDivElement.prototype, "getBoundingClientRect").mockReturnValue({
+    vi.spyOn(
+      window.HTMLDivElement.prototype,
+      "getBoundingClientRect",
+    ).mockReturnValue({
       width: 800,
       height: 600,
       top: 0,
@@ -208,7 +279,7 @@ describe("components/KnowledgeGraph", () => {
     };
 
     vi.spyOn(window.HTMLCanvasElement.prototype, "getContext").mockReturnValue(
-      mockContext as CanvasRenderingContext2D
+      mockContext as CanvasRenderingContext2D,
     );
 
     render(<KnowledgeGraph nodes={nodes} edges={edges} onRef={onRef} />);

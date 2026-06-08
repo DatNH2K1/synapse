@@ -7,7 +7,6 @@
 
 **CRITICAL:** If a step says "read fully and follow step-XX", you read and follow step-XX. No exceptions.
 
-
 ## READY FOR DEVELOPMENT STANDARD
 
 A specification is "Ready for Development" when:
@@ -16,7 +15,6 @@ A specification is "Ready for Development" when:
 - **Logical**: Tasks ordered by dependency.
 - **Testable**: All ACs use Given/When/Then.
 - **Complete**: No placeholders or TBDs.
-
 
 ## SCOPE STANDARD
 
@@ -27,7 +25,6 @@ A specification should target a **single user-facing goal** within **900–1600 
   - Don't split: "add validation and display errors" / "support drag-and-drop AND paste AND retry"
 - **900–1600 tokens**: Optimal range for LLM consumption. Below 900 risks ambiguity; above 1600 risks context-rot in implementation agents.
 - **Neither limit is a gate.** Both are proposals with user override.
-
 
 ## WORKFLOW ARCHITECTURE
 
@@ -54,9 +51,7 @@ This uses **step-file architecture** for disciplined execution:
 - **ALWAYS** follow the exact instructions in the step file
 - **ALWAYS** halt at checkpoints and wait for human input
 
-
 ## INITIALIZATION SEQUENCE
-
 
 1. **Load System Configuration (MANDATORY)**: First, read the `CLAUDE.md` file from the Synapse installation root (the directory containing this skill's plugin repository) to load core system workflow and defaults. Then, read the `CLAUDE.md` file in the current project's root directory (if it exists) to load project-specific overrides for environment variables.
 

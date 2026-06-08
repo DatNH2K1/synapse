@@ -1,9 +1,10 @@
 ---
 name: synapse-research-center
-description: 'Conduct market research on competition and customers. Use when the user says they need market research'
+description: "Conduct market research on competition and customers. Use when the user says they need market research"
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
+
 > [!IMPORTANT]
 > **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
 

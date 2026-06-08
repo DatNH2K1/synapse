@@ -1,9 +1,10 @@
 ---
 name: synapse-party-mode
-description: 'Orchestrates group discussions between installed Synapse agents, enabling natural multi-agent conversations where each agent is a real subagent with independent thinking. Use when user requests party mode, wants multiple agent perspectives, group discussion, roundtable, or multi-agent conversation about their project.'
+description: "Orchestrates group discussions between installed Synapse agents, enabling natural multi-agent conversations where each agent is a real subagent with independent thinking. Use when user requests party mode, wants multiple agent perspectives, group discussion, roundtable, or multi-agent conversation about their project."
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
+
 > [!IMPORTANT]
 > **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
 
@@ -63,6 +64,7 @@ Choose 2-4 agents whose expertise is most relevant to what the user is asking. U
 For each selected agent, spawn a subagent using the Agent tool. Each subagent gets:
 
 **The agent prompt** (built from the manifest data):
+
 ```
 You are {displayName} ({title}), a Synapse agent in a collaborative roundtable discussion.
 
@@ -110,14 +112,14 @@ After all agent responses are presented in full, you may optionally add a brief 
 
 The user drives what happens next. Common patterns:
 
-| User says... | You do... |
-|---|---|
-| Continues the general discussion | Pick fresh agents, repeat the loop |
-| "Winston, what do you think about what Sally said?" | Spawn just Winston with Sally's response as context |
-| "Bring in Amelia on this" | Spawn Amelia with a summary of the discussion so far |
-| "I agree with John, let's go deeper on that" | Spawn John + 1-2 others to expand on John's point |
+| User says...                                                 | You do...                                                |
+| ------------------------------------------------------------ | -------------------------------------------------------- |
+| Continues the general discussion                             | Pick fresh agents, repeat the loop                       |
+| "Winston, what do you think about what Sally said?"          | Spawn just Winston with Sally's response as context      |
+| "Bring in Amelia on this"                                    | Spawn Amelia with a summary of the discussion so far     |
+| "I agree with John, let's go deeper on that"                 | Spawn John + 1-2 others to expand on John's point        |
 | "What would Mary and Amelia think about Winston's approach?" | Spawn Mary and Amelia with Winston's response as context |
-| Asks a question directed at everyone | Back to step 1 with all agents |
+| Asks a question directed at everyone                         | Back to step 1 with all agents                           |
 
 The key insight: you can spawn any combination at any time. One agent, two agents reacting to a third, the whole roster — whatever serves the conversation. Each spawn is cheap and independent.
 

@@ -78,18 +78,28 @@ export default function RealtimeProvider({
               type: data.proposal.type,
             });
 
-            if (typeof window !== "undefined" && "Notification" in window && Notification.permission === "granted") {
+            if (
+              typeof window !== "undefined" &&
+              "Notification" in window &&
+              Notification.permission === "granted"
+            ) {
               try {
-                const notif = new Notification(`${t("brand_name")} - ${titleText}`, { 
-                  body: message,
-                  icon: "/favicon.ico"
-                });
+                const notif = new Notification(
+                  `${t("brand_name")} - ${titleText}`,
+                  {
+                    body: message,
+                    icon: "/favicon.ico",
+                  },
+                );
                 notif.onclick = () => {
                   window.focus();
                   window.location.href = "/gate";
                 };
               } catch (e) {
-                console.error("[Realtime] Error showing native notification:", e);
+                console.error(
+                  "[Realtime] Error showing native notification:",
+                  e,
+                );
               }
             }
 
@@ -100,17 +110,27 @@ export default function RealtimeProvider({
               action: data.action,
             });
 
-            if (typeof window !== "undefined" && "Notification" in window && Notification.permission === "granted") {
+            if (
+              typeof window !== "undefined" &&
+              "Notification" in window &&
+              Notification.permission === "granted"
+            ) {
               try {
-                const notif = new Notification(`${t("brand_name")} - ${titleText}`, { 
-                  body: message,
-                  icon: "/favicon.ico"
-                });
+                const notif = new Notification(
+                  `${t("brand_name")} - ${titleText}`,
+                  {
+                    body: message,
+                    icon: "/favicon.ico",
+                  },
+                );
                 notif.onclick = () => {
                   window.focus();
                 };
               } catch (e) {
-                console.error("[Realtime] Error showing native notification:", e);
+                console.error(
+                  "[Realtime] Error showing native notification:",
+                  e,
+                );
               }
             }
 

@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 import { prisma, Node, Edge, Tag } from "../db";
 import { vectorService } from "./vector-service";
 import { queueService } from "./queue-service";
+import { manifestService } from "./manifest-service";
 
 const parseTag = (tagStr: string) => {
   const [scope, rest] = tagStr.includes(":")
@@ -326,6 +327,29 @@ export const knowledgeService = {
 
     // Normalize metadata from proposal tags or direct fields
     const tags = proposal.tags || [];
+
+    const ALLOWED_SECTIONS = [
+      "specialized-conventions",
+      "optimized-techniques",
+      "mistakes-to-avoid",
+      "user-personals",
+    ];
+
+    const ALLOWED_AGENTS = manifestService.getAgents().map((a) => a.name);
+
+    for (const tagStr of tags) {
+      const { scope, name } = parseTag(tagStr);
+      if (scope === "section" && !ALLOWED_SECTIONS.includes(name)) {
+        throw new Error(
+          `Invalid section tag: "${name}". Allowed sections: ${ALLOWED_SECTIONS.join(", ")}`,
+        );
+      }
+      if (scope === "agent" && !ALLOWED_AGENTS.includes(name)) {
+        throw new Error(
+          `Invalid agent tag: "${name}". Allowed agents: ${ALLOWED_AGENTS.join(", ")}`,
+        );
+      }
+    }
     const projectTag = tags.find((t: string) => t.startsWith("project:"));
     const agentTag = tags.find((t: string) => t.startsWith("agent:"));
     const techTag = tags.find(

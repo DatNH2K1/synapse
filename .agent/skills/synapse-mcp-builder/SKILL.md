@@ -8,6 +8,7 @@ metadata:
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
+
 > [!IMPORTANT]
 > **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
 
@@ -31,24 +32,29 @@ Build Model Context Protocol (MCP) servers to allow AI agents to interact with e
 ## Implementation Phases
 
 ### 1. Research & Planning
+
 - Study the target API documentation.
 - Define the core workflows the agent needs to accomplish.
 - Plan input/output schemas (Pydantic/Zod).
 
 ### 2. Implementation
+
 - **Python (FastMCP):** Use `@mcp.tool()` for rapid development.
 - **Node/TypeScript:** Use `server.registerTool()` for type-safe integration.
 - Implement pagination, filtering, and truncation (max 25k tokens).
 
 ### 3. Review & Refine
+
 - Ensure DRY (Don't Repeat Yourself) logic.
 - Verify security (no hardcoded secrets).
 - Check that error messages are "agent-educational".
 
 ### 4. Evaluations
+
 - Create a `qa_pair` XML file to test if the LLM can solve complex tasks using the new tools.
 
 ## Quick Start (Python)
+
 ```python
 from mcp.server.fastmcp import FastMCP
 

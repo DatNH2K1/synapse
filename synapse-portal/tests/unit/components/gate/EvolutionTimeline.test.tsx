@@ -32,7 +32,15 @@ describe("components/gate/EvolutionTimeline", () => {
       memory_tier: "CORE",
       properties: JSON.stringify({ content: "Approved details." }),
       last_verified: "2026-06-01T12:00:00Z",
-      tags: [{ id: "tag-1", scope: "agent", name: "winston", color: "#ff0000", version: "1" }],
+      tags: [
+        {
+          id: "tag-1",
+          scope: "agent",
+          name: "winston",
+          color: "#ff0000",
+          version: "1",
+        },
+      ],
       archiveDetail: null,
     },
     {
@@ -86,7 +94,7 @@ describe("components/gate/EvolutionTimeline", () => {
         setStatusFilter={setStatusFilter}
         undoingId={null}
         onUndo={onUndo}
-      />
+      />,
     );
 
     expect(screen.getByText("Approved Node")).toBeDefined();
@@ -121,7 +129,7 @@ describe("components/gate/EvolutionTimeline", () => {
         setStatusFilter={setStatusFilter}
         undoingId={null}
         onUndo={onUndo}
-      />
+      />,
     );
 
     expect(screen.getByText("Loading Evolution Logs...")).toBeDefined();
@@ -138,7 +146,7 @@ describe("components/gate/EvolutionTimeline", () => {
         setStatusFilter={setStatusFilter}
         undoingId={null}
         onUndo={onUndo}
-      />
+      />,
     );
 
     expect(screen.getByText("No History Found")).toBeDefined();

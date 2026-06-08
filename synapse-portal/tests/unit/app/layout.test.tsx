@@ -4,15 +4,21 @@ import { render, screen } from "@testing-library/react";
 import RootLayout from "@/app/layout";
 
 vi.mock("@/lib/i18n", () => ({
-  I18nProvider: ({ children }: { children: React.ReactNode }) => <div data-testid="i18n">{children}</div>,
+  I18nProvider: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="i18n">{children}</div>
+  ),
 }));
 
 vi.mock("@/components/shared/ThemeProvider", () => ({
-  default: ({ children }: { children: React.ReactNode }) => <div data-testid="theme">{children}</div>,
+  default: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="theme">{children}</div>
+  ),
 }));
 
 vi.mock("@/components/shared/RealtimeProvider", () => ({
-  default: ({ children }: { children: React.ReactNode }) => <div data-testid="realtime">{children}</div>,
+  default: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="realtime">{children}</div>
+  ),
 }));
 
 describe("app/layout", () => {
@@ -20,7 +26,7 @@ describe("app/layout", () => {
     render(
       <RootLayout>
         <div data-testid="test-child">Child Content</div>
-      </RootLayout>
+      </RootLayout>,
     );
 
     expect(screen.getByTestId("theme")).toBeDefined();

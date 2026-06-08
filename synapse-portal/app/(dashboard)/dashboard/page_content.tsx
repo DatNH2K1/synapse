@@ -276,7 +276,8 @@ export default function OverviewPageContent({
               className="flex items-center gap-1 text-[9px] font-bold uppercase tracking-widest text-slate-600"
               suppressHydrationWarning
             >
-              <Clock size={10} /> {new Date().toLocaleDateString()} • {t("system_stable")}
+              <Clock size={10} /> {new Date().toLocaleDateString()} •{" "}
+              {t("system_stable")}
             </p>
           </div>
         </div>

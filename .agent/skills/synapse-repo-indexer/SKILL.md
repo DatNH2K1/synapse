@@ -25,22 +25,27 @@ This skill scans the project's source code (JS/TS, Python, Go, PHP) using static
 
 To scan and synchronize a repository, run the CLI tool from the workspace root.
 
-*   **Sync Current Workspace:**
-    ```bash
-    PYTHONPATH=scripts/utils python3 .agent/skills/synapse-repo-indexer/scripts/index_repo.py
-    ```
+> [!TIP]
+> **Skip Synchronization if Synced Within 1 Hour**: Before running a synchronization, check the last sync time of the repository (e.g., via `GET http://localhost:{SYNAPSE_PORTAL_PORT}/api/indexer/repos`). If the repository has been synced within the last 1 hour, **SKIP** the synchronization step. There is no need to re-sync.
 
-*   **Sync Custom Path / Directory:**
-    Use the `--path` parameter to specify another project directory:
-    ```bash
-    PYTHONPATH=scripts/utils python3 .agent/skills/synapse-repo-indexer/scripts/index_repo.py --path /path/to/target/project
-    ```
+- **Sync Current Workspace:**
 
-*   **Parsing a Single File (Testing / Verification):**
-    To parse a single file and output the parsed exports/imports JSON structure:
-    ```bash
-    PYTHONPATH=scripts/utils python3 .agent/skills/synapse-repo-indexer/scripts/index_repo.py --parse /path/to/file.ts
-    ```
+  ```bash
+  PYTHONPATH=scripts/utils python3 .agent/skills/synapse-repo-indexer/scripts/index_repo.py
+  ```
+
+- **Sync Custom Path / Directory:**
+  Use the `--path` parameter to specify another project directory:
+
+  ```bash
+  PYTHONPATH=scripts/utils python3 .agent/skills/synapse-repo-indexer/scripts/index_repo.py --path /path/to/target/project
+  ```
+
+- **Parsing a Single File (Testing / Verification):**
+  To parse a single file and output the parsed exports/imports JSON structure:
+  ```bash
+  PYTHONPATH=scripts/utils python3 .agent/skills/synapse-repo-indexer/scripts/index_repo.py --parse /path/to/file.ts
+  ```
 
 ---
 
@@ -52,7 +57,10 @@ AI Agents MUST query the Portal's AI-friendly HTTP endpoints to inspect codebase
 > The Portal port must be fetched dynamically using the environment configuration loader. Use the `{SYNAPSE_PORTAL_PORT}` variable loaded from `env_loader.py`.
 
 ### 1. Get Dependency Graph (AI-friendly)
+
 Retrieve all files, symbols, and relative dependency relations for a specific repository.
+
+- **Response Format:** Returns a structured mapping of file paths to their defined symbols and list of relative file path dependencies (no raw UUIDs).
 - **Endpoint:** `GET http://localhost:{SYNAPSE_PORTAL_PORT}/api/indexer/ai/graph?repo=<repo_name>`
 - **Example request (using python / curl):**
   ```bash
@@ -60,7 +68,10 @@ Retrieve all files, symbols, and relative dependency relations for a specific re
   ```
 
 ### 2. Get Reverse Impact / Blast Radius (AI-friendly)
-Find all files that import or depend on a specific file.
+
+Find all files that import or depend on a specific file (Semantic Impact).
+
+- **Response Format:** Returns blast radius partitioned into `directlyAffected` (depth 1) and `indirectlyAffected` (depth > 1 with depth level).
 - **Endpoint:** `GET http://localhost:{SYNAPSE_PORTAL_PORT}/api/indexer/ai/impact?file=<file_path>&repo=<repo_name>`
 - **Example request (using python / curl):**
   ```bash
@@ -68,11 +79,16 @@ Find all files that import or depend on a specific file.
   ```
 
 ### 3. Get File Details (AI-friendly)
+
 Retrieve detailed symbols, direct imports, and direct dependents for a file.
+
+- **Response Format:** Returns detailed symbols, direct dependencies (imported paths), and direct dependents (importing paths).
 - **Endpoint:** `GET http://localhost:{SYNAPSE_PORTAL_PORT}/api/indexer/ai/details?file=<file_path>&repo=<repo_name>`
 
 ### 4. List Scanned Repositories
+
 Retrieve a list of all indexed repositories.
+
 - **Endpoint:** `GET http://localhost:{SYNAPSE_PORTAL_PORT}/api/indexer/repos`
 
 ---

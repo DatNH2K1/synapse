@@ -1,5 +1,3 @@
-
-
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useI18n, I18nProvider } from "@/lib/i18n";
 import en from "@/locales/en.json";
@@ -9,7 +7,10 @@ const mockSetLocale = vi.fn();
 let mockContextValue: ReturnType<typeof useI18n> | null = null;
 
 vi.mock("react", async () => {
-  const actual = (await vi.importActual("react")) as Record<string, object | (() => void)>;
+  const actual = (await vi.importActual("react")) as Record<
+    string,
+    object | (() => void)
+  >;
   return {
     ...actual,
     useContext: vi.fn(() => mockContextValue),

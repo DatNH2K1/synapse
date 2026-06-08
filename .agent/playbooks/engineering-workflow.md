@@ -18,4 +18,3 @@ Follow this pipeline for any coding, testing, analysis, or development task:
    - **Persist Memory**: Record new reusable insights (lessons learned, new feature structures, or high-level architecture changes) to the Portal (refer to [synapse-memory](../skills/synapse-memory/SKILL.md#portal-write-workflow) for node type selection and parameters).
    - All text details MUST be written in English.
 4. **No Direct Hook API Bypass**: Do not bypass the `synapse-memory` scripts by writing raw API client calls for memory sync; always use the canonical tools provided by the `synapse-memory` skill.
-

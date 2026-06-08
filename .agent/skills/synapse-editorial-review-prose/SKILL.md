@@ -1,9 +1,10 @@
 ---
 name: synapse-editorial-review-prose
-description: 'Clinical copy-editor that reviews text for communication issues. Use when user says review for prose or improve the prose'
+description: "Clinical copy-editor that reviews text for communication issues. Use when user says review for prose or improve the prose"
 ---
 
 # 🛡️ MANDATORY COMPLIANCE CHECKLIST
+
 > [!IMPORTANT]
 > **COMPLIANCE RULE:** You MUST output the following checklist with `[x]` at the very beginning of your response to the user to confirm you have completed these steps. Do NOT proceed with the user request until this checklist is printed.
 
@@ -22,6 +23,7 @@ description: 'Clinical copy-editor that reviews text for communication issues. U
 **CONTENT IS SACROSANCT:** Never challenge ideas — only clarify how they're expressed.
 
 **Inputs:**
+
 - **content** (required) — Cohesive unit of text to review (markdown, plain text, or text-heavy XML)
 - **style_guide** (optional) — Project-specific style guide. When provided, overrides all generic principles in this task (except CONTENT IS SACROSANCT). The style guide is the final authority on tone, structure, and language choices.
 - **reader_type** (optional, default: `humans`) — `humans` for standard editorial, `llm` for precision focus
@@ -75,16 +77,16 @@ description: 'Clinical copy-editor that reviews text for communication issues. U
 
 **Output format:**
 
-| Original Text | Revised Text | Changes |
-|---------------|--------------|---------|
+| Original Text              | Revised Text           | Changes                                   |
+| -------------------------- | ---------------------- | ----------------------------------------- |
 | The exact original passage | The suggested revision | Brief explanation of what changed and why |
 
 **Example:**
 
-| Original Text | Revised Text | Changes |
-|---------------|--------------|---------|
+| Original Text                                         | Revised Text                                  | Changes                                                                                |
+| ----------------------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------- |
 | The system will processes data and it handles errors. | The system processes data and handles errors. | Fixed subject-verb agreement ("will processes" to "processes"); removed redundant "it" |
-| Users can chose from options (lines 12, 45, 78) | Users can choose from options | Fixed spelling: "chose" to "choose" (appears in 3 locations) |
+| Users can chose from options (lines 12, 45, 78)       | Users can choose from options                 | Fixed spelling: "chose" to "choose" (appears in 3 locations)                           |
 
 ## HALT CONDITIONS
 

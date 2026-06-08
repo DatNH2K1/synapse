@@ -1,4 +1,3 @@
-
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { POST as postVisualConfig } from "@/app/api/visual-config/route";
 import { prisma } from "@/lib/db";
@@ -22,7 +21,9 @@ describe("POST /api/visual-config", () => {
       body: JSON.stringify({ id: "tag-1", color: "#ff0000" }),
     });
 
-    vi.mocked(prisma.tag.update).mockResolvedValue({} as object as Awaited<ReturnType<typeof prisma.tag.update>>);
+    vi.mocked(prisma.tag.update).mockResolvedValue(
+      {} as object as Awaited<ReturnType<typeof prisma.tag.update>>,
+    );
 
     const response = await postVisualConfig(req);
     expect(response.status).toBe(200);

@@ -36,7 +36,6 @@ export function getConfig() {
   return { user_name: process.env.SYNAPSE_USER_NAME || "User" };
 }
 
-
 export interface Edge {
   id: number;
   from_id: string;

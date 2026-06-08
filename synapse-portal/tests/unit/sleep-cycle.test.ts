@@ -10,8 +10,12 @@ interface MockMethod<TReturn> {
   mockResolvedValueOnce: (value: TReturn) => MockMethod<TReturn>;
   mockRejectedValue: (error: Error) => MockMethod<TReturn>;
   mockRejectedValueOnce: (error: Error) => MockMethod<TReturn>;
-  mockImplementation: (fn: (...args: object[]) => TReturn | Promise<TReturn>) => MockMethod<TReturn>;
-  mockImplementationOnce: (fn: (...args: object[]) => TReturn | Promise<TReturn>) => MockMethod<TReturn>;
+  mockImplementation: (
+    fn: (...args: object[]) => TReturn | Promise<TReturn>,
+  ) => MockMethod<TReturn>;
+  mockImplementationOnce: (
+    fn: (...args: object[]) => TReturn | Promise<TReturn>,
+  ) => MockMethod<TReturn>;
 }
 
 function asMock<TReturn>(func: object): MockMethod<TReturn> {
@@ -73,7 +77,9 @@ vi.mock("@/lib/db", () => {
       create: vi.fn(),
       findFirst: vi.fn(),
     },
-    $transaction: vi.fn((cb: (tx: object) => Promise<object>) => cb(mockPrisma)),
+    $transaction: vi.fn((cb: (tx: object) => Promise<object>) =>
+      cb(mockPrisma),
+    ),
     $executeRaw: vi.fn().mockResolvedValue(1),
   };
   return { prisma: mockPrisma };
@@ -109,7 +115,9 @@ describe("REM Sleep Cycle Service", () => {
   });
 
   it("TC1: Should skip execution if rem_mode_enabled is disabled", async () => {
-    asMock<SystemConfig | null>(prisma.systemConfig.findUnique).mockResolvedValue(null);
+    asMock<SystemConfig | null>(
+      prisma.systemConfig.findUnique,
+    ).mockResolvedValue(null);
 
     const result = await sleepCycleService.run();
 
@@ -118,7 +126,9 @@ describe("REM Sleep Cycle Service", () => {
   });
 
   it("TC2: Should complete without processing if there are no pending nodes", async () => {
-    asMock<SystemConfig | null>(prisma.systemConfig.findUnique).mockImplementation((args: object) => {
+    asMock<SystemConfig | null>(
+      prisma.systemConfig.findUnique,
+    ).mockImplementation((args: object) => {
       const uArgs = args as { where: { key: string } };
       if (uArgs.where.key === "rem_mode_enabled") {
         return Promise.resolve({
@@ -138,7 +148,9 @@ describe("REM Sleep Cycle Service", () => {
   });
 
   it("TC3: Should auto-approve a unique proposal (similarity < threshold)", async () => {
-    asMock<SystemConfig | null>(prisma.systemConfig.findUnique).mockImplementation((args: object) => {
+    asMock<SystemConfig | null>(
+      prisma.systemConfig.findUnique,
+    ).mockImplementation((args: object) => {
       const uArgs = args as { where: { key: string } };
       if (uArgs.where.key === "rem_mode_enabled") {
         return Promise.resolve({
@@ -177,7 +189,9 @@ describe("REM Sleep Cycle Service", () => {
       label: string;
       score: number;
     }
-    asMock<MatchResult[]>(vectorService.findSimilarToNode).mockResolvedValue([]);
+    asMock<MatchResult[]>(vectorService.findSimilarToNode).mockResolvedValue(
+      [],
+    );
     asMock<Node>(prisma.node.update).mockResolvedValue({
       ...mockPendingNode,
       status: "BETA",
@@ -199,7 +213,9 @@ describe("REM Sleep Cycle Service", () => {
   });
 
   it("TC4: Should auto-consolidate (merge) when similarity >= threshold", async () => {
-    asMock<SystemConfig | null>(prisma.systemConfig.findUnique).mockImplementation((args: object) => {
+    asMock<SystemConfig | null>(
+      prisma.systemConfig.findUnique,
+    ).mockImplementation((args: object) => {
       const uArgs = args as { where: { key: string } };
       if (uArgs.where.key === "rem_mode_enabled") {
         return Promise.resolve({
@@ -225,25 +241,27 @@ describe("REM Sleep Cycle Service", () => {
       return Promise.resolve(null);
     });
 
-    asMock<Node | null>(prisma.node.findUnique).mockImplementation((args: object) => {
-      const uArgs = args as { where: { id: string } };
-      if (uArgs.where.id === "active-uuid-1") {
-        return Promise.resolve({
-          id: "active-uuid-1",
-          type: "LESSON",
-          label: "Existing SQL Query Optimize",
-          content_hash: null,
-          success_count: 0,
-          last_verified: new Date(),
-          properties: JSON.stringify({ content: "Indexing speedups" }),
-          status: "APPROVED",
-          memory_tier: "ACTIVE",
-          embeddingModel: null,
-          tags: [],
-        } as Node);
-      }
-      return Promise.resolve(null);
-    });
+    asMock<Node | null>(prisma.node.findUnique).mockImplementation(
+      (args: object) => {
+        const uArgs = args as { where: { id: string } };
+        if (uArgs.where.id === "active-uuid-1") {
+          return Promise.resolve({
+            id: "active-uuid-1",
+            type: "LESSON",
+            label: "Existing SQL Query Optimize",
+            content_hash: null,
+            success_count: 0,
+            last_verified: new Date(),
+            properties: JSON.stringify({ content: "Indexing speedups" }),
+            status: "APPROVED",
+            memory_tier: "ACTIVE",
+            embeddingModel: null,
+            tags: [],
+          } as Node);
+        }
+        return Promise.resolve(null);
+      },
+    );
 
     const mockPendingNode = {
       id: "pending-uuid-2",
@@ -319,7 +337,9 @@ describe("REM Sleep Cycle Service", () => {
   });
 
   it("TC5: Should skip execution if REM sleep cycle is already running (concurrency lock)", async () => {
-    asMock<SystemConfig | null>(prisma.systemConfig.findUnique).mockImplementation((args: object) => {
+    asMock<SystemConfig | null>(
+      prisma.systemConfig.findUnique,
+    ).mockImplementation((args: object) => {
       const uArgs = args as { where: { key: string } };
       if (uArgs.where.key === "rem_running") {
         return Promise.resolve({
@@ -334,25 +354,37 @@ describe("REM Sleep Cycle Service", () => {
     const result = await sleepCycleService.run();
 
     expect(result.processedCount).toBe(0);
-    expect(result.logs[1]).toContain("REM Sleep Cycle is already running. Skipping execution.");
+    expect(result.logs[1]).toContain(
+      "REM Sleep Cycle is already running. Skipping execution.",
+    );
   });
 
   describe("runDecayLoop", () => {
     it("should return early if forget_mode is disabled", async () => {
-      asMock<SystemConfig | null>(prisma.systemConfig.findUnique).mockResolvedValue(null);
+      asMock<SystemConfig | null>(
+        prisma.systemConfig.findUnique,
+      ).mockResolvedValue(null);
       const logs: string[] = [];
       await sleepCycleService.runDecayLoop(logs);
       expect(logs[1]).toContain("Forget Mode is disabled");
     });
 
     it("should run decay check and log dry run nodes", async () => {
-      asMock<SystemConfig | null>(prisma.systemConfig.findUnique).mockImplementation((args: object) => {
+      asMock<SystemConfig | null>(
+        prisma.systemConfig.findUnique,
+      ).mockImplementation((args: object) => {
         const uArgs = args as { where: { key: string } };
         if (uArgs.where.key === "forget_mode_enabled") {
-          return Promise.resolve({ key: "forget_mode_enabled", value: "true" } as SystemConfig);
+          return Promise.resolve({
+            key: "forget_mode_enabled",
+            value: "true",
+          } as SystemConfig);
         }
         if (uArgs.where.key === "forget_dry_run_enabled") {
-          return Promise.resolve({ key: "forget_dry_run_enabled", value: "true" } as SystemConfig);
+          return Promise.resolve({
+            key: "forget_dry_run_enabled",
+            value: "true",
+          } as SystemConfig);
         }
         return Promise.resolve(null);
       });
@@ -417,21 +449,33 @@ describe("REM Sleep Cycle Service", () => {
         },
       ];
 
-      asMock<ActiveNodeWithTagsRelation[]>(prisma.node.findMany).mockResolvedValue(mockActiveNodes);
+      asMock<ActiveNodeWithTagsRelation[]>(
+        prisma.node.findMany,
+      ).mockResolvedValue(mockActiveNodes);
 
       const logs: string[] = [];
       await sleepCycleService.runDecayLoop(logs);
-      expect(logs.some(log => log.includes("WOULD be decayed to COLD tier"))).toBe(true);
+      expect(
+        logs.some((log) => log.includes("WOULD be decayed to COLD tier")),
+      ).toBe(true);
     });
 
     it("should decay nodes and set tier to COLD if dry run is false", async () => {
-      asMock<SystemConfig | null>(prisma.systemConfig.findUnique).mockImplementation((args: object) => {
+      asMock<SystemConfig | null>(
+        prisma.systemConfig.findUnique,
+      ).mockImplementation((args: object) => {
         const uArgs = args as { where: { key: string } };
         if (uArgs.where.key === "forget_mode_enabled") {
-          return Promise.resolve({ key: "forget_mode_enabled", value: "true" } as SystemConfig);
+          return Promise.resolve({
+            key: "forget_mode_enabled",
+            value: "true",
+          } as SystemConfig);
         }
         if (uArgs.where.key === "forget_dry_run_enabled") {
-          return Promise.resolve({ key: "forget_dry_run_enabled", value: "false" } as SystemConfig);
+          return Promise.resolve({
+            key: "forget_dry_run_enabled",
+            value: "false",
+          } as SystemConfig);
         }
         return Promise.resolve(null);
       });
@@ -496,7 +540,9 @@ describe("REM Sleep Cycle Service", () => {
         },
       ];
 
-      asMock<ActiveNodeWithTagsRelation[]>(prisma.node.findMany).mockResolvedValue(mockActiveNodes);
+      asMock<ActiveNodeWithTagsRelation[]>(
+        prisma.node.findMany,
+      ).mockResolvedValue(mockActiveNodes);
       asMock<Node>(prisma.node.update).mockResolvedValue({} as Node);
 
       const logs: string[] = [];
@@ -514,7 +560,9 @@ describe("REM Sleep Cycle Service", () => {
       asMock<Node[]>(prisma.node.findMany).mockResolvedValue([]);
       const logs: string[] = [];
       await sleepCycleService.consolidateColdNodes(logs);
-      expect(logs.some(log => log.includes("Less than 2 COLD nodes found"))).toBe(true);
+      expect(
+        logs.some((log) => log.includes("Less than 2 COLD nodes found")),
+      ).toBe(true);
     });
 
     it("should cluster and propose consolidation of COLD nodes", async () => {
@@ -543,7 +591,12 @@ describe("REM Sleep Cycle Service", () => {
           status: "APPROVED",
           memory_tier: "COLD",
           embeddingModel: null,
-          tags: [{ tagId: "t-tech", tag: createMockTag({ scope: "technology", name: "js" }) }],
+          tags: [
+            {
+              tagId: "t-tech",
+              tag: createMockTag({ scope: "technology", name: "js" }),
+            },
+          ],
         },
         {
           id: "cold-2",
@@ -556,7 +609,12 @@ describe("REM Sleep Cycle Service", () => {
           status: "APPROVED",
           memory_tier: "COLD",
           embeddingModel: null,
-          tags: [{ tagId: "t-tech", tag: createMockTag({ scope: "technology", name: "js" }) }],
+          tags: [
+            {
+              tagId: "t-tech",
+              tag: createMockTag({ scope: "technology", name: "js" }),
+            },
+          ],
         },
         {
           id: "cold-3",
@@ -586,15 +644,21 @@ describe("REM Sleep Cycle Service", () => {
         },
       ];
 
-      asMock<ColdNodeWithTagsRelation[]>(prisma.node.findMany).mockResolvedValue(mockColdNodes);
+      asMock<ColdNodeWithTagsRelation[]>(
+        prisma.node.findMany,
+      ).mockResolvedValue(mockColdNodes);
       interface MatchResult {
         id: string;
         label: string;
         score: number;
       }
       asMock<MatchResult[]>(vectorService.findSimilarToNode)
-        .mockResolvedValueOnce([{ id: "cold-2", label: "Cold Node B", score: 0.9 }]) // JS cluster
-        .mockResolvedValueOnce([{ id: "cold-4", label: "Cold Node D", score: 0.9 }]); // general:general cluster
+        .mockResolvedValueOnce([
+          { id: "cold-2", label: "Cold Node B", score: 0.9 },
+        ]) // JS cluster
+        .mockResolvedValueOnce([
+          { id: "cold-4", label: "Cold Node D", score: 0.9 },
+        ]); // general:general cluster
 
       asMock<object>(aiService.synthesizeKnowledge)
         .mockResolvedValueOnce({
@@ -602,12 +666,19 @@ describe("REM Sleep Cycle Service", () => {
           content: "Consolidated JS cold contents",
           reason: "JS consolidation",
         })
-        .mockRejectedValueOnce(new Error("Synthesis failed on general cluster")); // triggers synthesis catch block
+        .mockRejectedValueOnce(
+          new Error("Synthesis failed on general cluster"),
+        ); // triggers synthesis catch block
 
       asMock<Node>(prisma.$transaction).mockImplementation((fn: object) => {
         const tx = {
           node: {
-            create: vi.fn().mockResolvedValue(createMockNode({ id: "crystal-id", label: "Unified Cold Node" })),
+            create: vi.fn().mockResolvedValue(
+              createMockNode({
+                id: "crystal-id",
+                label: "Unified Cold Node",
+              }),
+            ),
             updateMany: vi.fn(),
           },
           tag: {
@@ -622,8 +693,16 @@ describe("REM Sleep Cycle Service", () => {
 
       const logs: string[] = [];
       await sleepCycleService.consolidateColdNodes(logs);
-      expect(logs.some(log => log.includes("Successfully proposed consolidation of 2 COLD nodes"))).toBe(true);
-      expect(logs.some(log => log.includes("Failed to consolidate cluster \"general:general\""))).toBe(true);
+      expect(
+        logs.some((log) =>
+          log.includes("Successfully proposed consolidation of 2 COLD nodes"),
+        ),
+      ).toBe(true);
+      expect(
+        logs.some((log) =>
+          log.includes('Failed to consolidate cluster "general:general"'),
+        ),
+      ).toBe(true);
     });
   });
 
@@ -648,15 +727,27 @@ describe("REM Sleep Cycle Service", () => {
 
       expect(prisma.node.deleteMany).toHaveBeenCalled();
       expect(prisma.archive.deleteMany).toHaveBeenCalled();
-      expect(logs.some(log => log.includes("GC successfully purged 1 expired archive nodes"))).toBe(true);
-      expect(logs.some(log => log.includes("GC successfully purged 2 rejected nodes"))).toBe(true);
+      expect(
+        logs.some((log) =>
+          log.includes("GC successfully purged 1 expired archive nodes"),
+        ),
+      ).toBe(true);
+      expect(
+        logs.some((log) =>
+          log.includes("GC successfully purged 2 rejected nodes"),
+        ),
+      ).toBe(true);
     });
 
     it("should log error if GC fails", async () => {
-      asMock<Archive[]>(prisma.archive.findMany).mockRejectedValue(new Error("DB connection timeout"));
+      asMock<Archive[]>(prisma.archive.findMany).mockRejectedValue(
+        new Error("DB connection timeout"),
+      );
       const logs: string[] = [];
       await sleepCycleService.runGarbageCollection(logs);
-      expect(logs.some(log => log.includes("Garbage Collection failed"))).toBe(true);
+      expect(
+        logs.some((log) => log.includes("Garbage Collection failed")),
+      ).toBe(true);
     });
   });
 });

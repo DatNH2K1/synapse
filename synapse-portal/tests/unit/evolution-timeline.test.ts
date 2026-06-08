@@ -1,4 +1,3 @@
- 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { knowledgeService } from "@/lib/services/knowledge-service";
 import { prisma } from "@/lib/db";

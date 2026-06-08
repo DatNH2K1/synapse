@@ -41,7 +41,7 @@ describe("components/shared/KnowledgeExplorer", () => {
         onToggleOrphans={onToggleOrphans}
         visibleTags={visibleTags}
         onToggleTag={onToggleTag}
-      />
+      />,
     );
 
     expect(screen.getByText("scopeA")).toBeDefined();
@@ -57,7 +57,7 @@ describe("components/shared/KnowledgeExplorer", () => {
         onToggleOrphans={onToggleOrphans}
         visibleTags={visibleTags}
         onToggleTag={onToggleTag}
-      />
+      />,
     );
 
     // Initial state: Tag 1 should not be in the document
@@ -82,7 +82,7 @@ describe("components/shared/KnowledgeExplorer", () => {
         onToggleOrphans={onToggleOrphans}
         visibleTags={visibleTags}
         onToggleTag={onToggleTag}
-      />
+      />,
     );
 
     const btn = screen.getByRole("button");
@@ -99,7 +99,7 @@ describe("components/shared/KnowledgeExplorer", () => {
         onToggleOrphans={onToggleOrphans}
         visibleTags={visibleTags}
         onToggleTag={onToggleTag}
-      />
+      />,
     );
 
     // scopeB has tag3 which is not in connectedTagIds, so connectedCount is 0.
